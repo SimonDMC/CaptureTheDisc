@@ -1,0 +1,15 @@
+name: EventCTW
+version: '${project.version}'
+main: com.simondmc.eventctw.EventCTW
+authors: [ SimonDMC ]
+description: stuff for dream and techno event ig
+website: simondmc.com
+api-version: 1.13
+
+commands:
+  testcmd:
+  deconstructmap:
+  pastemap:
+  startctw:
+  forcestopctw:
+  openshop:

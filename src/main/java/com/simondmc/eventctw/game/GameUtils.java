@@ -1,0 +1,75 @@
+package com.simondmc.eventctw.game;
+
+import com.simondmc.eventctw.region.Region;
+import com.simondmc.eventctw.util.Utils;
+import org.bukkit.Color;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+
+public class GameUtils {
+    public static void clearEntities(Player p) {
+        for (Entity e : p.getWorld().getEntities()) {
+            if (!(e instanceof Player) && Utils.inRegion(e.getLocation(), Region.MAP)) e.remove();
+        }
+    }
+    public static void setupPlayers() {
+        for (Player p : Teams.getPlayers()) {
+            p.setGameMode(GameMode.SURVIVAL);
+            p.setHealth(20);
+            p.setFoodLevel(20);
+            p.setSaturation(0);
+            p.getInventory().clear();
+            fillInv(p);
+            if (Teams.getRed().contains(p)) {
+                p.teleport(new Location(p.getWorld(), Region.RED_SPAWN.getBlockX()+.5, Region.RED_SPAWN.getBlockY(), Region.RED_SPAWN.getBlockZ()+.5, -90, 0));
+            } else {
+                p.teleport(new Location(p.getWorld(), Region.BLUE_SPAWN.getBlockX()+.5, Region.BLUE_SPAWN.getBlockY(), Region.BLUE_SPAWN.getBlockZ()+.5, 90, 0));
+            }
+        }
+    }
+    public static void fillInv(Player p) {
+        ItemStack i;
+        ItemMeta m;
+        LeatherArmorMeta leather;
+
+        i = new ItemStack(Material.STONE_SWORD);
+        m = i.getItemMeta();
+        m.setUnbreakable(true);
+        i.setItemMeta(m);
+
+        p.getInventory().setItem(0, i);
+
+        i = new ItemStack(Material.BOW);
+        m = i.getItemMeta();
+        m.setUnbreakable(true);
+        i.setItemMeta(m);
+
+        p.getInventory().setItem(1, i);
+        p.getInventory().setItem(2, new ItemStack(Material.OAK_PLANKS, 64));
+        p.getInventory().setItem(3, new ItemStack(Material.OAK_PLANKS, 64));
+        p.getInventory().setItem(4, new ItemStack(Material.OAK_PLANKS, 64));
+        p.getInventory().setItem(5, new ItemStack(Material.AIR));
+        p.getInventory().setItem(6, new ItemStack(Material.GOLDEN_APPLE));
+
+        i = new ItemStack(Material.IRON_AXE);
+        m = i.getItemMeta();
+        m.setUnbreakable(true);
+        i.setItemMeta(m);
+
+        p.getInventory().setItem(7, i);
+        p.getInventory().setItem(8, new ItemStack(Material.ARROW, 8));
+
+        Color color = Teams.getRed().contains(p) ? Color.fromRGB(255, 0, 0) : Color.fromRGB(0, 0, 255);
+
+        i = new ItemStack(Material.LEATHER_HELMET);
+        leather = (LeatherArmorMeta) i.getItemMeta();
+        leather.setColor(color);
+
+    }
+}
