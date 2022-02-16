@@ -21,6 +21,9 @@ public class GameCore {
         for (Player p : Teams.getPlayers()) {
             p.setDisplayName(p.getName());
         }
+        Teams.getRed().clear();
+        Teams.getBlue().clear();
+        Teams.getPlayers().clear();
     }
     public static boolean isOn() {
         return running;

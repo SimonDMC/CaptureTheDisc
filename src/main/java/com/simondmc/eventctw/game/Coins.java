@@ -12,6 +12,10 @@ public class Coins {
     public static void addCoins(Player p, float amount) {
         float baseAmount = (coins.containsKey(p) ? coins.get(p) : 0);
         float adjusted = Math.round(amount*10)/10f;
+        coins.put(p, baseAmount + adjusted);
+
+        // no sound or message in chat if subtracting
+        if (amount < 0) return;
 
         // if damage is whole, round to omit decimal point
         if (adjusted == Math.round(adjusted)) {
@@ -19,7 +23,6 @@ public class Coins {
         } else {
             p.sendMessage("§6+" + adjusted + " Coins!");
         }
-        coins.put(p, baseAmount + adjusted);
         Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
     }
     public static float getCoins(Player p) {

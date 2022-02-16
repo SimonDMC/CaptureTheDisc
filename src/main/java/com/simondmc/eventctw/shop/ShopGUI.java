@@ -9,11 +9,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ShopGUI {
     private static final Inventory shop = Bukkit.createInventory(null, 45, "Shop");
-    public static final int[] shopSlots = {10,11,12,13,14,15,16,19,20,21,22,23,24,25};
+    public static final List<Integer> shopSlots = new ArrayList<>(Arrays.asList(10,11,12,13,14,15,16,19,20,21,22,23,24,25));
+    public static List<ShopItem> shopItems;
 
     public static void initShop() {
         ItemStack border = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
@@ -30,7 +32,6 @@ public class ShopGUI {
         fillShop();
     }
     private static void fillShop() {
-        List<ItemStack> shopItems = new ArrayList<>();
 
         // DEFINE SHOP METAS HERE
         ItemMeta swordDisplay = new ItemStack(Material.IRON_SWORD).getItemMeta();
@@ -43,16 +44,17 @@ public class ShopGUI {
         ItemStack swordItem = new ItemStack(Material.IRON_SWORD);
         swordItem.setItemMeta(swordItemMeta);
 
-        // TODO: make shopitem an actual object
         // ADD SHOP ITEMS HERE
-        shopItems.add(ShopItem.create(Material.IRON_SWORD, "Sharpness Sword", 20, 1, swordDisplay, swordItem));
-        shopItems.add(ShopItem.create(Material.GOLDEN_APPLE, "Golden Apple", 10));
-        shopItems.add(ShopItem.create(Material.ARROW, "Arrow", 15, 16));
-        shopItems.add(ShopItem.create(Material.TNT, "TNT", 10));
-        shopItems.add(ShopItem.create(Material.PAPER, "Placeholder Item", 69, 3));
+        shopItems = new ArrayList<>(Arrays.asList(
+                new ShopItem(Material.IRON_SWORD, "Sharpness Sword", 20, 1, swordDisplay, swordItem),
+                new ShopItem(Material.GOLDEN_APPLE, "Golden Apple", 10),
+                new ShopItem(Material.ARROW, "Arrow", 15, 16),
+                new ShopItem(Material.TNT, "TNT", 10),
+                new ShopItem(Material.PAPER, "Placeholder Item", 69, 3)
+        ));
 
-        for (ItemStack item : shopItems)
-            shop.setItem(shopSlots[shopItems.indexOf(item)], item);
+        for (ShopItem item : shopItems)
+            shop.setItem(shopSlots.get(shopItems.indexOf(item)), item.getShopItem());
     }
     public static Inventory getShopGui() {
         return shop;

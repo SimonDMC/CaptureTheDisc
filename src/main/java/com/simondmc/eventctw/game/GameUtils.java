@@ -34,6 +34,7 @@ public class GameUtils {
         }
     }
     public static void fillInv(Player p) {
+        // TODO: rewrite all of this jesus christ
         ItemStack i;
         ItemMeta m;
         LeatherArmorMeta leather;
@@ -55,7 +56,13 @@ public class GameUtils {
         p.getInventory().setItem(3, new ItemStack(Material.OAK_PLANKS, 64));
         p.getInventory().setItem(4, new ItemStack(Material.OAK_PLANKS, 64));
         p.getInventory().setItem(5, new ItemStack(Material.AIR));
-        p.getInventory().setItem(6, new ItemStack(Material.GOLDEN_APPLE));
+
+        i = new ItemStack(Material.GOLDEN_APPLE);
+        m = i.getItemMeta();
+        m.setDisplayName("§rGolden Apple");
+        i.setItemMeta(m);
+
+        p.getInventory().setItem(6, i);
 
         i = new ItemStack(Material.IRON_AXE);
         m = i.getItemMeta();
@@ -63,13 +70,26 @@ public class GameUtils {
         i.setItemMeta(m);
 
         p.getInventory().setItem(7, i);
-        p.getInventory().setItem(8, new ItemStack(Material.ARROW, 8));
+
+        i = new ItemStack(Material.ARROW, 8);
+        m = i.getItemMeta();
+        m.setDisplayName("§rArrow");
+        i.setItemMeta(m);
+
+        p.getInventory().setItem(8, i);
 
         Color color = Teams.getRed().contains(p) ? Color.fromRGB(255, 0, 0) : Color.fromRGB(0, 0, 255);
 
         i = new ItemStack(Material.LEATHER_HELMET);
         leather = (LeatherArmorMeta) i.getItemMeta();
         leather.setColor(color);
-
+        i.setItemMeta(leather);
+        p.getInventory().setHelmet(i);
+        i.setType(Material.LEATHER_CHESTPLATE);
+        p.getInventory().setChestplate(i);
+        i.setType(Material.LEATHER_LEGGINGS);
+        p.getInventory().setLeggings(i);
+        i.setType(Material.LEATHER_BOOTS);
+        p.getInventory().setBoots(i);
     }
 }
