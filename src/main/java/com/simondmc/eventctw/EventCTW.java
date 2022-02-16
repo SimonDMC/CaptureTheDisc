@@ -8,6 +8,7 @@ import com.simondmc.eventctw.game.Config;
 import com.simondmc.eventctw.game.GameLoop;
 import com.simondmc.eventctw.listeners.BlockEvent;
 import com.simondmc.eventctw.listeners.PlayerEvent;
+import com.simondmc.eventctw.shop.ShopClick;
 import com.simondmc.eventctw.shop.ShopGUI;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -49,11 +50,13 @@ public final class EventCTW extends JavaPlugin {
         commands.add(new ForceStopCommand());
         //commands.add(new TestDiscCommand());
         commands.add(new ShopCommand());
+        commands.add(new CoinsCommand());
     }
 
     void registerListeners() {
         getServer().getPluginManager().registerEvents(new BlockEvent(), plugin);
         getServer().getPluginManager().registerEvents(new PlayerEvent(), plugin);
+        getServer().getPluginManager().registerEvents(new ShopClick(), plugin);
     }
 
     void registerCommand(SuperCommand cmd) {

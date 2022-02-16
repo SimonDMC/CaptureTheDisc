@@ -27,9 +27,9 @@ public class GameUtils {
             p.getInventory().clear();
             fillInv(p);
             if (Teams.getRed().contains(p)) {
-                p.teleport(new Location(p.getWorld(), Region.RED_SPAWN.getBlockX()+.5, Region.RED_SPAWN.getBlockY(), Region.RED_SPAWN.getBlockZ()+.5, -90, 0));
+                p.teleport(Utils.genLocation(p.getWorld(), Region.RED_SPAWN, .5f, 0, .5f, -90, 0));
             } else {
-                p.teleport(new Location(p.getWorld(), Region.BLUE_SPAWN.getBlockX()+.5, Region.BLUE_SPAWN.getBlockY(), Region.BLUE_SPAWN.getBlockZ()+.5, 90, 0));
+                p.teleport(Utils.genLocation(p.getWorld(), Region.BLUE_SPAWN, .5f, 0, .5f, 90, 0));
             }
         }
     }

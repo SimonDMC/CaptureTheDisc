@@ -12,7 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShopGUI {
-    private final static Inventory shop = Bukkit.createInventory(null, 45, "Shop");
+    private static final Inventory shop = Bukkit.createInventory(null, 45, "Shop");
+    public static final int[] shopSlots = {10,11,12,13,14,15,16,19,20,21,22,23,24,25};
 
     public static void initShop() {
         ItemStack border = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
@@ -29,16 +30,22 @@ public class ShopGUI {
         fillShop();
     }
     private static void fillShop() {
-        int[] shopSlots = {10,11,12,13,14,15,16,19,20,21,22,23,24,25};
         List<ItemStack> shopItems = new ArrayList<>();
 
         // DEFINE SHOP METAS HERE
-        ItemMeta swordMeta = new ItemStack(Material.IRON_SWORD).getItemMeta();
-        swordMeta.addEnchant(Enchantment.DAMAGE_ALL, 1, true);
-        swordMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        ItemMeta swordDisplay = new ItemStack(Material.IRON_SWORD).getItemMeta();
+        swordDisplay.addEnchant(Enchantment.DAMAGE_ALL, 1, true);
+        swordDisplay.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 
+        // DEFINE ITEMS HERE
+        ItemMeta swordItemMeta = new ItemStack(Material.IRON_SWORD).getItemMeta();
+        swordItemMeta.addEnchant(Enchantment.DAMAGE_ALL, 1, true);
+        ItemStack swordItem = new ItemStack(Material.IRON_SWORD);
+        swordItem.setItemMeta(swordItemMeta);
+
+        // TODO: make shopitem an actual object
         // ADD SHOP ITEMS HERE
-        shopItems.add(ShopItem.create(Material.IRON_SWORD, "Sharpness Sword", 20, 1, swordMeta));
+        shopItems.add(ShopItem.create(Material.IRON_SWORD, "Sharpness Sword", 20, 1, swordDisplay, swordItem));
         shopItems.add(ShopItem.create(Material.GOLDEN_APPLE, "Golden Apple", 10));
         shopItems.add(ShopItem.create(Material.ARROW, "Arrow", 15, 16));
         shopItems.add(ShopItem.create(Material.TNT, "TNT", 10));

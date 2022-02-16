@@ -1,5 +1,6 @@
 package com.simondmc.eventctw.listeners;
 
+import com.simondmc.eventctw.game.Coins;
 import com.simondmc.eventctw.game.GameCore;
 import com.simondmc.eventctw.game.Teams;
 import com.simondmc.eventctw.region.Region;
@@ -7,6 +8,7 @@ import com.simondmc.eventctw.util.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -52,5 +54,14 @@ public class PlayerEvent implements Listener {
             Utils.launch(p, e.getTo(), e.getFrom(), 1.5f);
             p.sendMessage("§cYou cannot enter this area!");
         }
+    }
+
+    // TODO: only make it work for players (all entities allowed rn for testing purposes)
+    @EventHandler
+    public void hit(EntityDamageByEntityEvent e) {
+        if (!GameCore.isOn()) return;
+        if (!(e.getDamager() instanceof Player)) return;
+        Player p = (Player) e.getDamager();
+        Coins.addCoins(p, (float)e.getDamage());
     }
 }

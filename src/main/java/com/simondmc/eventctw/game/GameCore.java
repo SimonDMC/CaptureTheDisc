@@ -1,6 +1,7 @@
 package com.simondmc.eventctw.game;
 
 import com.simondmc.eventctw.region.Region;
+import com.simondmc.eventctw.util.Utils;
 import org.bukkit.GameMode;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
@@ -47,14 +48,14 @@ public class GameCore {
         p.setGameMode(GameMode.SURVIVAL);
         GameUtils.fillInv(p);
         if (Teams.getRed().contains(p)) {
-            p.teleport(new Location(p.getWorld(), Region.RED_SPAWN.getBlockX()+.5, Region.RED_SPAWN.getBlockY(), Region.RED_SPAWN.getBlockZ()+.5, -90, 0));
+            p.teleport(Utils.genLocation(p.getWorld(), Region.RED_SPAWN, .5f, 0, .5f, -90, 0));
         } else {
-            p.teleport(new Location(p.getWorld(), Region.BLUE_SPAWN.getBlockX()+.5, Region.BLUE_SPAWN.getBlockY(), Region.BLUE_SPAWN.getBlockZ()+.5, 90, 0));
+            p.teleport(Utils.genLocation(p.getWorld(), Region.BLUE_SPAWN, .5f, 0, .5f, 90, 0));
         }
     }
     public static void die(Player p) {
         p.setGameMode(GameMode.SPECTATOR);
         dead.put(p, 100); // 100 ticks = 5 seconds
-        p.teleport(new Location(p.getWorld(), Region.CENTER.getBlockX()+.5, Region.CENTER.getBlockY()+20, Region.CENTER.getZ()+.5));
+        p.teleport(Utils.genLocation(p.getWorld(), Region.CENTER, .5f, 20, .5f));
     }
 }

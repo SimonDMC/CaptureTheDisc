@@ -1,6 +1,8 @@
 package com.simondmc.eventctw.util;
 
 import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 public class Utils {
@@ -20,5 +22,17 @@ public class Utils {
         try {
             p.setVelocity(l2.toVector().subtract(l1.toVector()).normalize().setY(0.3333D).multiply(strength));
         } catch (Exception ignored) {}
+    }
+    public static Location genLocation(World world, Location loc, float addX, float addY, float addZ) {
+        return new Location(world, loc.getBlockX() + addX, loc.getBlockY() + addY, loc.getBlockZ() + addZ);
+    }
+    public static Location genLocation(World world, Location loc, float addX, float addY, float addZ, float yaw, float pitch) {
+        return new Location(world, loc.getBlockX() + addX, loc.getBlockY() + addY, loc.getBlockZ() + addZ, yaw, pitch);
+    }
+    public static void playSound(Player p, Sound sound) {
+        p.playSound(p.getLocation(), sound, 1, 1);
+    }
+    public static void playSound(Player p, Sound sound, float vol, float pitch) {
+        p.playSound(p.getLocation(), sound, vol, pitch);
     }
 }
