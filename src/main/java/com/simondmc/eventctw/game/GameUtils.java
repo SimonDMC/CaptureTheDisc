@@ -64,7 +64,7 @@ public class GameUtils {
 
         p.getInventory().setItem(6, i);
 
-        i = new ItemStack(Material.IRON_AXE);
+        i = new ItemStack(Material.STONE_AXE);
         m = i.getItemMeta();
         m.setUnbreakable(true);
         i.setItemMeta(m);

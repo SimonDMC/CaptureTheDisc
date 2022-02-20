@@ -25,10 +25,7 @@ public class ShopClick implements Listener {
                     Utils.playSound(p, Sound.ENTITY_VILLAGER_NO);
                     return;
                 }
-                // subtract cost from balance
-                Coins.addCoins(p, -shopItem.cost);
-                p.getInventory().addItem(shopItem.getItemToRecieve());
-                Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1.5f);
+                p.getInventory().addItem(shopItem.getItemToRecieve(p));
             }
         }
     }

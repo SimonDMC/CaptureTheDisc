@@ -31,6 +31,7 @@ public class GameLoop {
                     }
 
                     // ACTIONBAR HANDLER
+                    // TODO: move this into its own class
                     // https://www.spigotmc.org/threads/257845/
                     float coins = Coins.getCoins(p);
                     // remove decimal point if whole number

@@ -32,25 +32,19 @@ public class ShopGUI {
         fillShop();
     }
     private static void fillShop() {
-
-        // DEFINE SHOP METAS HERE
-        ItemMeta swordDisplay = new ItemStack(Material.IRON_SWORD).getItemMeta();
-        swordDisplay.addEnchant(Enchantment.DAMAGE_ALL, 1, true);
-        swordDisplay.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-
         // DEFINE ITEMS HERE
-        ItemMeta swordItemMeta = new ItemStack(Material.IRON_SWORD).getItemMeta();
-        swordItemMeta.addEnchant(Enchantment.DAMAGE_ALL, 1, true);
-        ItemStack swordItem = new ItemStack(Material.IRON_SWORD);
-        swordItem.setItemMeta(swordItemMeta);
+        ItemStack sword = new ItemStack(Material.IRON_SWORD);
 
         // ADD SHOP ITEMS HERE
         shopItems = new ArrayList<>(Arrays.asList(
-                new ShopItem(Material.IRON_SWORD, "Sharpness Sword", 20, 1, swordDisplay, swordItem),
+                // TODO: balance costs
+                new ShopItem(Material.IRON_SWORD, "Sword Upgrade", 20, CustomItem.UPGRADE_SWORD),
+                new ShopItem(Material.CHAINMAIL_CHESTPLATE, "Chestplate Upgrade", 20, CustomItem.UPGRADE_CHESTPLATE),
+                new ShopItem(Material.IRON_AXE, "Axe Upgrade 1", 20, CustomItem.UPGRADE_AXE_1),
+                new ShopItem(Material.DIAMOND_AXE, "Axe Upgrade 2", 20, CustomItem.UPGRADE_AXE_2),
                 new ShopItem(Material.GOLDEN_APPLE, "Golden Apple", 10),
                 new ShopItem(Material.ARROW, "Arrow", 15, 16),
-                new ShopItem(Material.TNT, "TNT", 10),
-                new ShopItem(Material.PAPER, "Placeholder Item", 69, 3)
+                new ShopItem(Material.TNT, "TNT", 10)
         ));
 
         for (ShopItem item : shopItems)
