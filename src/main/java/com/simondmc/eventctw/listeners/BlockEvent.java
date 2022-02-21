@@ -5,11 +5,14 @@ import com.simondmc.eventctw.region.Region;
 import com.simondmc.eventctw.util.Utils;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +37,12 @@ public class BlockEvent implements Listener {
             return;
         }
         placedBlocks.add(e.getBlock().getLocation());
+
+        if (e.getBlock().getType().equals(Material.TNT)) {
+            Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+            p.sendMessage("§eRight Click a TNT block to light it!");
+            System.out.println("placed");
+        }
     }
 
     @EventHandler
@@ -46,5 +55,11 @@ public class BlockEvent implements Listener {
             return;
         }
         placedBlocks.remove(e.getBlock().getLocation());
+    }
+
+    @EventHandler
+    public void blockExplode(EntityExplodeEvent e) {
+        if (!GameCore.isOn()) return;
+        e.blockList().clear();
     }
 }

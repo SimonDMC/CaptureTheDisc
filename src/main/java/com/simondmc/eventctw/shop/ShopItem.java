@@ -71,6 +71,7 @@ public class ShopItem {
     }
     // give actual item to recieve when buying
     ItemStack getItemToRecieve(Player p) {
+        // this code is completely garbage but its not worth improving
         if (customShopItem != null)
             // TODO: make a list of purchased upgrades to persist and make only buyable once
             switch (customShopItem) {

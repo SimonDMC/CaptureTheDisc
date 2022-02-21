@@ -5,13 +5,19 @@ import com.simondmc.eventctw.game.GameCore;
 import com.simondmc.eventctw.game.Teams;
 import com.simondmc.eventctw.region.Region;
 import com.simondmc.eventctw.util.Utils;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.EquipmentSlot;
 
 public class PlayerEvent implements Listener {
 
@@ -53,6 +59,17 @@ public class PlayerEvent implements Listener {
         if ((Teams.getRed().contains(p) && Utils.inRegion(e.getTo(), Region.BLUE_GRACE)) || (Teams.getBlue().contains(p) && Utils.inRegion(e.getTo(), Region.RED_GRACE))) {
             Utils.launch(p, e.getTo(), e.getFrom(), 1.5f);
             p.sendMessage("§cYou cannot enter this area!");
+        }
+    }
+
+    @EventHandler
+    public void click(PlayerInteractEvent e) {
+        if (!GameCore.isOn()) return;
+        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getHand().equals(EquipmentSlot.HAND) && e.getClickedBlock().getType().equals(Material.TNT)) {
+            Location l = e.getClickedBlock().getLocation().add(.5,0,.5);
+            e.getClickedBlock().setType(Material.AIR);
+            l.getWorld().spawnEntity(l, EntityType.PRIMED_TNT);
+            System.out.println("fired");
         }
     }
 
