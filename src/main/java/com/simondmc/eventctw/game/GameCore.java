@@ -4,7 +4,7 @@ import com.simondmc.eventctw.region.Region;
 import com.simondmc.eventctw.util.Utils;
 import org.bukkit.GameMode;
 import org.bukkit.GameRule;
-import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -12,6 +12,7 @@ import java.util.HashMap;
 public class GameCore {
     private static boolean running = false;
     public static final HashMap<Player, Integer> dead = new HashMap<>();
+    private static Player redDiscHolder, blueDiscHolder;
 
     public static void startGame() {
         running = true;
@@ -29,6 +30,9 @@ public class GameCore {
         return running;
     }
     public static void setup(Player p) {
+        // PRIORITY!!! initialize world
+        Region.initWorld(p.getWorld());
+
         // gamerules, weather and time
         p.getWorld().setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
         p.getWorld().setGameRule(GameRule.DO_MOB_SPAWNING, false);
@@ -41,6 +45,9 @@ public class GameCore {
         Teams.assignTeams();
         // setup all player things, tp, inventory, etc
         GameUtils.setupPlayers();
+        // spawn discs in team bases
+        GameUtils.spawnRedDisc();
+        GameUtils.spawnBlueDisc();
     }
 
     public static void respawn(Player p) {
@@ -60,5 +67,35 @@ public class GameCore {
         p.setGameMode(GameMode.SPECTATOR);
         dead.put(p, 100); // 100 ticks = 5 seconds
         p.teleport(Utils.genLocation(p.getWorld(), Region.CENTER, .5f, 20, .5f));
+
+        if (isDiscHolder(p)) {
+            for (Player player : Teams.getPlayers()) {
+                Utils.playSound(player, Sound.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF);
+                // blue disc holder
+                if (Teams.getRed().contains(p)) {
+                    p.sendMessage("§eThe §9BLUE §edisc was dropped!");
+                }
+                // red disc holder
+                if (Teams.getBlue().contains(p)) {
+                    p.sendMessage("§eThe §cRED §edisc was dropped!");
+                }
+            }
+
+            if (Teams.getRed().contains(p)) {
+                blueDiscHolder = null;
+                GameUtils.spawnBlueDisc();
+            }
+            if (Teams.getBlue().contains(p)) {
+                redDiscHolder = null;
+                GameUtils.spawnRedDisc();
+            }
+        }
+    }
+    public static boolean isDiscHolder(Player p) {
+        return redDiscHolder.equals(p) || blueDiscHolder.equals(p);
+    }
+    public static void setDiscHolder(Player p) {
+        if (Teams.getRed().contains(p)) blueDiscHolder = p;
+        if (Teams.getBlue().contains(p)) redDiscHolder = p;
     }
 }

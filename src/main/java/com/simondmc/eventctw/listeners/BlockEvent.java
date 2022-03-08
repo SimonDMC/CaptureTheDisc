@@ -13,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.ItemDespawnEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +60,12 @@ public class BlockEvent implements Listener {
 
     @EventHandler
     public void blockExplode(EntityExplodeEvent e) {
-        if (!GameCore.isOn()) return;
-        e.blockList().clear();
+        if (GameCore.isOn()) e.blockList().clear();
+    }
+
+    // not block but who cares ig
+    @EventHandler
+    public void itemDespawn(ItemDespawnEvent e) {
+        if (GameCore.isOn()) e.setCancelled(true);
     }
 }

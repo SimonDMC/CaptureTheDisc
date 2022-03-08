@@ -1,5 +1,6 @@
 package com.simondmc.eventctw.game;
 
+import com.simondmc.eventctw.EventCTW;
 import com.simondmc.eventctw.region.Region;
 import com.simondmc.eventctw.util.Utils;
 import org.bukkit.Color;
@@ -7,10 +8,14 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 public class GameUtils {
     public static void clearEntities(Player p) {
@@ -91,5 +96,26 @@ public class GameUtils {
         p.getInventory().setLeggings(i);
         i.setType(Material.LEATHER_BOOTS);
         p.getInventory().setBoots(i);
+    }
+
+    public static void spawnRedDisc() {
+        Item disc = Region.RED_DISC.getWorld().dropItem(Region.RED_DISC.add(.5,0,.5), new ItemStack(Material.MUSIC_DISC_PIGSTEP));
+        disc.setGravity(false);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                disc.setVelocity(new Vector(0, 0, 0));
+            }
+        }.runTaskLater(EventCTW.plugin, 1);
+    }
+    public static void spawnBlueDisc() {
+        Item disc = Region.BLUE_DISC.getWorld().dropItem(Region.BLUE_DISC.add(.5,0,.5), new ItemStack(Material.MUSIC_DISC_CAT));
+        disc.setGravity(false);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                disc.setVelocity(new Vector(0, 0, 0));
+            }
+        }.runTaskLater(EventCTW.plugin, 1);
     }
 }

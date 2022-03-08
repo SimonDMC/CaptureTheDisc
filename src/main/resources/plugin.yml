@@ -4,7 +4,7 @@ main: com.simondmc.eventctw.EventCTW
 authors: [ SimonDMC ]
 description: stuff for dream and techno event ig
 website: simondmc.com
-api-version: 1.13
+api-version: 1.16
 
 commands:
   testcmd:

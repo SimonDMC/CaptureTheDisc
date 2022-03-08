@@ -1,8 +1,14 @@
 package com.simondmc.eventctw.game;
 
 import com.simondmc.eventctw.EventCTW;
+import com.simondmc.eventctw.region.Region;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class GameLoop {
 
@@ -33,5 +39,25 @@ public class GameLoop {
                 }
             }
         }.runTaskTimer(EventCTW.plugin, 0, 5);
+
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+                if (!GameCore.isOn()) return;
+
+                // remove dupe discs
+                List<Entity> red_discs = Region.RED_DISC.getWorld().getNearbyEntities(Region.RED_DISC, 1, 1, 1).stream().filter(e -> e instanceof Item).collect(Collectors.toList());
+                if (red_discs.size() > 1) {
+                    for (Entity e : red_discs) e.remove();
+                    GameUtils.spawnRedDisc();
+                }
+                List<Entity> blue_discs = Region.BLUE_DISC.getWorld().getNearbyEntities(Region.BLUE_DISC, 1, 1, 1).stream().filter(e -> e instanceof Item).collect(Collectors.toList());
+                if (blue_discs.size() > 1) {
+                    for (Entity e : blue_discs) e.remove();
+                    GameUtils.spawnBlueDisc();
+                }
+            }
+        }.runTaskTimer(EventCTW.plugin, 0, 20);
     }
 }

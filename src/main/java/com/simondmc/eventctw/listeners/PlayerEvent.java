@@ -7,6 +7,7 @@ import com.simondmc.eventctw.region.Region;
 import com.simondmc.eventctw.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,9 +15,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
 public class PlayerEvent implements Listener {
@@ -80,5 +83,40 @@ public class PlayerEvent implements Listener {
         if (!(e.getDamager() instanceof Player)) return;
         Player p = (Player) e.getDamager();
         Coins.addCoins(p, (float)e.getDamage());
+    }
+
+    // disc pickup
+    @EventHandler
+    public void pickupDisc(EntityPickupItemEvent e) {
+        if (!GameCore.isOn()) return;
+        if (!(e.getEntity() instanceof Player)) return;
+        Player who_picked = (Player) e.getEntity();
+
+        // mark player as disc holder
+        GameCore.setDiscHolder(who_picked);
+
+        // blue pickup red
+        if (e.getItem().getItemStack().getType().equals(Material.MUSIC_DISC_PIGSTEP)) {
+            for (Player p : Teams.getRed()) {
+                Utils.playSound(p, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 0);
+                p.sendMessage("§9" + who_picked.getName() + "§e picked up your disc!");
+            }
+            for (Player p : Teams.getBlue()) {
+                Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+                p.sendMessage("§9" + who_picked.getName() + "§e picked up the §c§lRED§e disc!");
+            }
+        }
+
+        // red pickup blue
+        if (e.getItem().getItemStack().getType().equals(Material.MUSIC_DISC_CAT)) {
+            for (Player p : Teams.getBlue()) {
+                Utils.playSound(p, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 0);
+                p.sendMessage("§c" + who_picked.getName() + "§e picked up your disc!");
+            }
+            for (Player p : Teams.getRed()) {
+                Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+                p.sendMessage("§c" + who_picked.getName() + "§e picked up the §9§lBLUE§e disc!");
+            }
+        }
     }
 }

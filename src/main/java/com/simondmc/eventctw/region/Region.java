@@ -5,7 +5,12 @@ import org.bukkit.Location;
 import org.bukkit.World;
 
 public class Region {
-    private static final World world = Bukkit.getWorlds().get(0);
+    private static World world = Bukkit.getWorlds().get(0);
+
+    // set world on game start
+    public static void initWorld(World w) {
+        world = w;
+    }
 
     // center of map
     public static final Location CENTER = new Location(world, 0, 69, 0);
@@ -38,5 +43,19 @@ public class Region {
     public static final Location[] BLUE_NO_BLOCKS = {
             new Location(world, 88, 64, -15),
             new Location(world, 143, 81, 15),
+    };
+
+    // disc locations
+    public static final Location RED_DISC = new Location(world, -137, 80, -40);
+    public static final Location BLUE_DISC = new Location(world, 137, 80, 40);
+
+    // disc surroundings where you can't place blocks and team members can't enter
+    public static final Location[] RED_DISC_AREA = {
+            new Location(world, -140, 79, -43),
+            new Location(world, -134, 83, -37),
+    };
+    public static final Location[] BLUE_DISC_AREA = {
+            new Location(world, 134, 79, 37),
+            new Location(world, 140, 83, 43),
     };
 }
