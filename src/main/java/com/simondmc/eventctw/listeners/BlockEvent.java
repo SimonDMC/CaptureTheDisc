@@ -37,6 +37,12 @@ public class BlockEvent implements Listener {
             e.setCancelled(true);
             return;
         }
+        // no blocks in disc area
+        if (Utils.inRegion(l, Region.RED_DISC_AREA) || Utils.inRegion(l, Region.BLUE_DISC_AREA)) {
+            e.getPlayer().sendMessage("§cYou can't place blocks in a disc area!");
+            e.setCancelled(true);
+            return;
+        }
         placedBlocks.add(e.getBlock().getLocation());
 
         if (e.getBlock().getType().equals(Material.TNT)) {

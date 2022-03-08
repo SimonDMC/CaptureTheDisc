@@ -17,9 +17,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
 public class PlayerEvent implements Listener {
@@ -63,6 +63,40 @@ public class PlayerEvent implements Listener {
             Utils.launch(p, e.getTo(), e.getFrom(), 1.5f);
             p.sendMessage("§cYou cannot enter this area!");
         }
+
+        // launch out of own disc area
+        if ((Teams.getRed().contains(p) && Utils.inRegion(e.getTo(), Region.RED_DISC_AREA)) || (Teams.getBlue().contains(p) && Utils.inRegion(e.getTo(), Region.BLUE_DISC_AREA))) {
+            Utils.launch(p, e.getTo(), e.getFrom(), .8f);
+            p.sendMessage("§cYou cannot your own disc area!");
+        }
+
+        // capture disc - end game
+        if (Teams.getRed().contains(p) && Utils.inRegion(e.getTo(), Region.RED_CAPTURE) && GameCore.isDiscHolder(p)) {
+            for (Player player : Teams.getRed()) {
+                player.sendTitle("§aYou won!", "", 20, 100, 20);
+                player.sendMessage("§c"+p.getName()+" §ecaptured the §9§lBLUE §edisc!");
+                Utils.playSound(player, Sound.UI_TOAST_CHALLENGE_COMPLETE);
+            }
+            for (Player player : Teams.getBlue()) {
+                player.sendTitle("§cYou lost!", "", 20, 100, 20);
+                player.sendMessage("§c"+p.getName()+" §ecaptured the §9§lBLUE §edisc!");
+                Utils.playSound(player, Sound.ENTITY_ENDER_DRAGON_GROWL);
+            }
+            GameCore.stopGame();
+        }
+        if (Teams.getBlue().contains(p) && Utils.inRegion(e.getTo(), Region.BLUE_CAPTURE) && GameCore.isDiscHolder(p)) {
+            for (Player player : Teams.getBlue()) {
+                player.sendTitle("§aYou won!", "", 20, 100, 20);
+                player.sendMessage("§9"+p.getName()+" §ecaptured the §c§lRED §edisc!");
+                Utils.playSound(player, Sound.UI_TOAST_CHALLENGE_COMPLETE);
+            }
+            for (Player player : Teams.getRed()) {
+                player.sendTitle("§cYou lost!", "", 20, 100, 20);
+                player.sendMessage("§9"+p.getName()+" §ecaptured the §c§lRED §edisc!");
+                Utils.playSound(player, Sound.ENTITY_ENDER_DRAGON_GROWL);
+            }
+            GameCore.stopGame();
+        }
     }
 
     @EventHandler
@@ -72,7 +106,6 @@ public class PlayerEvent implements Listener {
             Location l = e.getClickedBlock().getLocation().add(.5,0,.5);
             e.getClickedBlock().setType(Material.AIR);
             l.getWorld().spawnEntity(l, EntityType.PRIMED_TNT);
-            System.out.println("fired");
         }
     }
 
@@ -92,8 +125,12 @@ public class PlayerEvent implements Listener {
         if (!(e.getEntity() instanceof Player)) return;
         Player who_picked = (Player) e.getEntity();
 
-        // mark player as disc holder
-        GameCore.setDiscHolder(who_picked);
+        // cancel pickup if own disc
+        if ((e.getItem().getItemStack().getType().equals(Material.MUSIC_DISC_PIGSTEP) && Teams.getRed().contains((Player) e.getEntity())) ||
+                (e.getItem().getItemStack().getType().equals(Material.MUSIC_DISC_CAT) && Teams.getBlue().contains((Player) e.getEntity()))) {
+            e.setCancelled(true);
+            return;
+        }
 
         // blue pickup red
         if (e.getItem().getItemStack().getType().equals(Material.MUSIC_DISC_PIGSTEP)) {
@@ -105,6 +142,9 @@ public class PlayerEvent implements Listener {
                 Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
                 p.sendMessage("§9" + who_picked.getName() + "§e picked up the §c§lRED§e disc!");
             }
+
+            // mark player as disc holder
+            GameCore.setDiscHolder(who_picked);
         }
 
         // red pickup blue
@@ -117,6 +157,15 @@ public class PlayerEvent implements Listener {
                 Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
                 p.sendMessage("§c" + who_picked.getName() + "§e picked up the §9§lBLUE§e disc!");
             }
+
+            // mark player as disc holder
+            GameCore.setDiscHolder(who_picked);
         }
+    }
+
+    // cancel item dropping
+    @EventHandler
+    public void dropItem(PlayerDropItemEvent e) {
+        if (GameCore.isOn()) e.setCancelled(true);
     }
 }

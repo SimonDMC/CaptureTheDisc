@@ -73,11 +73,11 @@ public class GameCore {
                 Utils.playSound(player, Sound.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF);
                 // blue disc holder
                 if (Teams.getRed().contains(p)) {
-                    p.sendMessage("§eThe §9BLUE §edisc was dropped!");
+                    p.sendMessage("§eThe §9§lBLUE §edisc was dropped!");
                 }
                 // red disc holder
                 if (Teams.getBlue().contains(p)) {
-                    p.sendMessage("§eThe §cRED §edisc was dropped!");
+                    p.sendMessage("§eThe §c§lRED §edisc was dropped!");
                 }
             }
 
@@ -92,7 +92,7 @@ public class GameCore {
         }
     }
     public static boolean isDiscHolder(Player p) {
-        return redDiscHolder.equals(p) || blueDiscHolder.equals(p);
+        return redDiscHolder == p || blueDiscHolder == p;
     }
     public static void setDiscHolder(Player p) {
         if (Teams.getRed().contains(p)) blueDiscHolder = p;

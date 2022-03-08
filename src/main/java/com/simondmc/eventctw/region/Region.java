@@ -46,16 +46,26 @@ public class Region {
     };
 
     // disc locations
-    public static final Location RED_DISC = new Location(world, -137, 80, -40);
-    public static final Location BLUE_DISC = new Location(world, 137, 80, 40);
+    public static final Location RED_DISC = new Location(world, -137, 79, -40);
+    public static final Location BLUE_DISC = new Location(world, 137, 79, 40);
 
     // disc surroundings where you can't place blocks and team members can't enter
     public static final Location[] RED_DISC_AREA = {
             new Location(world, -140, 79, -43),
-            new Location(world, -134, 83, -37),
+            new Location(world, -134, 84, -37),
     };
     public static final Location[] BLUE_DISC_AREA = {
             new Location(world, 134, 79, 37),
-            new Location(world, 140, 83, 43),
+            new Location(world, 140, 84, 43),
+    };
+
+    // capturing platforms
+    public static final Location[] BLUE_CAPTURE = {
+            new Location(world, 119, 69, -1),
+            new Location(world, 121, 71, 1),
+    };
+    public static final Location[] RED_CAPTURE = {
+            new Location(world, -121, 69, -1),
+            new Location(world, -119, 71, 1),
     };
 }
