@@ -13,12 +13,15 @@ public class Teams {
     private static final List<Player> red = new ArrayList<>();
     private static final List<Player> blue = new ArrayList<>();
     private static List<Player> players = new ArrayList<>();
+
     public static List<Player> getRed() {
         return red;
     }
+
     public static List<Player> getBlue() {
         return blue;
     }
+
     public static List<Player> getPlayers() {
         return players;
     }
@@ -34,6 +37,7 @@ public class Teams {
             red = !red;
         }
     }
+
     public static void setTeam(Player p, boolean isRed) {
         if (isRed) {
             red.add(p);

@@ -7,8 +7,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class CoinsCommand implements SuperCommand {
-    public String getLabel() {return "addcoins";}
-    public CommandType getType() {return CommandType.ADMIN_COMMAND;}
+    public String getLabel() {
+        return "addcoins";
+    }
+
+    public CommandType getType() {
+        return CommandType.ADMIN_COMMAND;
+    }
 
     public void runCommand(Player p, String[] args) {
         if (args.length == 0) return;

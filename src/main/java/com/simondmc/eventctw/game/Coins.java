@@ -11,7 +11,7 @@ public class Coins {
 
     public static void addCoins(Player p, float amount) {
         float baseAmount = (coins.containsKey(p) ? coins.get(p) : 0);
-        float adjusted = Math.round(amount*10)/10f;
+        float adjusted = Math.round(amount * 10) / 10f;
         coins.put(p, baseAmount + adjusted);
 
         // no sound or message in chat if subtracting
@@ -25,9 +25,11 @@ public class Coins {
         }
         Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
     }
+
     public static float getCoins(Player p) {
         return (coins.containsKey(p) ? coins.get(p) : 0);
     }
+
     public static boolean hasCoins(Player p, float amount) {
         if (!coins.containsKey(p)) return false;
         return coins.get(p) >= amount;

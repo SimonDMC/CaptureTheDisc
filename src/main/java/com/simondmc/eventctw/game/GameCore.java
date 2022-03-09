@@ -17,6 +17,7 @@ public class GameCore {
     public static void startGame() {
         running = true;
     }
+
     public static void stopGame() {
         running = false;
         for (Player p : Teams.getPlayers()) {
@@ -26,9 +27,11 @@ public class GameCore {
         Teams.getBlue().clear();
         Teams.getPlayers().clear();
     }
+
     public static boolean isOn() {
         return running;
     }
+
     public static void setup(Player p) {
         // PRIORITY!!! initialize world
         Region.initWorld(p.getWorld());
@@ -63,6 +66,7 @@ public class GameCore {
             p.teleport(Utils.genLocation(p.getWorld(), Region.BLUE_SPAWN, .5f, 0, .5f, 90, 0));
         }
     }
+
     public static void die(Player p) {
         p.setGameMode(GameMode.SPECTATOR);
         dead.put(p, 100); // 100 ticks = 5 seconds
@@ -91,9 +95,11 @@ public class GameCore {
             }
         }
     }
+
     public static boolean isDiscHolder(Player p) {
         return redDiscHolder == p || blueDiscHolder == p;
     }
+
     public static void setDiscHolder(Player p) {
         if (Teams.getRed().contains(p)) blueDiscHolder = p;
         if (Teams.getBlue().contains(p)) redDiscHolder = p;

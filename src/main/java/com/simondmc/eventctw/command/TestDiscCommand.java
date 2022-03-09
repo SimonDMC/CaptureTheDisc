@@ -11,8 +11,13 @@ import org.bukkit.potion.PotionEffectType;
 
 // UNUSED
 public class TestDiscCommand implements SuperCommand {
-    public String getLabel() {return "testdisc";}
-    public CommandType getType() {return CommandType.ADMIN_COMMAND;}
+    public String getLabel() {
+        return "testdisc";
+    }
+
+    public CommandType getType() {
+        return CommandType.ADMIN_COMMAND;
+    }
 
     public void runCommand(Player p, String[] args) {
         Giant g = p.getWorld().spawn(p.getLocation(), Giant.class);

@@ -18,6 +18,7 @@ public class Map {
             e.printStackTrace();
         }
     }
+
     public static void deconstructMap(Player p) {
         for (int x = Region.MAP[0].getBlockX(); x <= Region.MAP[1].getBlockX(); x++) {
             for (int y = Region.MAP[0].getBlockY(); y <= Region.MAP[1].getBlockY(); y++) {

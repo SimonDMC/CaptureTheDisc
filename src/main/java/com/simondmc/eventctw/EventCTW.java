@@ -40,7 +40,8 @@ public final class EventCTW extends JavaPlugin {
     }
 
     @Override
-    public void onDisable() {}
+    public void onDisable() {
+    }
 
     void populateCommands() {
         commands.add(new TestCommand());

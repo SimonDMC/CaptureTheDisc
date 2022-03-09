@@ -44,7 +44,7 @@ public class PlayerEvent implements Listener {
             e.setCancelled(true);
             return;
         }
-        if (p.getHealth() - e.getDamage() <= 0)  {
+        if (p.getHealth() - e.getDamage() <= 0) {
             e.setCancelled(true);
             GameCore.die(p);
         }
@@ -74,12 +74,12 @@ public class PlayerEvent implements Listener {
         if (Teams.getRed().contains(p) && Utils.inRegion(e.getTo(), Region.RED_CAPTURE) && GameCore.isDiscHolder(p)) {
             for (Player player : Teams.getRed()) {
                 player.sendTitle("§aYou won!", "", 20, 100, 20);
-                player.sendMessage("§c"+p.getName()+" §ecaptured the §9§lBLUE §edisc!");
+                player.sendMessage("§c" + p.getName() + " §ecaptured the §9§lBLUE §edisc!");
                 Utils.playSound(player, Sound.UI_TOAST_CHALLENGE_COMPLETE);
             }
             for (Player player : Teams.getBlue()) {
                 player.sendTitle("§cYou lost!", "", 20, 100, 20);
-                player.sendMessage("§c"+p.getName()+" §ecaptured the §9§lBLUE §edisc!");
+                player.sendMessage("§c" + p.getName() + " §ecaptured the §9§lBLUE §edisc!");
                 Utils.playSound(player, Sound.ENTITY_ENDER_DRAGON_GROWL);
             }
             GameCore.stopGame();
@@ -87,12 +87,12 @@ public class PlayerEvent implements Listener {
         if (Teams.getBlue().contains(p) && Utils.inRegion(e.getTo(), Region.BLUE_CAPTURE) && GameCore.isDiscHolder(p)) {
             for (Player player : Teams.getBlue()) {
                 player.sendTitle("§aYou won!", "", 20, 100, 20);
-                player.sendMessage("§9"+p.getName()+" §ecaptured the §c§lRED §edisc!");
+                player.sendMessage("§9" + p.getName() + " §ecaptured the §c§lRED §edisc!");
                 Utils.playSound(player, Sound.UI_TOAST_CHALLENGE_COMPLETE);
             }
             for (Player player : Teams.getRed()) {
                 player.sendTitle("§cYou lost!", "", 20, 100, 20);
-                player.sendMessage("§9"+p.getName()+" §ecaptured the §c§lRED §edisc!");
+                player.sendMessage("§9" + p.getName() + " §ecaptured the §c§lRED §edisc!");
                 Utils.playSound(player, Sound.ENTITY_ENDER_DRAGON_GROWL);
             }
             GameCore.stopGame();
@@ -103,7 +103,7 @@ public class PlayerEvent implements Listener {
     public void click(PlayerInteractEvent e) {
         if (!GameCore.isOn()) return;
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getHand().equals(EquipmentSlot.HAND) && e.getClickedBlock().getType().equals(Material.TNT)) {
-            Location l = e.getClickedBlock().getLocation().add(.5,0,.5);
+            Location l = e.getClickedBlock().getLocation().add(.5, 0, .5);
             e.getClickedBlock().setType(Material.AIR);
             l.getWorld().spawnEntity(l, EntityType.PRIMED_TNT);
         }
@@ -115,7 +115,7 @@ public class PlayerEvent implements Listener {
         if (!GameCore.isOn()) return;
         if (!(e.getDamager() instanceof Player)) return;
         Player p = (Player) e.getDamager();
-        Coins.addCoins(p, (float)e.getDamage());
+        Coins.addCoins(p, (float) e.getDamage());
     }
 
     // disc pickup

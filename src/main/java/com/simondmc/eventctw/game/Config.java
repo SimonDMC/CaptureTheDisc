@@ -15,6 +15,7 @@ public class Config {
      */
     private static File file;
     private static FileConfiguration customFile;
+
     public static void createConfig(String configName) {
         File customConfigFile = new File(EventCTW.plugin.getDataFolder(), configName);
         if (!customConfigFile.exists()) {
@@ -23,23 +24,28 @@ public class Config {
         }
         customFile = YamlConfiguration.loadConfiguration(customConfigFile);
     }
+
     public static FileConfiguration getFile() {
         return customFile;
     }
+
     public static void save() {
-        try{
+        try {
             customFile.save(file);
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Couldn't save file");
         }
     }
+
     public static void reload() {
         customFile = YamlConfiguration.loadConfiguration(file);
     }
+
     public static void set(String path, Object o) {
         customFile.set(path, o);
         save();
     }
+
     public static Object get(String path) {
         return customFile.get(path);
     }

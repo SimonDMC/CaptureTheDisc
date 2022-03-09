@@ -6,8 +6,13 @@ import com.simondmc.eventctw.map.Map;
 import org.bukkit.entity.Player;
 
 public class PasteMapCommand implements SuperCommand {
-    public String getLabel() {return "pastemap";}
-    public CommandType getType() {return CommandType.ADMIN_COMMAND;}
+    public String getLabel() {
+        return "pastemap";
+    }
+
+    public CommandType getType() {
+        return CommandType.ADMIN_COMMAND;
+    }
 
     public void runCommand(Player p, String[] args) {
         long time = System.currentTimeMillis();

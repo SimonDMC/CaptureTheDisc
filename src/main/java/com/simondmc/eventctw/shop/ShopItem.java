@@ -10,7 +10,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 public class ShopItem {
@@ -27,18 +26,21 @@ public class ShopItem {
         this.itemName = itemName;
         this.cost = cost;
     }
+
     public ShopItem(Material itemMaterial, String itemName, int cost, CustomItem customShopItem) {
         this.itemMaterial = itemMaterial;
         this.itemName = itemName;
         this.cost = cost;
         this.customShopItem = customShopItem;
     }
+
     public ShopItem(Material itemMaterial, String itemName, int cost, int count) {
         this.itemMaterial = itemMaterial;
         this.itemName = itemName;
         this.cost = cost;
         this.count = count;
     }
+
     public ShopItem(Material itemMaterial, String itemName, int cost, int count, ItemStack itemToRecieve) {
         this.itemMaterial = itemMaterial;
         this.itemName = itemName;
@@ -46,6 +48,7 @@ public class ShopItem {
         this.count = count;
         this.itemToRecieve = itemToRecieve;
     }
+
     public ShopItem(Material itemMaterial, String itemName, int cost, int count, ItemMeta itemMeta, ItemStack itemToRecieve) {
         this.itemMaterial = itemMaterial;
         this.itemName = itemName;
@@ -54,6 +57,7 @@ public class ShopItem {
         this.itemMeta = itemMeta;
         this.itemToRecieve = itemToRecieve;
     }
+
     // generate an item that will display in shop
     ItemStack getShopItem() {
         ItemStack item = new ItemStack(itemMaterial, count);
@@ -69,6 +73,7 @@ public class ShopItem {
         item.setItemMeta(itemMeta);
         return item;
     }
+
     // give actual item to recieve when buying
     ItemStack getItemToRecieve(Player p) {
         // this code is completely garbage but its not worth improving
