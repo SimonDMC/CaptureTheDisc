@@ -1,6 +1,7 @@
 package com.simondmc.eventctw.game;
 
 import com.simondmc.eventctw.region.Region;
+import com.simondmc.eventctw.shop.ShopNPC;
 import com.simondmc.eventctw.util.Utils;
 import org.bukkit.GameMode;
 import org.bukkit.GameRule;
@@ -55,6 +56,8 @@ public class GameCore {
         // spawn discs in team bases
         GameUtils.spawnRedDisc();
         GameUtils.spawnBlueDisc();
+        // spawn npcs
+        ShopNPC.initNpcs();
     }
 
     public static void respawn(Player p) {

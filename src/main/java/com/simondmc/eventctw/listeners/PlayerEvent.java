@@ -108,7 +108,6 @@ public class PlayerEvent implements Listener {
         }
     }
 
-    // TODO: only make it work for players (all entities allowed rn for testing purposes)
     @EventHandler
     public void hit(EntityDamageByEntityEvent e) {
         if (!GameCore.isOn()) return;

@@ -20,7 +20,7 @@ import java.util.UUID;
 public class ShopItem {
     Material itemMaterial;
     String itemName;
-    int cost;
+    public int cost; // idk why this is public but it fixes an error
     int count = 1;
     ItemMeta itemMeta;
     ItemStack itemToRecieve;
@@ -80,7 +80,7 @@ public class ShopItem {
     }
 
     // give actual item to recieve when buying
-    ItemStack getItemToRecieve(Player p) {
+    public ItemStack getItemToRecieve(Player p) {
         // this code is completely garbage but its not worth improving
         if (customShopItem != null)
             // TODO: make a list of purchased upgrades to persist and make only buyable once
