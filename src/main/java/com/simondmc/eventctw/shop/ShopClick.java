@@ -15,7 +15,14 @@ public class ShopClick implements Listener {
     public void clickShop(InventoryClickEvent e) {
         if (e.getInventory().equals(ShopGUI.getShopGui())) {
             e.setCancelled(true);
+            // get rid of that stupid inventory error
+            if (e.getClickedInventory() == null) return;
             if (e.getClickedInventory().getType() == InventoryType.PLAYER) return;
+            // close inv if click on close slot
+            if (e.getSlot() == 40) {
+                e.getWhoClicked().closeInventory();
+                return;
+            }
             if (ShopGUI.shopSlots.contains(e.getSlot())) {
                 int slot = ShopGUI.shopSlots.indexOf(e.getSlot());
                 ShopItem shopItem = ShopGUI.shopItems.get(slot);

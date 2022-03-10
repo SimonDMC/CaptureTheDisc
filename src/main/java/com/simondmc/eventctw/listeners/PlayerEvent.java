@@ -8,15 +8,13 @@ import com.simondmc.eventctw.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -33,6 +31,7 @@ public class PlayerEvent implements Listener {
     public void damage(EntityDamageEvent e) {
         if (!GameCore.isOn()) return;
         if (!(e.getEntity() instanceof Player)) return;
+        // nerf fall damage
         if (e.getCause().equals(EntityDamageEvent.DamageCause.FALL)) e.setDamage(e.getDamage() / 2);
         Player p = (Player) e.getEntity();
         // avoid damage taken on spawnpoint (mainly fall damage from tp)
@@ -113,9 +112,35 @@ public class PlayerEvent implements Listener {
     @EventHandler
     public void hit(EntityDamageByEntityEvent e) {
         if (!GameCore.isOn()) return;
-        if (!(e.getDamager() instanceof Player)) return;
-        Player p = (Player) e.getDamager();
-        Coins.addCoins(p, (float) e.getDamage());
+        if (!(e.getEntity() instanceof Player)) return;
+        Player damaged = (Player) e.getEntity();
+        // stab dmg
+        if (e.getDamager() instanceof Player) {
+            Player p = (Player) e.getDamager();
+            // friendly fire
+            if ((Teams.getRed().contains(p) && Teams.getRed().contains(damaged)) || (Teams.getBlue().contains(p) && Teams.getBlue().contains(damaged))) {
+                e.setCancelled(true);
+                return;
+            }
+            Coins.addCoins(p, (float) e.getDamage());
+            return;
+        }
+        // shoot dmg
+        if (e.getDamager() instanceof Arrow) {
+            Arrow arrow = (Arrow) e.getDamager();
+            // nerf arrow damage cuz op af
+            e.setDamage(e.getDamage() / 2);
+            if (!(arrow.getShooter() instanceof Player)) return;
+            Player p = (Player) arrow.getShooter();
+            // friendly fire
+            if ((Teams.getRed().contains(p) && Teams.getRed().contains(damaged)) || (Teams.getBlue().contains(p) && Teams.getBlue().contains(damaged))) {
+                // kill arrow cuz it looks goofy :(
+                arrow.remove();
+                e.setCancelled(true);
+                return;
+            }
+            Coins.addCoins(p, (float) e.getDamage());
+        }
     }
 
     // disc pickup
@@ -167,5 +192,18 @@ public class PlayerEvent implements Listener {
     @EventHandler
     public void dropItem(PlayerDropItemEvent e) {
         if (GameCore.isOn()) e.setCancelled(true);
+    }
+
+    // shoot tnt + kill arrows in block
+    @EventHandler
+    public void shootBlock(ProjectileHitEvent e) {
+        if (!GameCore.isOn()) return;
+        if (e.getHitBlock() == null) return;
+        // kill arrow
+        e.getEntity().remove();
+        if (!e.getHitBlock().getType().equals(Material.TNT)) return;
+        Location l = e.getHitBlock().getLocation().add(.5, 0, .5);
+        e.getHitBlock().setType(Material.AIR);
+        l.getWorld().spawnEntity(l, EntityType.PRIMED_TNT);
     }
 }

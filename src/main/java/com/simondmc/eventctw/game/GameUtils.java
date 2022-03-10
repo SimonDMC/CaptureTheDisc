@@ -6,14 +6,19 @@ import com.simondmc.eventctw.util.Utils;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+
+import java.util.UUID;
 
 public class GameUtils {
     public static void clearEntities(Player p) {
@@ -72,6 +77,8 @@ public class GameUtils {
         i = new ItemStack(Material.STONE_AXE);
         m = i.getItemMeta();
         m.setUnbreakable(true);
+        AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", 0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+        m.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, modifier);
         i.setItemMeta(m);
 
         p.getInventory().setItem(7, i);
@@ -88,6 +95,7 @@ public class GameUtils {
         i = new ItemStack(Material.LEATHER_HELMET);
         leather = (LeatherArmorMeta) i.getItemMeta();
         leather.setColor(color);
+        leather.setUnbreakable(true);
         i.setItemMeta(leather);
         p.getInventory().setHelmet(i);
         i.setType(Material.LEATHER_CHESTPLATE);

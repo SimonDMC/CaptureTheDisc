@@ -47,7 +47,7 @@ public class BlockEvent implements Listener {
 
         if (e.getBlock().getType().equals(Material.TNT)) {
             Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
-            p.sendMessage("§eRight Click a TNT block to light it!");
+            p.sendMessage("§eRight Click or shoot a TNT block to light it!");
             System.out.println("placed");
         }
     }

@@ -23,9 +23,13 @@ public class GameCore {
         for (Player p : Teams.getPlayers()) {
             p.setDisplayName(p.getName());
         }
+        // reset teams
         Teams.getRed().clear();
         Teams.getBlue().clear();
         Teams.getPlayers().clear();
+        // reset disc holder
+        redDiscHolder = null;
+        blueDiscHolder = null;
     }
 
     public static boolean isOn() {
@@ -77,11 +81,11 @@ public class GameCore {
                 Utils.playSound(player, Sound.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF);
                 // blue disc holder
                 if (Teams.getRed().contains(p)) {
-                    p.sendMessage("§eThe §9§lBLUE §edisc was dropped!");
+                    player.sendMessage("§eThe §9§lBLUE §edisc was dropped!");
                 }
                 // red disc holder
                 if (Teams.getBlue().contains(p)) {
-                    p.sendMessage("§eThe §c§lRED §edisc was dropped!");
+                    player.sendMessage("§eThe §c§lRED §edisc was dropped!");
                 }
             }
 

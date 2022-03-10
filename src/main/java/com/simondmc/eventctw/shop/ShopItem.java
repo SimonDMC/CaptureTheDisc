@@ -4,13 +4,18 @@ import com.simondmc.eventctw.game.Coins;
 import com.simondmc.eventctw.util.Utils;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class ShopItem {
     Material itemMaterial;
@@ -109,7 +114,15 @@ public class ShopItem {
         if (itemToRecieve != null) return itemToRecieve;
         ItemStack item = new ItemStack(itemMaterial, count);
         ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setUnbreakable(true);
+        // if item can be broken, make it unbreakable
+        if (itemMaterial.getMaxDurability() > 0) {
+            itemMeta.setUnbreakable(true);
+        }
+        // if axe set damage to 0
+        if (itemMaterial.toString().contains("AXE")) { // fires for waxed copper but who cares
+            AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", 0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+            itemMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, modifier);
+        }
         if (customShopItem == null) itemMeta.setDisplayName("§r" + itemName);
         item.setItemMeta(itemMeta);
 
