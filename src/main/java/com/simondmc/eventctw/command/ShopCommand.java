@@ -16,6 +16,6 @@ public class ShopCommand implements SuperCommand {
 
     public void runCommand(Player p, String[] args) {
         //if (!GameCore.isOn()) return;
-        p.openInventory(ShopGUI.getShopGui());
+        ShopGUI.openShopGui(p);
     }
 }

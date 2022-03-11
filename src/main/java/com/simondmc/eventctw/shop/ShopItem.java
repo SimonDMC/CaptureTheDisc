@@ -80,13 +80,16 @@ public class ShopItem {
     }
 
     // give actual item to recieve when buying
-    public ItemStack getItemToRecieve(Player p) {
-        // this code is completely garbage but its not worth improving
+    public SlotItem getItemToRecieve(Player p) {
+        // this code is completely garbage but its not worth improving :)
+
+        // not primitive for the sake of being nullable
+        Integer toReplace = null;
         if (customShopItem != null)
             // TODO: make a list of purchased upgrades to persist and make only buyable once
             switch (customShopItem) {
                 case UPGRADE_SWORD:
-                    p.getInventory().remove(Material.STONE_SWORD);
+                    toReplace = Utils.findMatInInventory(p, Material.STONE_SWORD);
                     break;
                 case UPGRADE_CHESTPLATE:
                     ItemStack item = new ItemStack(Material.CHAINMAIL_CHESTPLATE);
@@ -96,22 +99,13 @@ public class ShopItem {
                     p.getInventory().setChestplate(item);
                     Utils.playSound(p, Sound.ITEM_ARMOR_EQUIP_CHAIN);
                     Coins.addCoins(p, -cost);
-                    // return null but that throws an error
-                    return new ItemStack(Material.AIR);
-                case UPGRADE_AXE_1:
-                    p.getInventory().remove(Material.STONE_AXE);
-                    break;
-                case UPGRADE_AXE_2:
-                    // detection for upgrade 1 bought
-                    if (false) {
-                        p.sendMessage("§cYou haven't unlocked the first axe upgrade yet!");
-                        return new ItemStack(Material.AIR);
-                    }
-                    p.getInventory().remove(Material.IRON_AXE);
+                    return null;
+                case UPGRADE_AXE:
+                    toReplace = Utils.findMatInInventory(p, Material.STONE_AXE);
                     break;
             }
 
-        if (itemToRecieve != null) return itemToRecieve;
+        if (itemToRecieve != null) return new SlotItem(itemToRecieve, null);
         ItemStack item = new ItemStack(itemMaterial, count);
         ItemMeta itemMeta = item.getItemMeta();
         // if item can be broken, make it unbreakable
@@ -128,8 +122,9 @@ public class ShopItem {
 
         // subtract cost from balance
         Coins.addCoins(p, -cost);
-        Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1.5f);
+        Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.5f, 1.5f);
 
-        return item;
+        SlotItem slotitem = new SlotItem(item, toReplace);
+        return slotitem;
     }
 }

@@ -19,7 +19,7 @@ public class ShopClick implements Listener {
 
     @EventHandler
     public void clickShop(InventoryClickEvent e) {
-        if (e.getInventory().equals(ShopGUI.getShopGui())) {
+        if (e.getView().getTitle().equals("Shop§k")) {
             e.setCancelled(true);
             // get rid of that stupid inventory error
             if (e.getClickedInventory() == null) return;
@@ -38,7 +38,13 @@ public class ShopClick implements Listener {
                     Utils.playSound(p, Sound.ENTITY_VILLAGER_NO);
                     return;
                 }
-                p.getInventory().addItem(shopItem.getItemToRecieve(p));
+                if (shopItem.getItemToRecieve(p).item == null) return;
+                // replace if item has slot attributed to it
+                if (shopItem.getItemToRecieve(p).slot != null) {
+                    p.getInventory().setItem(shopItem.getItemToRecieve(p).slot, shopItem.getItemToRecieve(p).item);
+                } else {
+                    p.getInventory().addItem(shopItem.getItemToRecieve(p).item);
+                }
             }
         }
     }
@@ -49,7 +55,7 @@ public class ShopClick implements Listener {
         if (!GameCore.isOn()) return;
         if (!(e.getRightClicked() instanceof Villager)) return;
         e.setCancelled(true);
-        e.getPlayer().openInventory(ShopGUI.getShopGui());
+        ShopGUI.openShopGui(e.getPlayer());
     }
 
     // left click to open
@@ -60,6 +66,6 @@ public class ShopClick implements Listener {
         e.setCancelled(true);
         if (!(e.getDamager() instanceof Player)) return;
         Player p = (Player) e.getDamager();
-        p.openInventory(ShopGUI.getShopGui());
+        ShopGUI.openShopGui(p);
     }
 }

@@ -1,9 +1,14 @@
 package com.simondmc.eventctw.util;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Arrays;
 
 public class Utils {
     public static boolean inRegion(Location l, Location[] reg) {
@@ -40,5 +45,15 @@ public class Utils {
 
     public static void playSound(Player p, Sound sound, float vol, float pitch) {
         p.playSound(p.getLocation(), sound, vol, pitch);
+    }
+
+    public static Integer findMatInInventory(Player p, Material mat) {
+        ItemStack[] inventory = p.getInventory().getContents();
+        // not foreach loop so we can keep index
+        for (int i = 0; i < inventory.length; i++) {
+            if (inventory[i] == null) continue;
+            if (inventory[i].getType() == mat) return i;
+        }
+        return null;
     }
 }

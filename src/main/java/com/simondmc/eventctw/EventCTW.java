@@ -33,8 +33,6 @@ public final class EventCTW extends JavaPlugin {
         // copies the schematic over
         /*this just doesnt want to work for some reason so ill leave it for now and maybe resolve later
         saveResource("map.schem", false);*/
-        // loads shop
-        ShopGUI.initShop();
         // starts game loop
         GameLoop.gameLoop();
     }
