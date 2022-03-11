@@ -23,14 +23,19 @@ public class GameCore {
         running = false;
         for (Player p : Teams.getPlayers()) {
             p.setDisplayName(p.getName());
+            // reset disc holder
+            removeDiscHolder(p);
         }
         // reset teams
         Teams.getRed().clear();
         Teams.getBlue().clear();
         Teams.getPlayers().clear();
-        // reset disc holder
-        redDiscHolder = null;
-        blueDiscHolder = null;
+        for (String player : Teams.getRedTeam().getEntries()) {
+            Teams.getRedTeam().removeEntry(player);
+        }
+        for (String player : Teams.getBlueTeam().getEntries()) {
+            Teams.getBlueTeam().removeEntry(player);
+        }
     }
 
     public static boolean isOn() {
@@ -91,15 +96,7 @@ public class GameCore {
                     player.sendMessage("§eThe §c§lRED §edisc was dropped!");
                 }
             }
-
-            if (Teams.getRed().contains(p)) {
-                blueDiscHolder = null;
-                GameUtils.spawnBlueDisc();
-            }
-            if (Teams.getBlue().contains(p)) {
-                redDiscHolder = null;
-                GameUtils.spawnRedDisc();
-            }
+            removeDiscHolder(p);
         }
     }
 
@@ -110,5 +107,18 @@ public class GameCore {
     public static void setDiscHolder(Player p) {
         if (Teams.getRed().contains(p)) blueDiscHolder = p;
         if (Teams.getBlue().contains(p)) redDiscHolder = p;
+        p.setGlowing(true);
+    }
+
+    public static void removeDiscHolder(Player p) {
+        if (redDiscHolder == p) {
+            redDiscHolder = null;
+            if (isOn()) GameUtils.spawnRedDisc();
+        }
+        if (blueDiscHolder == p) {
+            blueDiscHolder = null;
+            if (isOn()) GameUtils.spawnBlueDisc();
+        }
+        p.setGlowing(false);
     }
 }
