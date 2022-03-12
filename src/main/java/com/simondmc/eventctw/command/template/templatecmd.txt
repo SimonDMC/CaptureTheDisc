@@ -1,8 +1,0 @@
-implements SuperCommand {
-    public String getLabel() {return "";}
-    public CommandType getType() {return CommandType.ADMIN_COMMAND;}
-
-    public void runCommand(Player p, String[] args) {
-
-    }
-}

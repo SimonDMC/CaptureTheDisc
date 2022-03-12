@@ -23,8 +23,7 @@ public class ShopItem {
     public int cost; // idk why this is public but it fixes an error
     int count = 1;
     ItemMeta itemMeta;
-    ItemStack itemToRecieve;
-    CustomItem customShopItem;
+    Upgrade level;
 
     public ShopItem(Material itemMaterial, String itemName, int cost) {
         this.itemMaterial = itemMaterial;
@@ -32,11 +31,11 @@ public class ShopItem {
         this.cost = cost;
     }
 
-    public ShopItem(Material itemMaterial, String itemName, int cost, CustomItem customShopItem) {
+    public ShopItem(Material itemMaterial, String itemName, int cost, Upgrade level) {
         this.itemMaterial = itemMaterial;
         this.itemName = itemName;
         this.cost = cost;
-        this.customShopItem = customShopItem;
+        this.level = level;
     }
 
     public ShopItem(Material itemMaterial, String itemName, int cost, int count) {
@@ -46,34 +45,31 @@ public class ShopItem {
         this.count = count;
     }
 
-    public ShopItem(Material itemMaterial, String itemName, int cost, int count, ItemStack itemToRecieve) {
-        this.itemMaterial = itemMaterial;
-        this.itemName = itemName;
-        this.cost = cost;
-        this.count = count;
-        this.itemToRecieve = itemToRecieve;
-    }
-
-    public ShopItem(Material itemMaterial, String itemName, int cost, int count, ItemMeta itemMeta, ItemStack itemToRecieve) {
-        this.itemMaterial = itemMaterial;
-        this.itemName = itemName;
-        this.cost = cost;
-        this.count = count;
-        this.itemMeta = itemMeta;
-        this.itemToRecieve = itemToRecieve;
-    }
-
     // generate an item that will display in shop
     ItemStack getShopItem() {
         ItemStack item = new ItemStack(itemMaterial, count);
         ItemMeta itemMeta = (this.itemMeta != null ? this.itemMeta : item.getItemMeta());
         if (item.getAmount() == 1) itemMeta.setDisplayName("§e" + itemName);
         else itemMeta.setDisplayName("§e" + item.getAmount() + "x " + itemName);
-        List<String> lore = new ArrayList<>(Arrays.asList(
-                "§7You will recieve " + item.getAmount() + "x " + itemName,
-                "",
-                "§7Cost: §6" + cost + " Coins"
-        ));
+        List<String> lore;
+        if (level == null) {
+            lore = new ArrayList<>(Arrays.asList(
+                    "§7You will recieve " + item.getAmount() + "x " + itemName,
+                    "",
+                    "§7Cost: §6" + cost + " Coins"
+            ));
+        } else {
+            lore = new ArrayList<>(Arrays.asList(
+                    "§7This is a permanent upgrade!",
+                    "",
+                    "§7Cost: §6" + cost + " Coins"
+            ));
+        }
+        // if axe set damage to 0
+        if (itemMaterial.toString().contains("AXE")) { // fires for waxed copper but who cares
+            AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", 0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+            itemMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, modifier);
+        }
         itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);
         return item;
@@ -81,31 +77,42 @@ public class ShopItem {
 
     // give actual item to recieve when buying
     public SlotItem getItemToRecieve(Player p) {
-        // this code is completely garbage but its not worth improving :)
+        // not completely garbage anymore holy moly
 
         // not primitive for the sake of being nullable
         Integer toReplace = null;
-        if (customShopItem != null)
+        if (level != null)
             // TODO: make a list of purchased upgrades to persist and make only buyable once
-            switch (customShopItem) {
-                case UPGRADE_SWORD:
+            switch (level) {
+                case SWORD_NONE:
                     toReplace = Utils.findMatInInventory(p, Material.STONE_SWORD);
+                    Utils.replaceUpgrade(p, Upgrade.SWORD_NONE, Upgrade.SWORD_1);
                     break;
-                case UPGRADE_CHESTPLATE:
-                    ItemStack item = new ItemStack(Material.CHAINMAIL_CHESTPLATE);
-                    ItemMeta m = item.getItemMeta();
-                    m.setUnbreakable(true);
-                    item.setItemMeta(m);
-                    p.getInventory().setChestplate(item);
-                    Utils.playSound(p, Sound.ITEM_ARMOR_EQUIP_CHAIN);
-                    Coins.addCoins(p, -cost);
+                case SWORD_1:
+                    toReplace = Utils.findMatInInventory(p, Material.IRON_SWORD);
+                    Utils.replaceUpgrade(p, Upgrade.SWORD_1, Upgrade.SWORD_2);
+                    break;
+                case CHESTPLATE_NONE:
+                    Utils.buyChestplate(p, Material.CHAINMAIL_CHESTPLATE, cost);
+                    Utils.replaceUpgrade(p, Upgrade.CHESTPLATE_NONE, Upgrade.CHESTPLATE_1);
                     return null;
-                case UPGRADE_AXE:
+                case CHESTPLATE_1:
+                    Utils.buyChestplate(p, Material.IRON_CHESTPLATE, cost);
+                    Utils.replaceUpgrade(p, Upgrade.CHESTPLATE_1, Upgrade.CHESTPLATE_2);
+                    return null;
+                case CHESTPLATE_2:
+                    Utils.buyChestplate(p, Material.DIAMOND_CHESTPLATE, cost);
+                    Utils.replaceUpgrade(p, Upgrade.CHESTPLATE_2, Upgrade.CHESTPLATE_3);
+                    return null;
+                case AXE_NONE:
                     toReplace = Utils.findMatInInventory(p, Material.STONE_AXE);
+                    Utils.replaceUpgrade(p, Upgrade.AXE_NONE, Upgrade.AXE_1);
+                    break;
+                case AXE_1:
+                    toReplace = Utils.findMatInInventory(p, Material.IRON_AXE);
+                    Utils.replaceUpgrade(p, Upgrade.AXE_1, Upgrade.AXE_2);
                     break;
             }
-
-        if (itemToRecieve != null) return new SlotItem(itemToRecieve, null);
         ItemStack item = new ItemStack(itemMaterial, count);
         ItemMeta itemMeta = item.getItemMeta();
         // if item can be broken, make it unbreakable
@@ -117,7 +124,7 @@ public class ShopItem {
             AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", 0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
             itemMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, modifier);
         }
-        if (customShopItem == null) itemMeta.setDisplayName("§r" + itemName);
+        if (level == null) itemMeta.setDisplayName("§r" + itemName);
         item.setItemMeta(itemMeta);
 
         // subtract cost from balance

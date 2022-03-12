@@ -1,5 +1,8 @@
 package com.simondmc.eventctw.util;
 
+import com.simondmc.eventctw.game.Coins;
+import com.simondmc.eventctw.shop.ShopGUI;
+import com.simondmc.eventctw.shop.Upgrade;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -7,6 +10,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
 
@@ -55,5 +59,20 @@ public class Utils {
             if (inventory[i].getType() == mat) return i;
         }
         return null;
+    }
+
+    public static void replaceUpgrade(Player p, Upgrade toReplace, Upgrade replaceWith) {
+        ShopGUI.upgrades.get(p).remove(toReplace);
+        ShopGUI.upgrades.get(p).add(replaceWith);
+    }
+
+    public static void buyChestplate(Player p, Material chestplate, int cost) {
+        ItemStack item = new ItemStack(chestplate);
+        ItemMeta m = item.getItemMeta();
+        m.setUnbreakable(true);
+        item.setItemMeta(m);
+        p.getInventory().setChestplate(item);
+        Utils.playSound(p, Sound.ITEM_ARMOR_EQUIP_CHAIN);
+        Coins.addCoins(p, -cost);
     }
 }

@@ -1,6 +1,7 @@
 package com.simondmc.eventctw.game;
 
 import com.simondmc.eventctw.region.Region;
+import com.simondmc.eventctw.shop.ShopGUI;
 import com.simondmc.eventctw.shop.ShopNPC;
 import com.simondmc.eventctw.util.Utils;
 import org.bukkit.GameMode;
@@ -56,6 +57,8 @@ public class GameCore {
         GameUtils.clearEntities(p);
         // assign teams randomly
         Teams.assignTeams();
+        // initalize all player upgrades
+        ShopGUI.initUpgrades();
         // setup all player things, tp, inventory, etc
         GameUtils.setupPlayers();
         // spawn discs in team bases

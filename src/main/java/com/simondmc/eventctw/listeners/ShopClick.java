@@ -4,6 +4,7 @@ import com.simondmc.eventctw.game.Coins;
 import com.simondmc.eventctw.game.GameCore;
 import com.simondmc.eventctw.shop.ShopGUI;
 import com.simondmc.eventctw.shop.ShopItem;
+import com.simondmc.eventctw.shop.SlotItem;
 import com.simondmc.eventctw.util.Utils;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -31,20 +32,28 @@ public class ShopClick implements Listener {
             }
             if (ShopGUI.shopSlots.contains(e.getSlot())) {
                 int slot = ShopGUI.shopSlots.indexOf(e.getSlot());
-                ShopItem shopItem = ShopGUI.shopItems.get(slot);
                 Player p = (Player) e.getWhoClicked();
+                ShopItem shopItem = ShopGUI.buildCurrentShopItems(p).get(slot);
                 if (!Coins.hasCoins(p, shopItem.cost)) {
                     p.sendMessage("§cYou cannot afford this!");
                     Utils.playSound(p, Sound.ENTITY_VILLAGER_NO);
                     return;
                 }
-                if (shopItem.getItemToRecieve(p).item == null) return;
-                // replace if item has slot attributed to it
-                if (shopItem.getItemToRecieve(p).slot != null) {
-                    p.getInventory().setItem(shopItem.getItemToRecieve(p).slot, shopItem.getItemToRecieve(p).item);
-                } else {
-                    p.getInventory().addItem(shopItem.getItemToRecieve(p).item);
+
+                SlotItem item = shopItem.getItemToRecieve(p);
+
+                // if not chestplate (handled directly)
+                if (item != null) {
+                    // replace if item has slot attributed to it
+                    if (item.slot != null) {
+                        p.getInventory().setItem(item.slot, item.item);
+                    } else {
+                        p.getInventory().addItem(shopItem.getItemToRecieve(p).item);
+                    }
                 }
+
+                // reload shop cuz something could have changed
+                ShopGUI.openShopGui(p);
             }
         }
     }

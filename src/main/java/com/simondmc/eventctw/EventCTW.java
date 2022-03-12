@@ -50,6 +50,7 @@ public final class EventCTW extends JavaPlugin {
         //commands.add(new TestDiscCommand());
         commands.add(new ShopCommand());
         commands.add(new CoinsCommand());
+        commands.add(new TestUpgradesCommand());
     }
 
     void registerListeners() {
