@@ -7,6 +7,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 
 import java.util.*;
 
@@ -14,16 +17,20 @@ public class ShopGUI {
     public static final List<Integer> shopSlots = new ArrayList<>(Arrays.asList(10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25));
     public static List<ShopItem> shopItems = new ArrayList<>(Arrays.asList(
             // TODO: balance costs
-            new ShopItem(Material.IRON_SWORD, "Sword Upgrade I", 20, Upgrade.SWORD_NONE),
-            new ShopItem(Material.DIAMOND_SWORD, "Sword Upgrade II", 20, Upgrade.SWORD_1),
-            new ShopItem(Material.CHAINMAIL_CHESTPLATE, "Chestplate Upgrade I", 20, Upgrade.CHESTPLATE_NONE),
-            new ShopItem(Material.IRON_CHESTPLATE, "Chestplate Upgrade II", 20, Upgrade.CHESTPLATE_1),
-            new ShopItem(Material.DIAMOND_CHESTPLATE, "Chestplate Upgrade III", 20, Upgrade.CHESTPLATE_2),
+            new ShopItem(Material.IRON_SWORD, "Sword Upgrade I", 70, Upgrade.SWORD_NONE),
+            new ShopItem(Material.DIAMOND_SWORD, "Sword Upgrade II", 150, Upgrade.SWORD_1),
+            new ShopItem(Material.CHAINMAIL_CHESTPLATE, "Chestplate Upgrade I", 50, Upgrade.CHESTPLATE_NONE),
+            new ShopItem(Material.IRON_CHESTPLATE, "Chestplate Upgrade II", 100, Upgrade.CHESTPLATE_1),
+            new ShopItem(Material.DIAMOND_CHESTPLATE, "Chestplate Upgrade III", 150, Upgrade.CHESTPLATE_2),
             new ShopItem(Material.IRON_AXE, "Axe Upgrade I", 20, Upgrade.AXE_NONE),
-            new ShopItem(Material.DIAMOND_AXE, "Axe Upgrade II", 20, Upgrade.AXE_1),
-            new ShopItem(Material.GOLDEN_APPLE, "Golden Apple", 10),
-            new ShopItem(Material.ARROW, "Arrow", 15, 16),
-            new ShopItem(Material.TNT, "TNT", 10)
+            new ShopItem(Material.DIAMOND_AXE, "Axe Upgrade II", 50, Upgrade.AXE_1),
+            new ShopItem(Material.GOLDEN_APPLE, "Golden Apple", 30),
+            new ShopItem(Material.TNT, "TNT", 30),
+            new ShopItem(Material.ENDER_PEARL, "Ender Pearl", 125),
+            new ShopItem(Material.SHIELD, "Shield", 85),
+            new ShopItem(Material.BOW, "Regular Bow", 60),
+            new ShopItem(Material.TIPPED_ARROW, "Slow Falling Arrow", 40, 5, PotionType.SLOW_FALLING),
+            new ShopItem(Material.TIPPED_ARROW, "Harming Arrow", 40, 5, PotionType.INSTANT_DAMAGE)
     ));
 
     public static Map<Player, List<Upgrade>> upgrades = new HashMap<>();

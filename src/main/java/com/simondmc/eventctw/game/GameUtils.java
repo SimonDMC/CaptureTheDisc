@@ -65,24 +65,6 @@ public class GameUtils {
 
         p.getInventory().setItem(0, i);
 
-        i = new ItemStack(Material.BOW);
-        m = i.getItemMeta();
-        m.setUnbreakable(true);
-        i.setItemMeta(m);
-
-        p.getInventory().setItem(1, i);
-        p.getInventory().setItem(2, new ItemStack(Material.OAK_PLANKS, 64));
-        p.getInventory().setItem(3, new ItemStack(Material.OAK_PLANKS, 64));
-        p.getInventory().setItem(4, new ItemStack(Material.OAK_PLANKS, 64));
-        p.getInventory().setItem(5, new ItemStack(Material.AIR));
-
-        i = new ItemStack(Material.GOLDEN_APPLE);
-        m = i.getItemMeta();
-        m.setDisplayName("§rGolden Apple");
-        i.setItemMeta(m);
-
-        p.getInventory().setItem(6, i);
-
         if (ShopGUI.upgrades.get(p).contains(Upgrade.AXE_2)) {
             i = new ItemStack(Material.DIAMOND_AXE);
         } else if (ShopGUI.upgrades.get(p).contains(Upgrade.AXE_1)) {
@@ -96,11 +78,16 @@ public class GameUtils {
         m.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, modifier);
         i.setItemMeta(m);
 
-        p.getInventory().setItem(7, i);
+        p.getInventory().setItem(1, i);
 
-        i = new ItemStack(Material.ARROW, 8);
+
+        p.getInventory().setItem(2, new ItemStack(Material.OAK_PLANKS, 64));
+        p.getInventory().setItem(3, new ItemStack(Material.OAK_PLANKS, 64));
+        p.getInventory().setItem(4, new ItemStack(Material.OAK_PLANKS, 64));
+
+        i = new ItemStack(Material.GOLDEN_APPLE);
         m = i.getItemMeta();
-        m.setDisplayName("§rArrow");
+        m.setDisplayName("§rGolden Apple");
         i.setItemMeta(m);
 
         p.getInventory().setItem(8, i);
@@ -138,7 +125,6 @@ public class GameUtils {
 
     public static void spawnRedDisc() {
         Item disc = Region.RED_DISC.getWorld().dropItem(Region.RED_DISC.add(.5, 0, .5), new ItemStack(Material.MUSIC_DISC_PIGSTEP));
-        disc.setGravity(false);
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -149,7 +135,6 @@ public class GameUtils {
 
     public static void spawnBlueDisc() {
         Item disc = Region.BLUE_DISC.getWorld().dropItem(Region.BLUE_DISC.add(.5, 0, .5), new ItemStack(Material.MUSIC_DISC_CAT));
-        disc.setGravity(false);
         new BukkitRunnable() {
             @Override
             public void run() {

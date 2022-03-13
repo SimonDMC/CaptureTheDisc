@@ -11,6 +11,9 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,8 +25,8 @@ public class ShopItem {
     String itemName;
     public int cost; // idk why this is public but it fixes an error
     int count = 1;
-    ItemMeta itemMeta;
     Upgrade level;
+    PotionType tippedArrowEffect;
 
     public ShopItem(Material itemMaterial, String itemName, int cost) {
         this.itemMaterial = itemMaterial;
@@ -45,33 +48,56 @@ public class ShopItem {
         this.count = count;
     }
 
+    public ShopItem(Material itemMaterial, String itemName, int cost, int count, PotionType tippedArrowEffect) {
+        this.itemMaterial = itemMaterial;
+        this.itemName = itemName;
+        this.cost = cost;
+        this.count = count;
+        this.tippedArrowEffect = tippedArrowEffect;
+    }
+
     // generate an item that will display in shop
     ItemStack getShopItem() {
         ItemStack item = new ItemStack(itemMaterial, count);
-        ItemMeta itemMeta = (this.itemMeta != null ? this.itemMeta : item.getItemMeta());
-        if (item.getAmount() == 1) itemMeta.setDisplayName("§e" + itemName);
-        else itemMeta.setDisplayName("§e" + item.getAmount() + "x " + itemName);
-        List<String> lore;
-        if (level == null) {
-            lore = new ArrayList<>(Arrays.asList(
+        // if tipped arrow
+        if (tippedArrowEffect != null) {
+            PotionMeta itemMeta = (PotionMeta) item.getItemMeta();
+            itemMeta.setBasePotionData(new PotionData(tippedArrowEffect));
+            if (item.getAmount() == 1) itemMeta.setDisplayName("§e" + itemName);
+            else itemMeta.setDisplayName("§e" + item.getAmount() + "x " + itemName);
+            List<String> lore = new ArrayList<>(Arrays.asList(
                     "§7You will recieve " + item.getAmount() + "x " + itemName,
                     "",
                     "§7Cost: §6" + cost + " Coins"
             ));
+            itemMeta.setLore(lore);
+            item.setItemMeta(itemMeta);
         } else {
-            lore = new ArrayList<>(Arrays.asList(
-                    "§7This is a permanent upgrade!",
-                    "",
-                    "§7Cost: §6" + cost + " Coins"
-            ));
+            ItemMeta itemMeta = item.getItemMeta();
+            if (item.getAmount() == 1) itemMeta.setDisplayName("§e" + itemName);
+            else itemMeta.setDisplayName("§e" + item.getAmount() + "x " + itemName);
+            List<String> lore;
+            if (level == null) {
+                lore = new ArrayList<>(Arrays.asList(
+                        "§7You will recieve " + item.getAmount() + "x " + itemName,
+                        "",
+                        "§7Cost: §6" + cost + " Coins"
+                ));
+            } else {
+                lore = new ArrayList<>(Arrays.asList(
+                        "§7This is a permanent upgrade!",
+                        "",
+                        "§7Cost: §6" + cost + " Coins"
+                ));
+            }
+            // if axe set damage to 0
+            if (itemMaterial.toString().contains("AXE")) { // fires for waxed copper but who cares
+                AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", 0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+                itemMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, modifier);
+            }
+            itemMeta.setLore(lore);
+            item.setItemMeta(itemMeta);
         }
-        // if axe set damage to 0
-        if (itemMaterial.toString().contains("AXE")) { // fires for waxed copper but who cares
-            AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", 0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
-            itemMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, modifier);
-        }
-        itemMeta.setLore(lore);
-        item.setItemMeta(itemMeta);
         return item;
     }
 
@@ -114,18 +140,27 @@ public class ShopItem {
                     break;
             }
         ItemStack item = new ItemStack(itemMaterial, count);
-        ItemMeta itemMeta = item.getItemMeta();
-        // if item can be broken, make it unbreakable
-        if (itemMaterial.getMaxDurability() > 0) {
-            itemMeta.setUnbreakable(true);
+
+        // if tipped arrow
+        if (tippedArrowEffect != null) {
+            PotionMeta itemMeta = (PotionMeta) item.getItemMeta();
+            itemMeta.setBasePotionData(new PotionData(tippedArrowEffect));
+            itemMeta.setDisplayName("§r" + itemName);
+            item.setItemMeta(itemMeta);
+        } else {
+            ItemMeta itemMeta = item.getItemMeta();
+            // if item can be broken, make it unbreakable
+            if (itemMaterial.getMaxDurability() > 0) {
+                itemMeta.setUnbreakable(true);
+            }
+            // if axe set damage to 0
+            if (itemMaterial.toString().contains("AXE")) { // fires for waxed copper but who cares
+                AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", 0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+                itemMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, modifier);
+            }
+            if (level == null) itemMeta.setDisplayName("§r" + itemName);
+            item.setItemMeta(itemMeta);
         }
-        // if axe set damage to 0
-        if (itemMaterial.toString().contains("AXE")) { // fires for waxed copper but who cares
-            AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", 0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
-            itemMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, modifier);
-        }
-        if (level == null) itemMeta.setDisplayName("§r" + itemName);
-        item.setItemMeta(itemMeta);
 
         // subtract cost from balance
         Coins.addCoins(p, -cost);

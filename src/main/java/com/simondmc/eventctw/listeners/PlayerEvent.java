@@ -101,6 +101,7 @@ public class PlayerEvent implements Listener {
     @EventHandler
     public void click(PlayerInteractEvent e) {
         if (!GameCore.isOn()) return;
+        // light tnt
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getHand().equals(EquipmentSlot.HAND) && e.getClickedBlock().getType().equals(Material.TNT)) {
             Location l = e.getClickedBlock().getLocation().add(.5, 0, .5);
             e.getClickedBlock().setType(Material.AIR);
