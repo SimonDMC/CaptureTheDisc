@@ -85,7 +85,7 @@ public class GameCore {
     public static void die(Player p) {
         p.setGameMode(GameMode.SPECTATOR);
         dead.put(p, 100); // 100 ticks = 5 seconds
-        p.teleport(Utils.genLocation(p.getWorld(), Region.CENTER, .5f, 20, .5f));
+        p.teleport(Region.CENTER.add(.5, 20, .5));
 
         if (isDiscHolder(p)) {
             for (Player player : Teams.getPlayers()) {

@@ -15,6 +15,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Arrays;
 
 public class Utils {
+
+    // check whether a location is within a region (two-member location array, lower and upper bounds) inclusive
     public static boolean inRegion(Location l, Location[] reg) {
         if (l.getBlock().getX() < reg[0].getBlockX()) return false;
         if (l.getBlock().getY() < reg[0].getBlockY()) return false;
@@ -24,10 +26,7 @@ public class Utils {
         return l.getBlock().getZ() <= reg[1].getBlockZ();
     }
 
-    public static boolean inBlock(Location l1, Location l2) {
-        return (l1.getBlock().getX() == l2.getBlock().getX() && l1.getBlock().getY() == l2.getBlock().getY() && l1.getBlock().getZ() == l2.getBlock().getZ());
-    }
-
+    // launch player with a force with a vector from one location to another (best used with PlayerMoveEvent.getTo() and getFrom())
     public static void launch(Player p, Location l1, Location l2, float strength) {
         try {
             p.setVelocity(l2.toVector().subtract(l1.toVector()).normalize().setY(0.3333D).multiply(strength));
@@ -35,14 +34,12 @@ public class Utils {
         }
     }
 
-    public static Location genLocation(World world, Location loc, float addX, float addY, float addZ) {
-        return new Location(world, loc.getBlockX() + addX, loc.getBlockY() + addY, loc.getBlockZ() + addZ);
-    }
-
+    // location contructor from a location, offset, yaw and pitch
     public static Location genLocation(World world, Location loc, float addX, float addY, float addZ, float yaw, float pitch) {
         return new Location(world, loc.getBlockX() + addX, loc.getBlockY() + addY, loc.getBlockZ() + addZ, yaw, pitch);
     }
 
+    // simpler playsound method
     public static void playSound(Player p, Sound sound) {
         p.playSound(p.getLocation(), sound, 1, 1);
     }
@@ -51,6 +48,7 @@ public class Utils {
         p.playSound(p.getLocation(), sound, vol, pitch);
     }
 
+    // returns the first occurence of an item of a material in a player's inventory, used in shop upgrades
     public static Integer findMatInInventory(Player p, Material mat) {
         ItemStack[] inventory = p.getInventory().getContents();
         // not foreach loop so we can keep index
@@ -61,11 +59,13 @@ public class Utils {
         return null;
     }
 
+    // upgrade utility method for replacing upgrades
     public static void replaceUpgrade(Player p, Upgrade toReplace, Upgrade replaceWith) {
         ShopGUI.upgrades.get(p).remove(toReplace);
         ShopGUI.upgrades.get(p).add(replaceWith);
     }
 
+    // chestplate generation, purchase and equipment in a handy method for code readability sake
     public static void buyChestplate(Player p, Material chestplate, int cost) {
         ItemStack item = new ItemStack(chestplate);
         ItemMeta m = item.getItemMeta();
@@ -76,6 +76,7 @@ public class Utils {
         Coins.addCoins(p, -cost);
     }
 
+    // returns amount of items of a material in a player's inventory, used for block and arrow regen
     public static int countItems(Material mat, Player p) {
         int amount = 0;
         for (ItemStack item : p.getInventory().getContents()) {
