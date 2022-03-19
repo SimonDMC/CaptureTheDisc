@@ -42,6 +42,9 @@ public class GameUtils {
             } else {
                 p.teleport(Utils.genLocation(p.getWorld(), Region.BLUE_SPAWN, .5f, 0, .5f, 90, 0));
             }
+            // reset coins and kills
+            Coins.setCoins(p, 0);
+            GameCore.kills.put(p, 0);
         }
     }
 

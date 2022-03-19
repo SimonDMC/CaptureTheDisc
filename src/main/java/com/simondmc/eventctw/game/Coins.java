@@ -34,4 +34,8 @@ public class Coins {
         if (!coins.containsKey(p)) return false;
         return coins.get(p) >= amount;
     }
+
+    public static void setCoins(Player p, float amount) {
+        coins.put(p, amount);
+    }
 }
