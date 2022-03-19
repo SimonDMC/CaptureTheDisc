@@ -3,8 +3,10 @@ package com.simondmc.eventctw.listeners;
 import com.simondmc.eventctw.game.Coins;
 import com.simondmc.eventctw.game.GameCore;
 import com.simondmc.eventctw.game.Teams;
+import com.simondmc.eventctw.game.TimestampHit;
 import com.simondmc.eventctw.region.Region;
 import com.simondmc.eventctw.util.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -27,6 +29,44 @@ public class PlayerEvent implements Listener {
     @EventHandler
     public void food(FoodLevelChangeEvent e) {
         if (GameCore.isOn()) e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void hit(EntityDamageByEntityEvent e) {
+        if (!GameCore.isOn()) return;
+        if (!(e.getEntity() instanceof Player)) return;
+        Player damaged = (Player) e.getEntity();
+        // stab dmg
+        if (e.getDamager() instanceof Player) {
+            Player p = (Player) e.getDamager();
+            // friendly fire
+            if ((Teams.getRed().contains(p) && Teams.getRed().contains(damaged)) || (Teams.getBlue().contains(p) && Teams.getBlue().contains(damaged))) {
+                e.setCancelled(true);
+                return;
+            }
+            Coins.addCoins(p, (float) e.getDamage());
+            // set last damager
+            GameCore.lastDamage.put(damaged, new TimestampHit(System.currentTimeMillis(), p));
+            return;
+        }
+        // shoot dmg
+        if (e.getDamager() instanceof Arrow) {
+            Arrow arrow = (Arrow) e.getDamager();
+            // nerf arrow damage cuz op af
+            e.setDamage(e.getDamage() / 2);
+            if (!(arrow.getShooter() instanceof Player)) return;
+            Player p = (Player) arrow.getShooter();
+            // friendly fire
+            if ((Teams.getRed().contains(p) && Teams.getRed().contains(damaged)) || (Teams.getBlue().contains(p) && Teams.getBlue().contains(damaged))) {
+                // kill arrow cuz it looks goofy :(
+                arrow.remove();
+                e.setCancelled(true);
+                return;
+            }
+            Coins.addCoins(p, (float) e.getDamage());
+            // set last damager
+            GameCore.lastDamage.put(damaged, new TimestampHit(System.currentTimeMillis(), p));
+        }
     }
 
     @EventHandler
@@ -111,40 +151,6 @@ public class PlayerEvent implements Listener {
         }
     }
 
-    @EventHandler
-    public void hit(EntityDamageByEntityEvent e) {
-        if (!GameCore.isOn()) return;
-        if (!(e.getEntity() instanceof Player)) return;
-        Player damaged = (Player) e.getEntity();
-        // stab dmg
-        if (e.getDamager() instanceof Player) {
-            Player p = (Player) e.getDamager();
-            // friendly fire
-            if ((Teams.getRed().contains(p) && Teams.getRed().contains(damaged)) || (Teams.getBlue().contains(p) && Teams.getBlue().contains(damaged))) {
-                e.setCancelled(true);
-                return;
-            }
-            Coins.addCoins(p, (float) e.getDamage());
-            return;
-        }
-        // shoot dmg
-        if (e.getDamager() instanceof Arrow) {
-            Arrow arrow = (Arrow) e.getDamager();
-            // nerf arrow damage cuz op af
-            e.setDamage(e.getDamage() / 2);
-            if (!(arrow.getShooter() instanceof Player)) return;
-            Player p = (Player) arrow.getShooter();
-            // friendly fire
-            if ((Teams.getRed().contains(p) && Teams.getRed().contains(damaged)) || (Teams.getBlue().contains(p) && Teams.getBlue().contains(damaged))) {
-                // kill arrow cuz it looks goofy :(
-                arrow.remove();
-                e.setCancelled(true);
-                return;
-            }
-            Coins.addCoins(p, (float) e.getDamage());
-        }
-    }
-
     // disc pickup
     @EventHandler
     public void pickupDisc(EntityPickupItemEvent e) {
@@ -202,7 +208,7 @@ public class PlayerEvent implements Listener {
         if (e.getHitBlock() == null) return;
 
         // shoot tnt + kill arrows in block if arrow
-        if (e instanceof Arrow) {
+        if (e.getEntity() instanceof Arrow) {
             e.getEntity().remove();
             if (!e.getHitBlock().getType().equals(Material.TNT)) return;
             Location l = e.getHitBlock().getLocation().add(.5, 0, .5);
@@ -211,7 +217,7 @@ public class PlayerEvent implements Listener {
         }
 
         // check illegal areas if pearl
-        if (e instanceof EnderPearl) {
+        if (e.getEntity() instanceof EnderPearl) {
             if (Utils.inRegion(e.getEntity().getLocation(), Region.RED_GRACE) ||
                     Utils.inRegion(e.getEntity().getLocation(), Region.BLUE_GRACE) ||
                     Utils.inRegion(e.getEntity().getLocation(), Region.RED_DISC_AREA) ||

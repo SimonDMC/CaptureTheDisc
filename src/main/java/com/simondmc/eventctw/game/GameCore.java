@@ -14,6 +14,8 @@ import java.util.HashMap;
 public class GameCore {
     private static boolean running = false;
     public static final HashMap<Player, Integer> dead = new HashMap<>();
+    public static final HashMap<Player, Integer> kills = new HashMap<>();
+    public static final HashMap<Player, TimestampHit> lastDamage = new HashMap<>();
     private static Player redDiscHolder, blueDiscHolder;
 
     public static void startGame() {
@@ -83,9 +85,22 @@ public class GameCore {
     }
 
     public static void die(Player p) {
+        // figure out if kill
+        if (lastDamage.containsKey(p)) {
+            // make sure last hit was less than 10 seconds ago
+            if (System.currentTimeMillis() - lastDamage.get(p).timestamp > 10000) return; // 10,000ms = 10s
+            Player damager = lastDamage.get(p).damager;
+            String dColor = (Teams.getRed().contains(damager) ? "§c" : "§9");
+            String pColor = (Teams.getRed().contains(p) ? "§c" : "§9");
+            damager.sendMessage(pColor + p.getName() + " §ewas killed by " + dColor + damager.getName());
+            Utils.playSound(damager, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+            GameUtils.addKill(damager);
+        }
+
+
         p.setGameMode(GameMode.SPECTATOR);
         dead.put(p, 100); // 100 ticks = 5 seconds
-        p.teleport(Region.CENTER.add(.5, 20, .5));
+        p.teleport(Region.CENTER.clone().add(.5, 20, .5));
 
         if (isDiscHolder(p)) {
             for (Player player : Teams.getPlayers()) {

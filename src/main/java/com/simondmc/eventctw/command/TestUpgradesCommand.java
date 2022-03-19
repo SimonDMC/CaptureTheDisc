@@ -2,7 +2,6 @@ package com.simondmc.eventctw.command;
 
 import com.simondmc.eventctw.command.template.CommandType;
 import com.simondmc.eventctw.command.template.SuperCommand;
-import com.simondmc.eventctw.game.GameCore;
 import com.simondmc.eventctw.shop.ShopGUI;
 import com.simondmc.eventctw.shop.Upgrade;
 import org.bukkit.entity.Player;

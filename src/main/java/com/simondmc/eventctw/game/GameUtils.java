@@ -140,4 +140,16 @@ public class GameUtils {
             }
         }.runTaskLater(EventCTW.plugin, 1);
     }
+
+    public static void addKill(Player p) {
+        if (GameCore.kills.containsKey(p)) {
+            GameCore.kills.put(p, GameCore.kills.get(p) + 1);
+        } else {
+            GameCore.kills.put(p, 1);
+        }
+    }
+
+    public static int getKills(Player p) {
+        return (GameCore.kills.getOrDefault(p, 0));
+    }
 }
