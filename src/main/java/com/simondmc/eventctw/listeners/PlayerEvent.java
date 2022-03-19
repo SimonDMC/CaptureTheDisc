@@ -108,7 +108,7 @@ public class PlayerEvent implements Listener {
         // launch out of own disc area
         if ((Teams.getRed().contains(p) && Utils.inRegion(e.getTo(), Region.RED_DISC_AREA)) || (Teams.getBlue().contains(p) && Utils.inRegion(e.getTo(), Region.BLUE_DISC_AREA))) {
             e.setCancelled(true);
-            p.sendMessage("§cYou cannot your own disc area!");
+            p.sendMessage("§cYou cannot enter your own disc area!");
         }
 
         // capture disc - end game
