@@ -82,8 +82,6 @@ public class GameUtils {
 
 
         p.getInventory().setItem(2, new ItemStack(Material.OAK_PLANKS, 64));
-        p.getInventory().setItem(3, new ItemStack(Material.OAK_PLANKS, 64));
-        p.getInventory().setItem(4, new ItemStack(Material.OAK_PLANKS, 64));
 
         i = new ItemStack(Material.GOLDEN_APPLE);
         m = i.getItemMeta();

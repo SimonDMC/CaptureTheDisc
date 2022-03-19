@@ -75,4 +75,14 @@ public class Utils {
         Utils.playSound(p, Sound.ITEM_ARMOR_EQUIP_CHAIN);
         Coins.addCoins(p, -cost);
     }
+
+    public static int countItems(Material mat, Player p) {
+        int amount = 0;
+        for (ItemStack item : p.getInventory().getContents()) {
+            if (item != null && item.getType() == mat) {
+                amount += item.getAmount();
+            }
+        }
+        return amount;
+    }
 }

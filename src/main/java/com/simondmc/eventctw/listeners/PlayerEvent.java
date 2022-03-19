@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,6 +20,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 
 public class PlayerEvent implements Listener {
 
@@ -65,7 +67,7 @@ public class PlayerEvent implements Listener {
 
         // launch out of own disc area
         if ((Teams.getRed().contains(p) && Utils.inRegion(e.getTo(), Region.RED_DISC_AREA)) || (Teams.getBlue().contains(p) && Utils.inRegion(e.getTo(), Region.BLUE_DISC_AREA))) {
-            Utils.launch(p, e.getTo(), e.getFrom(), .8f);
+            e.setCancelled(true);
             p.sendMessage("§cYou cannot your own disc area!");
         }
 
@@ -194,16 +196,34 @@ public class PlayerEvent implements Listener {
         if (GameCore.isOn()) e.setCancelled(true);
     }
 
-    // shoot tnt + kill arrows in block
     @EventHandler
     public void shootBlock(ProjectileHitEvent e) {
         if (!GameCore.isOn()) return;
         if (e.getHitBlock() == null) return;
-        // kill arrow
-        e.getEntity().remove();
-        if (!e.getHitBlock().getType().equals(Material.TNT)) return;
-        Location l = e.getHitBlock().getLocation().add(.5, 0, .5);
-        e.getHitBlock().setType(Material.AIR);
-        l.getWorld().spawnEntity(l, EntityType.PRIMED_TNT);
+
+        // shoot tnt + kill arrows in block if arrow
+        if (e instanceof Arrow) {
+            e.getEntity().remove();
+            if (!e.getHitBlock().getType().equals(Material.TNT)) return;
+            Location l = e.getHitBlock().getLocation().add(.5, 0, .5);
+            e.getHitBlock().setType(Material.AIR);
+            l.getWorld().spawnEntity(l, EntityType.PRIMED_TNT);
+        }
+
+        // check illegal areas if pearl
+        if (e instanceof EnderPearl) {
+            if (Utils.inRegion(e.getEntity().getLocation(), Region.RED_GRACE) ||
+                    Utils.inRegion(e.getEntity().getLocation(), Region.BLUE_GRACE) ||
+                    Utils.inRegion(e.getEntity().getLocation(), Region.RED_DISC_AREA) ||
+                    Utils.inRegion(e.getEntity().getLocation(), Region.BLUE_DISC_AREA) ||
+                    Utils.inRegion(e.getEntity().getLocation(), Region.RED_CAPTURE) ||
+                    Utils.inRegion(e.getEntity().getLocation(), Region.BLUE_CAPTURE)) {
+                EnderPearl pearl = (EnderPearl) e.getEntity();
+                Player p = (Player) pearl.getShooter();
+                p.sendMessage("§cYou can't teleport there!");
+                p.getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
+                pearl.remove();
+            }
+        }
     }
 }

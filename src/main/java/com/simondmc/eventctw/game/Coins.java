@@ -14,8 +14,8 @@ public class Coins {
         float adjusted = Math.round(amount * 10) / 10f;
         coins.put(p, baseAmount + adjusted);
 
-        // no sound or message in chat if subtracting
-        if (amount < 0) return;
+        // no sound or message in chat if subtracting or refunding from below 0
+        if (amount < 0 || baseAmount < 0) return;
 
         // if damage is whole, round to omit decimal point
         if (adjusted == Math.round(adjusted)) {

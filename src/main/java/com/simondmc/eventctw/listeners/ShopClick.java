@@ -48,7 +48,7 @@ public class ShopClick implements Listener {
                     if (item.slot != null) {
                         p.getInventory().setItem(item.slot, item.item);
                     } else {
-                        p.getInventory().addItem(shopItem.getItemToRecieve(p).item);
+                        p.getInventory().addItem(item.item);
                     }
                 }
 

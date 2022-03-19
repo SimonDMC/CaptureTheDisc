@@ -2,9 +2,12 @@ package com.simondmc.eventctw.game;
 
 import com.simondmc.eventctw.EventCTW;
 import com.simondmc.eventctw.region.Region;
+import com.simondmc.eventctw.util.Utils;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
@@ -66,5 +69,22 @@ public class GameLoop {
                 }
             }
         }.runTaskTimer(EventCTW.plugin, 0, 20);
+
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+                if (!GameCore.isOn()) return;
+
+                // give blocks
+                for (Player p : Teams.getPlayers()) {
+                    int blockCount = Utils.countItems(Material.OAK_PLANKS, p);
+                    if (blockCount < 64) {
+                        p.getInventory().addItem(new ItemStack(Material.OAK_PLANKS));
+                    }
+                }
+
+            }
+        }.runTaskTimer(EventCTW.plugin, 0, 40);
     }
 }
