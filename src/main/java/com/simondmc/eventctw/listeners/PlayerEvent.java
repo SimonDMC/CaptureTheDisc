@@ -22,6 +22,10 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.Potion;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class PlayerEvent implements Listener {
 
     @EventHandler
@@ -83,8 +87,25 @@ public class PlayerEvent implements Listener {
             e.setCancelled(true);
             return;
         }
+        // death
         if (p.getHealth() - e.getDamage() <= 0) {
             e.setCancelled(true);
+
+            // drop everything bought from shop
+            List<Material> droppable = new ArrayList<>(Arrays.asList(
+                    Material.GOLDEN_APPLE,
+                    Material.TNT,
+                    Material.ENDER_PEARL,
+                    Material.SHIELD,
+                    Material.BOW,
+                    Material.TIPPED_ARROW
+            ));
+            for (ItemStack i : p.getInventory().getContents()) {
+                if (i != null && droppable.contains(i.getType())) {
+                    p.getWorld().dropItemNaturally(p.getLocation(), i);
+                }
+            }
+
             GameCore.die(p);
         }
     }
@@ -233,6 +254,7 @@ public class PlayerEvent implements Listener {
 
     @EventHandler
     public void splashPotion(PotionSplashEvent e) {
+        if (!GameCore.isOn()) return;
         ThrownPotion pot = e.getEntity();
         if (!(pot.getShooter() instanceof Player)) return;
         Player thrower = (Player) pot.getShooter();
