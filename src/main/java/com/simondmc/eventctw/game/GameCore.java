@@ -30,6 +30,8 @@ public class GameCore {
             p.setDisplayName(p.getName());
             // reset disc holder
             removeDiscHolder(p);
+            // remove all active effects
+            p.getActivePotionEffects().clear();
         }
         // reset teams
         Teams.getRed().clear();
@@ -100,6 +102,8 @@ public class GameCore {
             GameUtils.addKill(damager);
         }
 
+        // remove all active effects
+        p.getActivePotionEffects().clear();
 
         p.setGameMode(GameMode.SPECTATOR);
         dead.put(p, 100); // 100 ticks = 5 seconds

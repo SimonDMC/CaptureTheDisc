@@ -10,10 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.EnderPearl;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -23,6 +20,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.Potion;
 
 public class PlayerEvent implements Listener {
 
@@ -231,5 +229,17 @@ public class PlayerEvent implements Listener {
                 pearl.remove();
             }
         }
+    }
+
+    @EventHandler
+    public void splashPotion(PotionSplashEvent e) {
+        ThrownPotion pot = e.getEntity();
+        if (!(pot.getShooter() instanceof Player)) return;
+        Player thrower = (Player) pot.getShooter();
+        // only sploosher gets effect
+        for (LivingEntity ent : e.getAffectedEntities()) {
+            if (!thrower.equals(ent)) e.setIntensity(ent, 0); // this is the worst way to cancel getting the potion but altering getAffectedEntities didn't work
+        }
+
     }
 }

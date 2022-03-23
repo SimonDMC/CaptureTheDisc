@@ -17,6 +17,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -85,6 +86,8 @@ public class Inventory {
         p.getInventory().remove(Material.CROSSBOW);
         p.getInventory().remove(Material.ARROW);
         Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+        // no speed for you
+        p.getActivePotionEffects().removeIf(e -> e.getType().equals(PotionEffectType.SPEED));
     }
 
     public static void fillInv(Player p) {

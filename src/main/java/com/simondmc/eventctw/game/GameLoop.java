@@ -1,6 +1,8 @@
 package com.simondmc.eventctw.game;
 
 import com.simondmc.eventctw.EventCTW;
+import com.simondmc.eventctw.kits.Kit;
+import com.simondmc.eventctw.kits.Kits;
 import com.simondmc.eventctw.region.Region;
 import com.simondmc.eventctw.util.Utils;
 import org.bukkit.Material;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 public class GameLoop {
 
     public static void gameLoop() {
+        // EVERY 5 TICKS (4 loops/s)
         new BukkitRunnable() {
 
             @Override
@@ -50,6 +53,7 @@ public class GameLoop {
             }
         }.runTaskTimer(EventCTW.plugin, 0, 5);
 
+        // EVERY 20 TICKS (1 loop/s)
         new BukkitRunnable() {
 
             @Override
@@ -70,6 +74,7 @@ public class GameLoop {
             }
         }.runTaskTimer(EventCTW.plugin, 0, 20);
 
+        // EVERY 40 TICKS (2 s/loop)
         new BukkitRunnable() {
 
             @Override
@@ -86,5 +91,23 @@ public class GameLoop {
 
             }
         }.runTaskTimer(EventCTW.plugin, 0, 40);
+
+        // EVERY 200 TICKS (10 s/loop)
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+                if (!GameCore.isOn()) return;
+
+                // give arrow to every bow guy
+                for (Player p : Kits.getKitMembers(Kit.ARCHER)) {
+                    int arrowCount = Utils.countItems(Material.ARROW, p);
+                    if (arrowCount < 3) {
+                        p.getInventory().addItem(new ItemStack(Material.ARROW));
+                    }
+                }
+
+            }
+        }.runTaskTimer(EventCTW.plugin, 0, 200);
     }
 }
