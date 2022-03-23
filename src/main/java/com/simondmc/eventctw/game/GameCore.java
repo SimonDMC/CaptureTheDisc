@@ -2,6 +2,7 @@ package com.simondmc.eventctw.game;
 
 import com.simondmc.eventctw.kits.Inventory;
 import com.simondmc.eventctw.kits.KitNPC;
+import com.simondmc.eventctw.kits.Kits;
 import com.simondmc.eventctw.region.Region;
 import com.simondmc.eventctw.shop.ShopGUI;
 import com.simondmc.eventctw.shop.ShopNPC;
@@ -19,6 +20,7 @@ public class GameCore {
     public static final HashMap<Player, Integer> dead = new HashMap<>();
     public static final HashMap<Player, Integer> kills = new HashMap<>();
     public static final HashMap<Player, TimestampHit> lastDamage = new HashMap<>();
+    public static long startTime;
     private static Player redDiscHolder, blueDiscHolder;
 
     public static void startGame() {
@@ -44,6 +46,8 @@ public class GameCore {
         for (String player : Teams.getBlueTeam().getEntries()) {
             Teams.getBlueTeam().removeEntry(player);
         }
+        // reset kits
+        Kits.resetKits();
     }
 
     public static boolean isOn() {
@@ -54,6 +58,8 @@ public class GameCore {
         // PRIORITY!!! initialize world
         Region.initWorld(p.getWorld());
 
+        // set start time for devinfo
+        startTime = System.currentTimeMillis();
         // gamerules, weather and time
         p.getWorld().setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
         p.getWorld().setGameRule(GameRule.DO_MOB_SPAWNING, false);

@@ -35,8 +35,6 @@ public class Inventory {
         p.getInventory().addItem(crossbow);
 
         p.getInventory().addItem(new ItemStack(Material.ARROW));
-
-        p.sendMessage("§eSelected the §aArcher §ekit!");
     }
 
     public static void giveTactician(Player p) {
@@ -58,8 +56,6 @@ public class Inventory {
         potmeta.setLore(lore);
         pot.setItemMeta(potmeta);
         p.getInventory().addItem(pot);
-
-        p.sendMessage("§eSelected the §aTactician §ekit!");
     }
 
     public static void giveTank(Player p) {
@@ -75,8 +71,6 @@ public class Inventory {
         i = new ItemStack(Material.IRON_BOOTS);
         i.setItemMeta(imeta);
         p.getInventory().setBoots(i);
-
-        p.sendMessage("§eSelected the §aTank §ekit!");
     }
 
     private static void resetKit(Player p) {

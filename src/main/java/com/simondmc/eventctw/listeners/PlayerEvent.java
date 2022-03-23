@@ -5,6 +5,7 @@ import com.simondmc.eventctw.game.GameCore;
 import com.simondmc.eventctw.game.Teams;
 import com.simondmc.eventctw.game.TimestampHit;
 import com.simondmc.eventctw.region.Region;
+import com.simondmc.eventctw.util.Config;
 import com.simondmc.eventctw.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -143,6 +144,8 @@ public class PlayerEvent implements Listener {
                 Utils.playSound(player, Sound.ENTITY_ENDER_DRAGON_GROWL);
             }
             GameCore.stopGame();
+            // devinfo
+            Config.devAnnounce("§aGame finished! Took " + Math.round((System.currentTimeMillis() - GameCore.startTime)/1000) + "s.");
         }
         if (Teams.getBlue().contains(p) && Utils.inRegion(e.getTo(), Region.BLUE_CAPTURE) && GameCore.isDiscHolder(p)) {
             for (Player player : Teams.getBlue()) {
@@ -156,6 +159,8 @@ public class PlayerEvent implements Listener {
                 Utils.playSound(player, Sound.ENTITY_ENDER_DRAGON_GROWL);
             }
             GameCore.stopGame();
+            // devinfo
+            Config.devAnnounce("§aGame finished! Took " + Math.round((System.currentTimeMillis() - GameCore.startTime)/1000) + "s.");
         }
     }
 

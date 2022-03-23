@@ -17,6 +17,10 @@ public class Kits {
         kitList.put(p, k);
     }
 
+    public static void resetKits() {
+        kitList.clear();
+    }
+
     public static List<Player> getKitMembers(Kit k) {
         List<Player> result = new ArrayList<>();
         kitList.forEach((player, kit) -> {

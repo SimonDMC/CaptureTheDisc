@@ -4,7 +4,6 @@ import com.simondmc.eventctw.command.*;
 import com.simondmc.eventctw.command.template.AdminCommand;
 import com.simondmc.eventctw.command.template.CommandType;
 import com.simondmc.eventctw.command.template.SuperCommand;
-import com.simondmc.eventctw.game.Config;
 import com.simondmc.eventctw.game.GameLoop;
 import com.simondmc.eventctw.listeners.BlockEvent;
 import com.simondmc.eventctw.listeners.PlayerEvent;
@@ -30,7 +29,8 @@ public final class EventCTW extends JavaPlugin {
             registerCommand(cmd);
         // registers listeners
         registerListeners();
-        Config.createConfig("blocks.yml");
+        // config file
+        plugin.saveDefaultConfig();
         // copies the schematic over
         /*this just doesnt want to work for some reason so ill leave it for now and maybe resolve later
         saveResource("map.schem", false);*/
@@ -56,6 +56,7 @@ public final class EventCTW extends JavaPlugin {
         commands.add(new ShopCommand());
         commands.add(new CoinsCommand());
         commands.add(new TestUpgradesCommand());
+        commands.add(new ToggleDevCommand());
     }
 
     void registerListeners() {

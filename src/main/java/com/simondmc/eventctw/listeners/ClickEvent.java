@@ -96,15 +96,18 @@ public class ClickEvent implements Listener {
             case FLETCHER:
                 Inventory.giveArcher(p);
                 Kits.setKit(p, Kit.ARCHER);
+                p.sendMessage("§eSelected the §aArcher §ekit!");
                 break;
             case LIBRARIAN:
                 Inventory.giveTactician(p);
                 Kits.setKit(p, Kit.TACTICIAN);
+                p.sendMessage("§eSelected the §aTactician §ekit!");
                 break;
             case ARMORER:
                 Inventory.giveTank(p);
                 Kits.setKit(p, Kit.TANK);
                 Utils.playSound(p, Sound.ITEM_ARMOR_EQUIP_IRON);
+                p.sendMessage("§eSelected the §aTank §ekit!");
                 break;
         }
     }
