@@ -85,9 +85,6 @@ public class Inventory {
         p.getInventory().remove(Material.SPLASH_POTION);
         p.getInventory().remove(Material.CROSSBOW);
         p.getInventory().remove(Material.ARROW);
-        Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
-        // no speed for you
-        p.getActivePotionEffects().removeIf(e -> e.getType().equals(PotionEffectType.SPEED));
     }
 
     public static void fillInv(Player p) {
@@ -133,6 +130,20 @@ public class Inventory {
         p.getInventory().setItem(8, i);
 
         setArmor(p);
+
+        // give corresponding kit
+        if (Kits.getKit(p) == null) return;
+        switch (Kits.getKit(p)) {
+            case ARCHER:
+                giveArcher(p);
+                break;
+            case TACTICIAN:
+                giveTactician(p);
+                break;
+            case TANK:
+                giveTank(p);
+                break;
+        }
     }
 
     private static void setArmor(Player p) {

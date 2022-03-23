@@ -13,6 +13,10 @@ public class Kits {
         return kitList.get(p);
     }
 
+    public static void setKit(Player p, Kit k) {
+        kitList.put(p, k);
+    }
+
     public static List<Player> getKitMembers(Kit k) {
         List<Player> result = new ArrayList<>();
         kitList.forEach((player, kit) -> {

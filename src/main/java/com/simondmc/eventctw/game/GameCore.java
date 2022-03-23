@@ -10,6 +10,7 @@ import org.bukkit.GameMode;
 import org.bukkit.GameRule;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
 
 import java.util.HashMap;
 
@@ -31,7 +32,7 @@ public class GameCore {
             // reset disc holder
             removeDiscHolder(p);
             // remove all active effects
-            p.getActivePotionEffects().clear();
+            for (PotionEffect eff : p.getActivePotionEffects()) p.removePotionEffect(eff.getType());
         }
         // reset teams
         Teams.getRed().clear();
@@ -103,7 +104,7 @@ public class GameCore {
         }
 
         // remove all active effects
-        p.getActivePotionEffects().clear();
+        for (PotionEffect eff : p.getActivePotionEffects()) p.removePotionEffect(eff.getType());
 
         p.setGameMode(GameMode.SPECTATOR);
         dead.put(p, 100); // 100 ticks = 5 seconds

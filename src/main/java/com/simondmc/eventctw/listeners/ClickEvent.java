@@ -3,6 +3,8 @@ package com.simondmc.eventctw.listeners;
 import com.simondmc.eventctw.game.Coins;
 import com.simondmc.eventctw.game.GameCore;
 import com.simondmc.eventctw.kits.Inventory;
+import com.simondmc.eventctw.kits.Kit;
+import com.simondmc.eventctw.kits.Kits;
 import com.simondmc.eventctw.shop.ShopGUI;
 import com.simondmc.eventctw.shop.ShopItem;
 import com.simondmc.eventctw.shop.SlotItem;
@@ -16,6 +18,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.potion.PotionEffectType;
 
 public class ClickEvent implements Listener {
 
@@ -79,18 +82,29 @@ public class ClickEvent implements Listener {
     }
 
     void clickedVillager(Player p, Villager v) {
+
+        // selection sound + clear speed
+        if (!v.getProfession().equals(Villager.Profession.WEAPONSMITH)) {
+            Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+            p.removePotionEffect(PotionEffectType.SPEED);
+        }
+
         switch (v.getProfession()) {
             case WEAPONSMITH:
                 ShopGUI.openShopGui(p);
                 break;
             case FLETCHER:
                 Inventory.giveArcher(p);
+                Kits.setKit(p, Kit.ARCHER);
                 break;
             case LIBRARIAN:
                 Inventory.giveTactician(p);
+                Kits.setKit(p, Kit.TACTICIAN);
                 break;
             case ARMORER:
                 Inventory.giveTank(p);
+                Kits.setKit(p, Kit.TANK);
+                Utils.playSound(p, Sound.ITEM_ARMOR_EQUIP_IRON);
                 break;
         }
     }
