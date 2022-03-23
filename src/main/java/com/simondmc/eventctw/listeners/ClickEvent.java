@@ -2,6 +2,7 @@ package com.simondmc.eventctw.listeners;
 
 import com.simondmc.eventctw.game.Coins;
 import com.simondmc.eventctw.game.GameCore;
+import com.simondmc.eventctw.kits.Inventory;
 import com.simondmc.eventctw.shop.ShopGUI;
 import com.simondmc.eventctw.shop.ShopItem;
 import com.simondmc.eventctw.shop.SlotItem;
@@ -16,7 +17,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
-public class ShopClick implements Listener {
+public class ClickEvent implements Listener {
 
     @EventHandler
     public void clickShop(InventoryClickEvent e) {
@@ -64,7 +65,7 @@ public class ShopClick implements Listener {
         if (!GameCore.isOn()) return;
         if (!(e.getRightClicked() instanceof Villager)) return;
         e.setCancelled(true);
-        ShopGUI.openShopGui(e.getPlayer());
+        clickedVillager(e.getPlayer(), (Villager) e.getRightClicked());
     }
 
     // left click to open
@@ -74,7 +75,23 @@ public class ShopClick implements Listener {
         if (!(e.getEntity() instanceof Villager)) return;
         e.setCancelled(true);
         if (!(e.getDamager() instanceof Player)) return;
-        Player p = (Player) e.getDamager();
-        ShopGUI.openShopGui(p);
+        clickedVillager((Player) e.getDamager(), (Villager) e.getEntity());
+    }
+
+    void clickedVillager(Player p, Villager v) {
+        switch (v.getProfession()) {
+            case WEAPONSMITH:
+                ShopGUI.openShopGui(p);
+                break;
+            case FLETCHER:
+                Inventory.giveArcher(p);
+                break;
+            case LIBRARIAN:
+                Inventory.giveTactician(p);
+                break;
+            case ARMORER:
+                Inventory.giveTank(p);
+                break;
+        }
     }
 }

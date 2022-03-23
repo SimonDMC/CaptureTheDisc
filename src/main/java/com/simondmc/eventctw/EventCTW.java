@@ -8,7 +8,7 @@ import com.simondmc.eventctw.game.Config;
 import com.simondmc.eventctw.game.GameLoop;
 import com.simondmc.eventctw.listeners.BlockEvent;
 import com.simondmc.eventctw.listeners.PlayerEvent;
-import com.simondmc.eventctw.listeners.ShopClick;
+import com.simondmc.eventctw.listeners.ClickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -61,7 +61,7 @@ public final class EventCTW extends JavaPlugin {
     void registerListeners() {
         getServer().getPluginManager().registerEvents(new BlockEvent(), plugin);
         getServer().getPluginManager().registerEvents(new PlayerEvent(), plugin);
-        getServer().getPluginManager().registerEvents(new ShopClick(), plugin);
+        getServer().getPluginManager().registerEvents(new ClickEvent(), plugin);
     }
 
     void registerCommand(SuperCommand cmd) {

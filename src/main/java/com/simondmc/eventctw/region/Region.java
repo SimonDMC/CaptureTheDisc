@@ -72,4 +72,8 @@ public class Region {
     // shop npcs
     public static final Location RED_SHOP = new Location(world, -90.5, 64, 3.5, 135, 0);
     public static final Location BLUE_SHOP = new Location(world, 91.5, 64, -2.5, -45, 0);
+
+    // kit npcs
+    public static final Location RED_KITS = new Location(world, -90.5, 64, -2.5, 45, 0);
+    public static final Location BLUE_KITS = new Location(world, 91.5, 64, 3.5, -135, 0);
 }

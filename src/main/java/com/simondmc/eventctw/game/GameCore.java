@@ -1,5 +1,7 @@
 package com.simondmc.eventctw.game;
 
+import com.simondmc.eventctw.kits.Inventory;
+import com.simondmc.eventctw.kits.KitNPC;
 import com.simondmc.eventctw.region.Region;
 import com.simondmc.eventctw.shop.ShopGUI;
 import com.simondmc.eventctw.shop.ShopNPC;
@@ -67,7 +69,8 @@ public class GameCore {
         GameUtils.spawnRedDisc();
         GameUtils.spawnBlueDisc();
         // spawn npcs
-        ShopNPC.initNpcs();
+        ShopNPC.initShopNpc();
+        KitNPC.initKitNpcs();
     }
 
     public static void respawn(Player p) {
@@ -76,7 +79,7 @@ public class GameCore {
         p.setSaturation(0);
         p.getInventory().clear();
         p.setGameMode(GameMode.SURVIVAL);
-        GameUtils.fillInv(p);
+        Inventory.fillInv(p);
         if (Teams.getRed().contains(p)) {
             p.teleport(Utils.genLocation(p.getWorld(), Region.RED_SPAWN, .5f, 0, .5f, -90, 0));
         } else {

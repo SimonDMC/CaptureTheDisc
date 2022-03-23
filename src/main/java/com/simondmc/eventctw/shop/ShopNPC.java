@@ -6,11 +6,11 @@ import org.bukkit.entity.Villager;
 
 public class ShopNPC {
 
-    public static void initNpcs() {
+    public static void initShopNpc() {
         Villager[] shops = {(Villager) Region.RED_SHOP.getWorld().spawnEntity(Region.RED_SHOP, EntityType.VILLAGER),
                 (Villager) Region.BLUE_SHOP.getWorld().spawnEntity(Region.BLUE_SHOP, EntityType.VILLAGER)};
         for (Villager v : shops) {
-            v.setProfession(Villager.Profession.ARMORER);
+            v.setProfession(Villager.Profession.WEAPONSMITH);
             v.setCustomName("§e§lShop");
             v.setCustomNameVisible(true);
             v.setVillagerLevel(5);
