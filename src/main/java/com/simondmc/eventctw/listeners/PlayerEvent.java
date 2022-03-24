@@ -35,44 +35,6 @@ public class PlayerEvent implements Listener {
     }
 
     @EventHandler
-    public void hit(EntityDamageByEntityEvent e) {
-        if (!GameCore.isOn()) return;
-        if (!(e.getEntity() instanceof Player)) return;
-        Player damaged = (Player) e.getEntity();
-        // stab dmg
-        if (e.getDamager() instanceof Player) {
-            Player p = (Player) e.getDamager();
-            // friendly fire
-            if ((Teams.getRed().contains(p) && Teams.getRed().contains(damaged)) || (Teams.getBlue().contains(p) && Teams.getBlue().contains(damaged))) {
-                e.setCancelled(true);
-                return;
-            }
-            Coins.addCoins(p, (float) e.getDamage());
-            // set last damager
-            GameCore.lastDamage.put(damaged, new TimestampHit(System.currentTimeMillis(), p));
-            return;
-        }
-        // shoot dmg
-        if (e.getDamager() instanceof Arrow) {
-            Arrow arrow = (Arrow) e.getDamager();
-            // nerf arrow damage cuz op af
-            e.setDamage(e.getDamage() / 2);
-            if (!(arrow.getShooter() instanceof Player)) return;
-            Player p = (Player) arrow.getShooter();
-            // friendly fire
-            if ((Teams.getRed().contains(p) && Teams.getRed().contains(damaged)) || (Teams.getBlue().contains(p) && Teams.getBlue().contains(damaged))) {
-                // kill arrow cuz it looks goofy :(
-                arrow.remove();
-                e.setCancelled(true);
-                return;
-            }
-            Coins.addCoins(p, (float) e.getDamage());
-            // set last damager
-            GameCore.lastDamage.put(damaged, new TimestampHit(System.currentTimeMillis(), p));
-        }
-    }
-
-    @EventHandler
     public void damage(EntityDamageEvent e) {
         if (!GameCore.isOn()) return;
         if (!(e.getEntity() instanceof Player)) return;
@@ -112,12 +74,55 @@ public class PlayerEvent implements Listener {
     }
 
     @EventHandler
+    public void hit(EntityDamageByEntityEvent e) {
+        if (!GameCore.isOn()) return;
+        if (!(e.getEntity() instanceof Player)) return;
+        Player damaged = (Player) e.getEntity();
+        // stab dmg
+        if (e.getDamager() instanceof Player) {
+            Player p = (Player) e.getDamager();
+            // friendly fire
+            if ((Teams.getRed().contains(p) && Teams.getRed().contains(damaged)) || (Teams.getBlue().contains(p) && Teams.getBlue().contains(damaged))) {
+                e.setCancelled(true);
+                return;
+            }
+            Coins.addCoins(p, (float) e.getDamage());
+            // set last damager
+            GameCore.lastDamage.put(damaged, new TimestampHit(System.currentTimeMillis(), p));
+            return;
+        }
+        // shoot dmg
+        if (e.getDamager() instanceof Arrow) {
+            Arrow arrow = (Arrow) e.getDamager();
+            // nerf arrow damage slightly
+            e.setDamage(e.getDamage() * 2/3);
+            if (!(arrow.getShooter() instanceof Player)) return;
+            Player p = (Player) arrow.getShooter();
+            // friendly fire
+            if ((Teams.getRed().contains(p) && Teams.getRed().contains(damaged)) || (Teams.getBlue().contains(p) && Teams.getBlue().contains(damaged))) {
+                // kill arrow cuz it looks goofy :(
+                arrow.remove();
+                e.setCancelled(true);
+                return;
+            }
+            // add coins if damage done
+            if (e.getDamage() > 0) Coins.addCoins(p, (float) e.getDamage());
+            // set last damager
+            GameCore.lastDamage.put(damaged, new TimestampHit(System.currentTimeMillis(), p));
+        }
+    }
+
+    @EventHandler
     public void move(PlayerMoveEvent e) {
         if (!GameCore.isOn()) return;
         Player p = e.getPlayer();
 
         // void death
-        if (e.getTo().getY() < 0) GameCore.die(p);
+        if (e.getTo().getY() < 0) {
+            GameCore.die(p);
+            e.setCancelled(true);
+            return;
+        }
 
         // launch out of other teams base
         if ((Teams.getRed().contains(p) && Utils.inRegion(e.getTo(), Region.BLUE_GRACE)) || (Teams.getBlue().contains(p) && Utils.inRegion(e.getTo(), Region.RED_GRACE))) {

@@ -48,7 +48,7 @@ public class Teams {
         blueTeam.setColor(ChatColor.BLUE);
 
         players = new ArrayList<>(Bukkit.getOnlinePlayers());
-        players.removeIf(p -> p.getGameMode().equals(GameMode.SPECTATOR));
+        //players.removeIf(p -> p.getGameMode().equals(GameMode.SPECTATOR));
         Collections.shuffle(players);
         // whether to start with red or blue
         boolean red = new Random().nextFloat() < 0.5;

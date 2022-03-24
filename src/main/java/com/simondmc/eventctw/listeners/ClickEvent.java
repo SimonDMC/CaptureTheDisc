@@ -37,7 +37,13 @@ public class ClickEvent implements Listener {
             if (ShopGUI.shopSlots.contains(e.getSlot())) {
                 int slot = ShopGUI.shopSlots.indexOf(e.getSlot());
                 Player p = (Player) e.getWhoClicked();
-                ShopItem shopItem = ShopGUI.buildCurrentShopItems(p).get(slot);
+                // clicking an empty slot throws an error ¯\_(ツ)_/¯
+                ShopItem shopItem;
+                try {
+                    shopItem = ShopGUI.buildCurrentShopItems(p).get(slot);
+                } catch (IndexOutOfBoundsException ex) {
+                    return;
+                }
                 if (!Coins.hasCoins(p, shopItem.cost)) {
                     p.sendMessage("§cYou cannot afford this!");
                     Utils.playSound(p, Sound.ENTITY_VILLAGER_NO);

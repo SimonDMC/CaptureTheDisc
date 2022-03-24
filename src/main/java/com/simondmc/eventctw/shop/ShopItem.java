@@ -84,7 +84,7 @@ public class ShopItem {
                 ));
             } else {
                 lore = new ArrayList<>(Arrays.asList(
-                        "§7This is a permanent upgrade!",
+                        "§7This is a permanent upgrade",
                         "",
                         "§7Cost: §6" + cost + " Coins"
                 ));

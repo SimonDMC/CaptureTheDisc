@@ -31,6 +31,7 @@ public class GameCore {
         running = false;
         for (Player p : Teams.getPlayers()) {
             p.setDisplayName(p.getName());
+            p.setGameMode(GameMode.SURVIVAL);
             // reset disc holder
             removeDiscHolder(p);
             // remove all active effects
@@ -48,6 +49,8 @@ public class GameCore {
         }
         // reset kits
         Kits.resetKits();
+        // reset death timer
+        dead.clear();
     }
 
     public static boolean isOn() {

@@ -21,6 +21,7 @@ import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 public class Inventory {
@@ -74,11 +75,26 @@ public class Inventory {
     }
 
     private static void resetKit(Player p) {
+        List<Material> toRemove = new ArrayList<>(Arrays.asList(
+                Material.CHAINMAIL_HELMET,
+                Material.IRON_BOOTS,
+                Material.FISHING_ROD,
+                Material.SPLASH_POTION,
+                Material.CROSSBOW,
+                Material.ARROW
+        ));
+        // remove all kit relevant items
+        for (ItemStack item : p.getInventory().getContents()) {
+            if (item == null) continue;
+            if (toRemove.contains(item.getType())) {
+                p.getInventory().remove(item);
+            }
+        }
+        // prevent offhand smuggle
+        if (toRemove.contains(p.getInventory().getItemInOffHand().getType())) {
+            p.getInventory().setItemInOffHand(null);
+        }
         setArmor(p);
-        p.getInventory().remove(Material.FISHING_ROD);
-        p.getInventory().remove(Material.SPLASH_POTION);
-        p.getInventory().remove(Material.CROSSBOW);
-        p.getInventory().remove(Material.ARROW);
     }
 
     public static void fillInv(Player p) {
