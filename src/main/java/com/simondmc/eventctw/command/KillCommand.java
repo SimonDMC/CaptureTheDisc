@@ -3,11 +3,12 @@ package com.simondmc.eventctw.command;
 import com.simondmc.eventctw.command.template.CommandType;
 import com.simondmc.eventctw.command.template.SuperCommand;
 import com.simondmc.eventctw.game.GameCore;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class StartCommand implements SuperCommand {
+public class KillCommand implements SuperCommand {
     public String getLabel() {
-        return "startctw";
+        return "ctwkill";
     }
 
     public CommandType getType() {
@@ -15,13 +16,16 @@ public class StartCommand implements SuperCommand {
     }
 
     public void runCommand(Player p, String[] args) {
-        /*if (GameCore.isOn()) {
-            p.sendMessage("§cThe game is already running! Use /forcestopctw to stop it.");
+        if (args.length == 0) {
+            GameCore.die(p);
             return;
-        }*/
-        if (GameCore.isOn()) GameCore.stopGame();
-        GameCore.setup(p);
-        GameCore.startGame();
-
+        }
+        Player p2;
+        try {
+            p2 = Bukkit.getPlayer(args[0]);
+        } catch (Exception e) {
+            return;
+        }
+        GameCore.die(p2);
     }
 }

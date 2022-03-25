@@ -68,7 +68,6 @@ public class PlayerEvent implements Listener {
                     p.getWorld().dropItemNaturally(p.getLocation(), i);
                 }
             }
-
             GameCore.die(p);
         }
     }
@@ -94,19 +93,17 @@ public class PlayerEvent implements Listener {
         // shoot dmg
         if (e.getDamager() instanceof Arrow) {
             Arrow arrow = (Arrow) e.getDamager();
-            // nerf arrow damage slightly
-            e.setDamage(e.getDamage() * 2/3);
             if (!(arrow.getShooter() instanceof Player)) return;
             Player p = (Player) arrow.getShooter();
-            // friendly fire
-            if ((Teams.getRed().contains(p) && Teams.getRed().contains(damaged)) || (Teams.getBlue().contains(p) && Teams.getBlue().contains(damaged))) {
+            // friendly fire (you can still shoot yourself tho)
+            if (!p.equals(damaged) && ((Teams.getRed().contains(p) && Teams.getRed().contains(damaged)) || (Teams.getBlue().contains(p) && Teams.getBlue().contains(damaged)))) {
                 // kill arrow cuz it looks goofy :(
                 arrow.remove();
                 e.setCancelled(true);
                 return;
             }
-            // add coins if damage done
-            if (e.getDamage() > 0) Coins.addCoins(p, (float) e.getDamage());
+            // add coins if damage done and haven't shot self
+            if (e.getDamage() > 0 && !p.equals(damaged)) Coins.addCoins(p, (float) e.getDamage());
             // set last damager
             GameCore.lastDamage.put(damaged, new TimestampHit(System.currentTimeMillis(), p));
         }
@@ -120,7 +117,6 @@ public class PlayerEvent implements Listener {
         // void death
         if (e.getTo().getY() < 0) {
             GameCore.die(p);
-            e.setCancelled(true);
             return;
         }
 

@@ -5,6 +5,7 @@ import com.simondmc.eventctw.kits.Kit;
 import com.simondmc.eventctw.kits.Kits;
 import com.simondmc.eventctw.region.Region;
 import com.simondmc.eventctw.util.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -53,27 +54,6 @@ public class GameLoop {
             }
         }.runTaskTimer(EventCTW.plugin, 0, 5);
 
-        // EVERY 20 TICKS (1 loop/s)
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-                if (!GameCore.isOn()) return;
-
-                // remove dupe discs
-                List<Entity> red_discs = Region.RED_DISC.getWorld().getNearbyEntities(Region.RED_DISC, 1, 1, 1).stream().filter(e -> e instanceof Item).collect(Collectors.toList());
-                if (red_discs.size() > 1) {
-                    for (Entity e : red_discs) e.remove();
-                    GameUtils.spawnRedDisc();
-                }
-                List<Entity> blue_discs = Region.BLUE_DISC.getWorld().getNearbyEntities(Region.BLUE_DISC, 1, 1, 1).stream().filter(e -> e instanceof Item).collect(Collectors.toList());
-                if (blue_discs.size() > 1) {
-                    for (Entity e : blue_discs) e.remove();
-                    GameUtils.spawnBlueDisc();
-                }
-            }
-        }.runTaskTimer(EventCTW.plugin, 0, 20);
-
         // EVERY 40 TICKS (2 s/loop)
         new BukkitRunnable() {
 
@@ -89,6 +69,17 @@ public class GameLoop {
                     }
                 }
 
+                // remove dupe discs
+                List<Entity> red_discs = Region.RED_DISC.getWorld().getNearbyEntities(Region.RED_DISC, 1, 1, 1).stream().filter(e -> e instanceof Item).collect(Collectors.toList());
+                if (red_discs.size() > 1) {
+                    for (Entity e : red_discs) e.remove();
+                    GameUtils.spawnRedDisc();
+                }
+                List<Entity> blue_discs = Region.BLUE_DISC.getWorld().getNearbyEntities(Region.BLUE_DISC, 1, 1, 1).stream().filter(e -> e instanceof Item).collect(Collectors.toList());
+                if (blue_discs.size() > 1) {
+                    for (Entity e : blue_discs) e.remove();
+                    GameUtils.spawnBlueDisc();
+                }
             }
         }.runTaskTimer(EventCTW.plugin, 0, 40);
 
@@ -106,7 +97,6 @@ public class GameLoop {
                         p.getInventory().addItem(new ItemStack(Material.ARROW));
                     }
                 }
-
             }
         }.runTaskTimer(EventCTW.plugin, 0, 200);
     }

@@ -8,6 +8,7 @@ import com.simondmc.eventctw.game.GameLoop;
 import com.simondmc.eventctw.listeners.BlockEvent;
 import com.simondmc.eventctw.listeners.PlayerEvent;
 import com.simondmc.eventctw.listeners.ClickEvent;
+import com.simondmc.eventctw.region.Region;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -36,6 +37,7 @@ public final class EventCTW extends JavaPlugin {
         saveResource("map.schem", false);*/
         // starts game loop
         GameLoop.gameLoop();
+        // forceload chunks
     }
 
     @Override
@@ -57,6 +59,7 @@ public final class EventCTW extends JavaPlugin {
         commands.add(new CoinsCommand());
         commands.add(new TestUpgradesCommand());
         commands.add(new ToggleDevCommand());
+        commands.add(new KillCommand());
     }
 
     void registerListeners() {

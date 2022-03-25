@@ -16,3 +16,4 @@ commands:
   addcoins:
   debugupgrades:
   togglectwdev:
+  ctwkill:

@@ -2,6 +2,7 @@ package com.simondmc.eventctw.listeners;
 
 import com.simondmc.eventctw.game.Coins;
 import com.simondmc.eventctw.game.GameCore;
+import com.simondmc.eventctw.game.Teams;
 import com.simondmc.eventctw.kits.Inventory;
 import com.simondmc.eventctw.kits.Kit;
 import com.simondmc.eventctw.kits.Kits;
@@ -10,7 +11,9 @@ import com.simondmc.eventctw.shop.ShopItem;
 import com.simondmc.eventctw.shop.SlotItem;
 import com.simondmc.eventctw.util.Utils;
 import org.bukkit.Sound;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.ThrownPotion;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -91,8 +94,24 @@ public class ClickEvent implements Listener {
 
         // selection sound + clear speed
         if (!v.getProfession().equals(Villager.Profession.WEAPONSMITH)) {
+            /*
+                THIS IS LIKELY TO CHANGE
+             */
+            // prevent from selecting kits in other team's base
+            if ((Teams.getRed().contains(p) && p.getLocation().getX() > 0) || (Teams.getBlue().contains(p) && p.getLocation().getX() < 0)) {
+                p.sendMessage("§cYou can only select kits in your team's base!");
+                Utils.playSound(p, Sound.ENTITY_VILLAGER_NO);
+                return;
+            }
             Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
             p.removePotionEffect(PotionEffectType.SPEED);
+            // remove thrown potions
+            for (Entity e : p.getNearbyEntities(10, 10, 10)) {
+                if (!(e instanceof ThrownPotion)) continue;
+                ThrownPotion pot = (ThrownPotion) e;
+                if (!(pot.getShooter() instanceof Player)) continue;
+                if (p.equals(pot.getShooter())) e.remove();
+            }
         }
 
         switch (v.getProfession()) {

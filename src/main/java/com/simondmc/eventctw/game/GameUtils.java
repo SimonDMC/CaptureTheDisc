@@ -50,23 +50,11 @@ public class GameUtils {
     }
 
     public static void spawnRedDisc() {
-        Item disc = Region.RED_DISC.getWorld().dropItem(Region.RED_DISC.add(.5, 0, .5), new ItemStack(Material.MUSIC_DISC_PIGSTEP));
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                disc.setVelocity(new Vector(0, 0, 0));
-            }
-        }.runTaskLater(EventCTW.plugin, 1);
+        Region.RED_DISC.getWorld().dropItem(Region.RED_DISC.clone().add(.5, 0, .5), new ItemStack(Material.MUSIC_DISC_PIGSTEP));
     }
 
     public static void spawnBlueDisc() {
-        Item disc = Region.BLUE_DISC.getWorld().dropItem(Region.BLUE_DISC.add(.5, 0, .5), new ItemStack(Material.MUSIC_DISC_CAT));
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                disc.setVelocity(new Vector(0, 0, 0));
-            }
-        }.runTaskLater(EventCTW.plugin, 1);
+        Region.BLUE_DISC.getWorld().dropItem(Region.BLUE_DISC.clone().add(.5, 0, .5), new ItemStack(Material.MUSIC_DISC_CAT));
     }
 
     public static void addKill(Player p) {
