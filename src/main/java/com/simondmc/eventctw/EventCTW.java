@@ -5,6 +5,7 @@ import com.simondmc.eventctw.command.template.AdminCommand;
 import com.simondmc.eventctw.command.template.CommandType;
 import com.simondmc.eventctw.command.template.SuperCommand;
 import com.simondmc.eventctw.game.GameLoop;
+import com.simondmc.eventctw.kits.Kits;
 import com.simondmc.eventctw.listeners.BlockEvent;
 import com.simondmc.eventctw.listeners.PlayerEvent;
 import com.simondmc.eventctw.listeners.ClickEvent;
@@ -37,7 +38,8 @@ public final class EventCTW extends JavaPlugin {
         saveResource("map.schem", false);*/
         // starts game loop
         GameLoop.gameLoop();
-        // forceload chunks
+        // build kit inventory
+        Kits.initKitGui();
     }
 
     @Override

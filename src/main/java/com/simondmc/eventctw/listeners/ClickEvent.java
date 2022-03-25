@@ -23,6 +23,8 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.Objects;
+
 public class ClickEvent implements Listener {
 
     @EventHandler
@@ -67,6 +69,35 @@ public class ClickEvent implements Listener {
 
                 // reload shop cuz something could have changed
                 ShopGUI.openShopGui(p);
+                return;
+            }
+        }
+        if (Objects.equals(e.getClickedInventory(), Kits.getKitGui())) {
+            e.setCancelled(true);
+            // get rid of that stupid inventory error
+            if (e.getClickedInventory() == null) return;
+            if (e.getClickedInventory().getType() == InventoryType.PLAYER) return;
+            Player p = (Player) e.getWhoClicked();
+
+            // select kit based on click slot
+            switch (e.getSlot()) {
+                case 11:
+                    Kits.setKit(p, Kit.ARCHER);
+                    Inventory.giveArcher(p);
+                    Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+                    p.closeInventory();
+                    return;
+                case 13:
+                    Kits.setKit(p, Kit.TACTICIAN);
+                    Inventory.giveTactician(p);
+                    Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+                    p.closeInventory();
+                    return;
+                case 15:
+                    Kits.setKit(p, Kit.TANK);
+                    Inventory.giveTank(p);
+                    Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+                    p.closeInventory();
             }
         }
     }

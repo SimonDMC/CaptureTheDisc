@@ -2,6 +2,7 @@ package com.simondmc.eventctw.game;
 
 import com.simondmc.eventctw.EventCTW;
 import com.simondmc.eventctw.kits.Inventory;
+import com.simondmc.eventctw.kits.Kits;
 import com.simondmc.eventctw.region.Region;
 import com.simondmc.eventctw.shop.ShopGUI;
 import com.simondmc.eventctw.shop.Upgrade;
@@ -46,6 +47,8 @@ public class GameUtils {
             // reset coins and kills
             Coins.setCoins(p, 0);
             GameCore.kills.put(p, 0);
+            // open kit selection
+            Kits.openKitGui(p);
         }
     }
 
