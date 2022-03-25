@@ -103,13 +103,14 @@ public class GameCore {
         // figure out if kill
         if (lastDamage.containsKey(p)) {
             // make sure last hit was less than 10 seconds ago
-            if (System.currentTimeMillis() - lastDamage.get(p).timestamp > 10000) return; // 10,000ms = 10s
-            Player damager = lastDamage.get(p).damager;
-            String dColor = (Teams.getRed().contains(damager) ? "§c" : "§9");
-            String pColor = (Teams.getRed().contains(p) ? "§c" : "§9");
-            damager.sendMessage(pColor + p.getName() + " §ewas killed by " + dColor + damager.getName());
-            Utils.playSound(damager, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
-            GameUtils.addKill(damager);
+            if (System.currentTimeMillis() - lastDamage.get(p).timestamp < 10000) {// 10,000ms = 10s
+                Player damager = lastDamage.get(p).damager;
+                String dColor = (Teams.getRed().contains(damager) ? "§c" : "§9");
+                String pColor = (Teams.getRed().contains(p) ? "§c" : "§9");
+                damager.sendMessage(pColor + p.getName() + " §ewas killed by " + dColor + damager.getName());
+                Utils.playSound(damager, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+                GameUtils.addKill(damager);
+            }
         }
 
         // remove all active effects
