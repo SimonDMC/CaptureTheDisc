@@ -27,7 +27,9 @@ public class Config {
     public static void devAnnounce(String message) {
         if (EventCTW.plugin.getConfig().get("devs") != null) {
             for (String uuid : (List<String>) EventCTW.plugin.getConfig().get("devs")) {
-                Bukkit.getPlayer(UUID.fromString(uuid)).sendMessage("§d[DEV INFO] " + message);
+                try {
+                    Bukkit.getPlayer(UUID.fromString(uuid)).sendMessage("§d[DEV INFO] " + message);
+                } catch (Exception ignored) {}
             }
         }
     }
