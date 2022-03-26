@@ -3,10 +3,8 @@ package com.simondmc.eventctw.kits;
 import com.simondmc.eventctw.game.Teams;
 import com.simondmc.eventctw.shop.ShopGUI;
 import com.simondmc.eventctw.shop.Upgrade;
-import com.simondmc.eventctw.util.Utils;
 import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
@@ -17,7 +15,6 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,10 +50,12 @@ public class Inventory {
         potmeta.setColor(Color.fromRGB(135,206,235)); // close enough idk i got this from searching sky blue on google
         potmeta.setDisplayName("§rSplash Potion of Swiftness");
         potmeta.addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 600, 0, false, true), false);
-        ArrayList<String> lore = new ArrayList<>(Arrays.asList(" ", "§cNotice: You can only splash this", "§cpotion on yourself."));
+        ArrayList<String> lore = new ArrayList<>(Arrays.asList(" ", "§cNotice: You can only splash", "§cthis potion on yourself."));
         potmeta.setLore(lore);
         pot.setItemMeta(potmeta);
         p.getInventory().addItem(pot);
+
+        p.getInventory().addItem(new ItemStack(Material.SCAFFOLDING, 10));
     }
 
     public static void giveTank(Player p) {
@@ -80,6 +79,7 @@ public class Inventory {
                 Material.IRON_BOOTS,
                 Material.FISHING_ROD,
                 Material.SPLASH_POTION,
+                Material.SCAFFOLDING,
                 Material.CROSSBOW,
                 Material.ARROW
         ));

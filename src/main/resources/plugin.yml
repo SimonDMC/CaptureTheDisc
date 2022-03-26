@@ -17,3 +17,4 @@ commands:
   debugupgrades:
   togglectwdev:
   ctwkill:
+  pickupdisc:

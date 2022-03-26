@@ -1,9 +1,6 @@
 package com.simondmc.eventctw.listeners;
 
-import com.simondmc.eventctw.game.Coins;
-import com.simondmc.eventctw.game.GameCore;
-import com.simondmc.eventctw.game.Teams;
-import com.simondmc.eventctw.game.TimestampHit;
+import com.simondmc.eventctw.game.*;
 import com.simondmc.eventctw.region.Region;
 import com.simondmc.eventctw.util.Config;
 import com.simondmc.eventctw.util.Utils;
@@ -22,12 +19,23 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class PlayerEvent implements Listener {
+
+    List<Material> droppable = new ArrayList<>(Arrays.asList(
+            Material.GOLDEN_APPLE,
+            Material.TNT,
+            Material.ENDER_PEARL,
+            Material.SHIELD,
+            Material.BOW,
+            Material.TIPPED_ARROW
+    ));
 
     @EventHandler
     public void food(FoodLevelChangeEvent e) {
@@ -43,26 +51,20 @@ public class PlayerEvent implements Listener {
         Player p = (Player) e.getEntity();
         // avoid damage taken on spawnpoint (mainly fall damage from tp)
         if (Teams.getRed().contains(p) && Utils.inRegion(p.getLocation(), Region.RED_GRACE)) {
+            e.setDamage(0);
             e.setCancelled(true);
             return;
         }
         if (Teams.getBlue().contains(p) && Utils.inRegion(p.getLocation(), Region.BLUE_GRACE)) {
+            e.setDamage(0);
             e.setCancelled(true);
             return;
         }
         // death
         if (p.getHealth() - e.getDamage() <= 0) {
-            e.setCancelled(true);
+            e.setDamage(0);
 
             // drop everything bought from shop
-            List<Material> droppable = new ArrayList<>(Arrays.asList(
-                    Material.GOLDEN_APPLE,
-                    Material.TNT,
-                    Material.ENDER_PEARL,
-                    Material.SHIELD,
-                    Material.BOW,
-                    Material.TIPPED_ARROW
-            ));
             for (ItemStack i : p.getInventory().getContents()) {
                 if (i != null && droppable.contains(i.getType())) {
                     p.getWorld().dropItemNaturally(p.getLocation(), i);
@@ -85,6 +87,10 @@ public class PlayerEvent implements Listener {
                 e.setCancelled(true);
                 return;
             }
+            // add coins if damage done, haven't shot self and no shield blocking
+            if (e.getDamage() == 0) return;
+            if (p.equals(damaged)) return;
+            if (e.getDamage(EntityDamageEvent.DamageModifier.BLOCKING) != 0) return;
             Coins.addCoins(p, (float) e.getDamage());
             // set last damager
             GameCore.lastDamage.put(damaged, new TimestampHit(System.currentTimeMillis(), p));
@@ -95,15 +101,19 @@ public class PlayerEvent implements Listener {
             Arrow arrow = (Arrow) e.getDamager();
             if (!(arrow.getShooter() instanceof Player)) return;
             Player p = (Player) arrow.getShooter();
+            // nerf arrow damage slightly
+            e.setDamage(e.getDamage() * 3/4);
             // friendly fire (you can still shoot yourself tho)
             if (!p.equals(damaged) && ((Teams.getRed().contains(p) && Teams.getRed().contains(damaged)) || (Teams.getBlue().contains(p) && Teams.getBlue().contains(damaged)))) {
-                // kill arrow cuz it looks goofy :(
                 arrow.remove();
                 e.setCancelled(true);
                 return;
             }
-            // add coins if damage done and haven't shot self
-            if (e.getDamage() > 0 && !p.equals(damaged)) Coins.addCoins(p, (float) e.getDamage());
+            // add coins if damage done, haven't shot self and no shield blocking
+            if (e.getDamage() == 0) return;
+            if (p.equals(damaged)) return;
+            if (e.getDamage(EntityDamageEvent.DamageModifier.BLOCKING) != 0) return;
+            Coins.addCoins(p, (float) e.getDamage());
             // set last damager
             GameCore.lastDamage.put(damaged, new TimestampHit(System.currentTimeMillis(), p));
         }
@@ -122,7 +132,7 @@ public class PlayerEvent implements Listener {
 
         // launch out of other teams base
         if ((Teams.getRed().contains(p) && Utils.inRegion(e.getTo(), Region.BLUE_GRACE)) || (Teams.getBlue().contains(p) && Utils.inRegion(e.getTo(), Region.RED_GRACE))) {
-            Utils.launch(p, e.getTo(), e.getFrom(), 1.5f);
+            e.setCancelled(true);
             p.sendMessage("§cYou cannot enter this area!");
         }
 
@@ -144,9 +154,15 @@ public class PlayerEvent implements Listener {
                 player.sendMessage("§c" + p.getName() + " §ecaptured the §9§lBLUE §edisc!");
                 Utils.playSound(player, Sound.ENTITY_ENDER_DRAGON_GROWL);
             }
-            GameCore.stopGame();
+
             // devinfo
             Config.devAnnounce("§aGame finished! Took " + Math.round((System.currentTimeMillis() - GameCore.startTime)/1000) + "s.");
+            // stats
+            for (Player player : Teams.getPlayers()) {
+                player.sendMessage("§e§lMost kills: §a" + GameUtils.getMostKills().getName() + " §7- §c" + GameUtils.getKills(GameUtils.getMostKills()) + "⚔");
+                player.sendMessage("§7Your kills: §c" + GameUtils.getKills(player) +"⚔");
+            }
+            GameCore.stopGame();
         }
         if (Teams.getBlue().contains(p) && Utils.inRegion(e.getTo(), Region.BLUE_CAPTURE) && GameCore.isDiscHolder(p)) {
             for (Player player : Teams.getBlue()) {
@@ -159,9 +175,15 @@ public class PlayerEvent implements Listener {
                 player.sendMessage("§9" + p.getName() + " §ecaptured the §c§lRED §edisc!");
                 Utils.playSound(player, Sound.ENTITY_ENDER_DRAGON_GROWL);
             }
-            GameCore.stopGame();
+
             // devinfo
             Config.devAnnounce("§aGame finished! Took " + Math.round((System.currentTimeMillis() - GameCore.startTime)/1000) + "s.");
+            // stats
+            for (Player player : Teams.getPlayers()) {
+                player.sendMessage("§e§lMost kills: §a" + GameUtils.getMostKills().getName() + " §7- §c" + GameUtils.getKills(GameUtils.getMostKills()) + "⚔");
+                player.sendMessage("§7Your kills: §c" + GameUtils.getKills(player) +"⚔");
+            }
+            GameCore.stopGame();
         }
     }
 
@@ -203,6 +225,8 @@ public class PlayerEvent implements Listener {
 
             // mark player as disc holder
             GameCore.setDiscHolder(who_picked);
+            // give regen
+            who_picked.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 200, 0));
         }
 
         // red pickup blue
@@ -218,13 +242,16 @@ public class PlayerEvent implements Listener {
 
             // mark player as disc holder
             GameCore.setDiscHolder(who_picked);
+            // give regen
+            who_picked.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 200, 0));
         }
     }
 
     // cancel item dropping
     @EventHandler
     public void dropItem(PlayerDropItemEvent e) {
-        if (GameCore.isOn()) e.setCancelled(true);
+        if (!GameCore.isOn()) return;
+        if (!droppable.contains(e.getItemDrop().getItemStack().getType())) e.setCancelled(true);
     }
 
     @EventHandler

@@ -62,6 +62,7 @@ public final class EventCTW extends JavaPlugin {
         commands.add(new TestUpgradesCommand());
         commands.add(new ToggleDevCommand());
         commands.add(new KillCommand());
+        commands.add(new PickupDiscCommand());
     }
 
     void registerListeners() {

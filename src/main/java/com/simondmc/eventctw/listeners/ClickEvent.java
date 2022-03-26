@@ -1,5 +1,6 @@
 package com.simondmc.eventctw.listeners;
 
+import com.simondmc.eventctw.EventCTW;
 import com.simondmc.eventctw.game.Coins;
 import com.simondmc.eventctw.game.GameCore;
 import com.simondmc.eventctw.game.Teams;
@@ -19,9 +20,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Objects;
 
@@ -85,18 +88,21 @@ public class ClickEvent implements Listener {
                     Kits.setKit(p, Kit.ARCHER);
                     Inventory.giveArcher(p);
                     Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+                    Kits.selected.add(p);
                     p.closeInventory();
                     return;
                 case 13:
                     Kits.setKit(p, Kit.TACTICIAN);
                     Inventory.giveTactician(p);
                     Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+                    Kits.selected.add(p);
                     p.closeInventory();
                     return;
                 case 15:
                     Kits.setKit(p, Kit.TANK);
                     Inventory.giveTank(p);
                     Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+                    Kits.selected.add(p);
                     p.closeInventory();
             }
         }
@@ -165,6 +171,21 @@ public class ClickEvent implements Listener {
                 Utils.playSound(p, Sound.ITEM_ARMOR_EQUIP_IRON);
                 p.sendMessage("§eSelected the §aTank §ekit!");
                 break;
+        }
+    }
+
+    @EventHandler
+    public void closeInv(InventoryCloseEvent e) {
+        if (!GameCore.isOn()) return;
+        Player p = (Player) e.getPlayer();
+        if (!Kits.selected.contains(p)) {
+            // reopen inventory a tick later otherwise console shits its pants
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    p.openInventory(Kits.getKitGui());
+                }
+            }.runTaskLater(EventCTW.plugin, 1);
         }
     }
 }

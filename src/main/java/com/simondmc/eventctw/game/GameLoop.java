@@ -42,8 +42,8 @@ public class GameLoop {
                     }
 
                     // ACTION BAR
-                    if (!GameCore.dead.containsKey(p) && Teams.getPlayers().contains(p)) {
-                        ActionBarHandler.displayCoins(p);
+                    if (Teams.getPlayers().contains(p)) {
+                        ActionBarHandler.displayStats(p);
                     }
 
                     // NEGATIVE COINS PATCH (sometimes it subtracts coins past 0 but doesn't give item, purely visual)

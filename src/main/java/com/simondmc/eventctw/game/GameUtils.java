@@ -22,6 +22,8 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class GameUtils {
@@ -47,6 +49,8 @@ public class GameUtils {
             // reset coins and kills
             Coins.setCoins(p, 0);
             GameCore.kills.put(p, 0);
+            // reset kit selected list
+            Kits.selected.clear();
             // open kit selection
             Kits.openKitGui(p);
         }
@@ -70,5 +74,13 @@ public class GameUtils {
 
     public static int getKills(Player p) {
         return (GameCore.kills.getOrDefault(p, 0));
+    }
+
+    public static Player getMostKills() {
+        int value = Collections.max(GameCore.kills.values());
+        return GameCore.kills.keySet()
+                .stream()
+                .filter(key -> GameCore.kills.get(key).equals(value))
+                .findFirst().get();
     }
 }

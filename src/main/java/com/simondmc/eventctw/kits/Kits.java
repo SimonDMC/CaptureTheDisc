@@ -15,6 +15,7 @@ import java.util.List;
 
 public class Kits {
     private static final HashMap<Player, Kit> kitList = new HashMap<>();
+    public static final List<Player> selected = new ArrayList<>();
     private static final Inventory kitGui = Bukkit.createInventory(null, 27, "Select Kit");
 
     public static Kit getKit(Player p) {
@@ -45,7 +46,7 @@ public class Kits {
                 " ",
                 "§7Contents:",
                 "§7- 1x Crossbow",
-                "§7- 1x Regenerating Arrow"
+                "§7- 1x Regenerating Arrow (10s)"
         ));
         m.setLore(l);
         m.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -59,7 +60,8 @@ public class Kits {
                 " ",
                 "§7Contents:",
                 "§7- 1x Fishing Rod",
-                "§7- 1x Speed I Potion (0:30)"
+                "§7- 1x Speed I Potion (0:30)",
+                "§7- 10x Scaffolding"
         ));
         m.setLore(l);
         m.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);

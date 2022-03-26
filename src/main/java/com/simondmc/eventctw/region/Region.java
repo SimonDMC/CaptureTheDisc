@@ -28,11 +28,11 @@ public class Region {
     // grace area for teams, where the other one can't go (to avoid spawncamping)
     public static final Location[] RED_GRACE = {
             new Location(world, -143, 64, -15),
-            new Location(world, -113, 79, 15),
+            new Location(world, -113, 94, 15),
     };
     public static final Location[] BLUE_GRACE = {
             new Location(world, 113, 64, -15),
-            new Location(world, 143, 79, 15),
+            new Location(world, 143, 94, 15),
     };
 
     // spawn area where you can't place blocks

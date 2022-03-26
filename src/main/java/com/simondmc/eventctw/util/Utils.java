@@ -23,14 +23,6 @@ public class Utils {
         return l.getBlock().getZ() <= reg[1].getBlockZ();
     }
 
-    // launch player with a force with a vector from one location to another (best used with PlayerMoveEvent.getTo() and getFrom())
-    public static void launch(Player p, Location l1, Location l2, float strength) {
-        try {
-            p.setVelocity(l2.toVector().subtract(l1.toVector()).normalize().setY(0.3333D).multiply(strength));
-        } catch (Exception ignored) {
-        }
-    }
-
     // location contructor from a location, offset, yaw and pitch
     public static Location genLocation(World world, Location loc, float addX, float addY, float addZ, float yaw, float pitch) {
         return new Location(world, loc.getBlockX() + addX, loc.getBlockY() + addY, loc.getBlockZ() + addZ, yaw, pitch);
