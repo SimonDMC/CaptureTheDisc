@@ -1,6 +1,6 @@
-name: EventCTW
+name: CaptureTheDisc
 version: '${project.version}'
-main: com.simondmc.eventctw.EventCTW
+main: com.simondmc.capturethedisc.CaptureTheDisc
 authors: [ SimonDMC ]
 description: stuff for dream and techno event ig
 website: simondmc.com
@@ -10,11 +10,11 @@ commands:
   testcmd:
   deconstructmap:
   pastemap:
-  startctw:
-  forcestopctw:
+  startctd:
+  forcestopctd:
   openshop:
   addcoins:
   debugupgrades:
-  togglectwdev:
-  ctwkill:
+  togglectddev:
+  ctdkill:
   pickupdisc:
