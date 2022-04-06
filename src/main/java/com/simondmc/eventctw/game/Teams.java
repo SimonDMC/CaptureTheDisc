@@ -7,16 +7,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Teams {
     private static Team redTeam;
     private static Team blueTeam;
     private static final List<Player> red = new ArrayList<>();
     private static final List<Player> blue = new ArrayList<>();
+    private static final List<OfflinePlayer> offline = new ArrayList<>();
     private static List<Player> players = new ArrayList<>();
 
     public static List<Player> getRed() {
@@ -37,6 +35,10 @@ public class Teams {
 
     public static Team getBlueTeam() {
         return blueTeam;
+    }
+
+    public static List<OfflinePlayer> getOffline() {
+        return offline;
     }
 
     public static void assignTeams() {

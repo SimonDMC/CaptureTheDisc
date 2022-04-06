@@ -47,6 +47,8 @@ public class GameCore {
         for (String player : Teams.getBlueTeam().getEntries()) {
             Teams.getBlueTeam().removeEntry(player);
         }
+        // reset offline players
+        Teams.getOffline().clear();
         // reset kits
         Kits.resetKits();
         // reset death timer

@@ -1,21 +1,19 @@
 package com.simondmc.eventctw.listeners;
 
 import com.simondmc.eventctw.game.*;
+import com.simondmc.eventctw.game.OfflinePlayer;
+import com.simondmc.eventctw.kits.Kits;
 import com.simondmc.eventctw.region.Region;
+import com.simondmc.eventctw.shop.ShopGUI;
 import com.simondmc.eventctw.util.Config;
 import com.simondmc.eventctw.util.Utils;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.*;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.Potion;
@@ -296,5 +294,59 @@ public class PlayerEvent implements Listener {
             if (!thrower.equals(ent)) e.setIntensity(ent, 0); // this is the worst way to cancel getting the potion but altering getAffectedEntities didn't work
         }
 
+    }
+
+    @EventHandler
+    public void joinGame(PlayerJoinEvent e) {
+        if (!GameCore.isOn()) return;
+        Player p = e.getPlayer();
+
+        // parse offlineplayer data
+        for (OfflinePlayer op : Teams.getOffline()) {
+            if (op.getUUID().equals(p.getUniqueId())) {
+                // add back to game and die
+                Teams.getPlayers().add(p);
+                GameCore.die(p);
+
+                // set kit
+                if (op.getKit() == null) {
+                    Kits.openKitGui(p);
+                } else {
+                    Kits.setKit(p, op.getKit());
+                    Kits.selected.add(p);
+                }
+
+                // set team
+                if (op.isRed()) {
+                    Teams.getRed().add(p);
+                } else {
+                    Teams.getBlue().add(p);
+                }
+
+                // set upgrades
+                ShopGUI.upgrades.put(p, op.getUpgrades());
+
+                return;
+            }
+        }
+
+        // if not in offlineplayer list, set as spectator
+        p.sendMessage("§aCapture The Disc has already started! You can spectate the game.");
+        p.setGameMode(GameMode.SPECTATOR);
+        Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+
+    }
+
+    @EventHandler
+    public void leaveGame(PlayerQuitEvent e) {
+        if (!GameCore.isOn()) return;
+        Player p = e.getPlayer();
+        if (Teams.getPlayers().contains(p)) {
+            // generate a new offline player to retrieve when rejoins
+            Teams.getOffline().add(new OfflinePlayer(p.getUniqueId(), Kits.getKit(p), Teams.getRed().contains(p), ShopGUI.upgrades.get(p)));
+
+            // die so disc drops if player is disc holder
+            GameCore.die(p);
+        }
     }
 }

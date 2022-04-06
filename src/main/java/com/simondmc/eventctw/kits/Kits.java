@@ -19,7 +19,7 @@ public class Kits {
     private static final Inventory kitGui = Bukkit.createInventory(null, 27, "Select Kit");
 
     public static Kit getKit(Player p) {
-        return kitList.get(p);
+        return kitList.getOrDefault(p, null);
     }
 
     public static void setKit(Player p, Kit k) {
