@@ -11,7 +11,9 @@ import com.simondmc.eventctw.shop.ShopGUI;
 import com.simondmc.eventctw.shop.ShopItem;
 import com.simondmc.eventctw.shop.SlotItem;
 import com.simondmc.eventctw.util.Utils;
+import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.data.type.TNT;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.ThrownPotion;
@@ -69,6 +71,9 @@ public class ClickEvent implements Listener {
                         p.getInventory().addItem(item.item);
                     }
                 }
+
+                // TNT message
+                if (item != null && item.item.getType() == Material.TNT) p.sendMessage("§aTip: Sneak while placing TNT to explode it later!");
 
                 // reload shop cuz something could have changed
                 ShopGUI.openShopGui(p);

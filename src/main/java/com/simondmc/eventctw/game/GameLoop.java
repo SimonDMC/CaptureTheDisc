@@ -6,7 +6,9 @@ import com.simondmc.eventctw.kits.Kits;
 import com.simondmc.eventctw.region.Region;
 import com.simondmc.eventctw.util.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -51,6 +53,11 @@ public class GameLoop {
                         Coins.addCoins(p, -Coins.getCoins(p));
                     }
                 }
+
+                // PARTICLES ON SHOP
+                for (Location l : new Location[]{Region.RED_SHOP, Region.BLUE_SHOP}) {
+                    l.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, l.clone().add(0, 2.7, 0), 5);
+                }
             }
         }.runTaskTimer(EventCTW.plugin, 0, 5);
 
@@ -70,12 +77,12 @@ public class GameLoop {
                 }
 
                 // remove dupe discs
-                List<Entity> red_discs = Region.RED_DISC.getWorld().getNearbyEntities(Region.RED_DISC, 1, 1, 1).stream().filter(e -> e instanceof Item).collect(Collectors.toList());
+                List<Entity> red_discs = Region.RED_DISC.getWorld().getNearbyEntities(Region.RED_DISC, 3, 3, 3).stream().filter(e -> e instanceof Item).collect(Collectors.toList());
                 if (red_discs.size() > 1) {
                     for (Entity e : red_discs) e.remove();
                     GameUtils.spawnRedDisc();
                 }
-                List<Entity> blue_discs = Region.BLUE_DISC.getWorld().getNearbyEntities(Region.BLUE_DISC, 1, 1, 1).stream().filter(e -> e instanceof Item).collect(Collectors.toList());
+                List<Entity> blue_discs = Region.BLUE_DISC.getWorld().getNearbyEntities(Region.BLUE_DISC, 3, 3, 3).stream().filter(e -> e instanceof Item).collect(Collectors.toList());
                 if (blue_discs.size() > 1) {
                     for (Entity e : blue_discs) e.remove();
                     GameUtils.spawnBlueDisc();

@@ -15,7 +15,7 @@ import java.util.UUID;
 public class AdminCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         for (SuperCommand cmd : EventCTW.commands) {
-            if (!label.equalsIgnoreCase(cmd.getLabel()) && !label.equalsIgnoreCase("eventctw:" + cmd.getLabel()))
+            if (!label.equalsIgnoreCase(cmd.getLabel()) && !label.equalsIgnoreCase(EventCTW.plugin.getName() + ":" + cmd.getLabel()))
                 continue;
             if (!(sender instanceof Player)) {
                 sender.sendMessage("§cNot a player!");

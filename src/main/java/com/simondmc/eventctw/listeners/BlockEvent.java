@@ -7,6 +7,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -45,10 +46,15 @@ public class BlockEvent implements Listener {
         }
         placedBlocks.add(e.getBlock().getLocation());
 
+        // TNT
         if (e.getBlock().getType().equals(Material.TNT)) {
-            Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
-            p.sendMessage("§eRight Click or shoot a TNT block to light it!");
-            System.out.println("placed");
+            if (e.getPlayer().isSneaking()) {
+                Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+                p.sendMessage("§eRight Click or shoot a TNT block to light it!");
+            } else {
+                e.getBlockPlaced().setType(Material.AIR);
+                e.getBlockPlaced().getWorld().spawnEntity(e.getBlockPlaced().getLocation().add(.5, 0, .5), EntityType.PRIMED_TNT);
+            }
         }
     }
 

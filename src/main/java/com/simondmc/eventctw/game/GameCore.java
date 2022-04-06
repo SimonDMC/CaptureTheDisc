@@ -6,6 +6,7 @@ import com.simondmc.eventctw.kits.Kits;
 import com.simondmc.eventctw.region.Region;
 import com.simondmc.eventctw.shop.ShopGUI;
 import com.simondmc.eventctw.shop.ShopNPC;
+import com.simondmc.eventctw.util.Config;
 import com.simondmc.eventctw.util.Utils;
 import org.bukkit.GameMode;
 import org.bukkit.GameRule;
@@ -29,6 +30,13 @@ public class GameCore {
 
     public static void stopGame() {
         running = false;
+        // devinfo
+        Config.devAnnounce("§aGame finished! Took " + Math.round((System.currentTimeMillis() - GameCore.startTime)/1000) + "s.");
+        // stats
+        for (Player player : Teams.getPlayers()) {
+            player.sendMessage("§e§lMost kills: §a" + GameUtils.getMostKills().getName() + " §7- §c" + GameUtils.getKills(GameUtils.getMostKills()) + "⚔");
+            player.sendMessage("§7Your kills: §c" + GameUtils.getKills(player) +"⚔");
+        }
         for (Player p : Teams.getPlayers()) {
             p.setDisplayName(p.getName());
             p.setGameMode(GameMode.SURVIVAL);
@@ -53,6 +61,8 @@ public class GameCore {
         Kits.resetKits();
         // reset death timer
         dead.clear();
+        // reset kills
+        GameCore.kills.clear();
     }
 
     public static boolean isOn() {

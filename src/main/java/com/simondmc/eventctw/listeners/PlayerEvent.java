@@ -131,6 +131,8 @@ public class PlayerEvent implements Listener {
         // launch out of other teams base
         if ((Teams.getRed().contains(p) && Utils.inRegion(e.getTo(), Region.BLUE_GRACE)) || (Teams.getBlue().contains(p) && Utils.inRegion(e.getTo(), Region.RED_GRACE))) {
             e.setCancelled(true);
+            // slightly boost away
+            p.setVelocity(e.getFrom().toVector().subtract(e.getTo().toVector()).normalize().setY(.33).multiply(.5));
             p.sendMessage("§cYou cannot enter this area!");
         }
 
@@ -152,14 +154,6 @@ public class PlayerEvent implements Listener {
                 player.sendMessage("§c" + p.getName() + " §ecaptured the §9§lBLUE §edisc!");
                 Utils.playSound(player, Sound.ENTITY_ENDER_DRAGON_GROWL);
             }
-
-            // devinfo
-            Config.devAnnounce("§aGame finished! Took " + Math.round((System.currentTimeMillis() - GameCore.startTime)/1000) + "s.");
-            // stats
-            for (Player player : Teams.getPlayers()) {
-                player.sendMessage("§e§lMost kills: §a" + GameUtils.getMostKills().getName() + " §7- §c" + GameUtils.getKills(GameUtils.getMostKills()) + "⚔");
-                player.sendMessage("§7Your kills: §c" + GameUtils.getKills(player) +"⚔");
-            }
             GameCore.stopGame();
         }
         if (Teams.getBlue().contains(p) && Utils.inRegion(e.getTo(), Region.BLUE_CAPTURE) && GameCore.isDiscHolder(p)) {
@@ -172,14 +166,6 @@ public class PlayerEvent implements Listener {
                 player.sendTitle("§cYou lost!", "", 20, 100, 20);
                 player.sendMessage("§9" + p.getName() + " §ecaptured the §c§lRED §edisc!");
                 Utils.playSound(player, Sound.ENTITY_ENDER_DRAGON_GROWL);
-            }
-
-            // devinfo
-            Config.devAnnounce("§aGame finished! Took " + Math.round((System.currentTimeMillis() - GameCore.startTime)/1000) + "s.");
-            // stats
-            for (Player player : Teams.getPlayers()) {
-                player.sendMessage("§e§lMost kills: §a" + GameUtils.getMostKills().getName() + " §7- §c" + GameUtils.getKills(GameUtils.getMostKills()) + "⚔");
-                player.sendMessage("§7Your kills: §c" + GameUtils.getKills(player) +"⚔");
             }
             GameCore.stopGame();
         }
@@ -223,8 +209,9 @@ public class PlayerEvent implements Listener {
 
             // mark player as disc holder
             GameCore.setDiscHolder(who_picked);
-            // give regen
+            // give regen and slowness
             who_picked.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 200, 0));
+            who_picked.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000000, 0));
         }
 
         // red pickup blue
@@ -240,8 +227,9 @@ public class PlayerEvent implements Listener {
 
             // mark player as disc holder
             GameCore.setDiscHolder(who_picked);
-            // give regen
+            // give regen and slowness
             who_picked.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 200, 0));
+            who_picked.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000000, 0));
         }
     }
 

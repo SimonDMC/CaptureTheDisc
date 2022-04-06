@@ -8,6 +8,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -84,16 +85,13 @@ public class ShopItem {
                 ));
             } else {
                 lore = new ArrayList<>(Arrays.asList(
-                        "§7This is a permanent upgrade",
+                        "§aThis is a permanent upgrade",
                         "",
                         "§7Cost: §6" + cost + " Coins"
                 ));
             }
             // if axe set damage to 0
-            if (itemMaterial.toString().contains("AXE")) { // fires for waxed copper but who cares
-                AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", 0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
-                itemMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, modifier);
-            }
+            itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
             itemMeta.setLore(lore);
             item.setItemMeta(itemMeta);
         }

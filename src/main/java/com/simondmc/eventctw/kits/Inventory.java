@@ -81,7 +81,11 @@ public class Inventory {
                 Material.SPLASH_POTION,
                 Material.SCAFFOLDING,
                 Material.CROSSBOW,
-                Material.ARROW
+                Material.ARROW,
+                Material.LEATHER_HELMET,
+                Material.LEATHER_CHESTPLATE,
+                Material.LEATHER_LEGGINGS,
+                Material.LEATHER_BOOTS
         ));
         // remove all kit relevant items
         for (ItemStack item : p.getInventory().getContents()) {
