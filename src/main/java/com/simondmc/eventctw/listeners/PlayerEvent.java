@@ -53,7 +53,7 @@ public class PlayerEvent implements Listener {
             e.setCancelled(true);
             return;
         }
-        if (Teams.getBlue().contains(p) && Utils.inRegion(p.getLocation(), Region.BLUE_GRACE)) {
+        if (Teams.getGreen().contains(p) && Utils.inRegion(p.getLocation(), Region.GREEN_GRACE)) {
             e.setDamage(0);
             e.setCancelled(true);
             return;
@@ -81,7 +81,7 @@ public class PlayerEvent implements Listener {
         if (e.getDamager() instanceof Player) {
             Player p = (Player) e.getDamager();
             // friendly fire
-            if ((Teams.getRed().contains(p) && Teams.getRed().contains(damaged)) || (Teams.getBlue().contains(p) && Teams.getBlue().contains(damaged))) {
+            if ((Teams.getRed().contains(p) && Teams.getRed().contains(damaged)) || (Teams.getGreen().contains(p) && Teams.getGreen().contains(damaged))) {
                 e.setCancelled(true);
                 return;
             }
@@ -102,7 +102,7 @@ public class PlayerEvent implements Listener {
             // nerf arrow damage slightly
             e.setDamage(e.getDamage() * 3/4);
             // friendly fire (you can still shoot yourself tho)
-            if (!p.equals(damaged) && ((Teams.getRed().contains(p) && Teams.getRed().contains(damaged)) || (Teams.getBlue().contains(p) && Teams.getBlue().contains(damaged)))) {
+            if (!p.equals(damaged) && ((Teams.getRed().contains(p) && Teams.getRed().contains(damaged)) || (Teams.getGreen().contains(p) && Teams.getGreen().contains(damaged)))) {
                 arrow.remove();
                 e.setCancelled(true);
                 return;
@@ -129,7 +129,7 @@ public class PlayerEvent implements Listener {
         }
 
         // launch out of other teams base
-        if ((Teams.getRed().contains(p) && Utils.inRegion(e.getTo(), Region.BLUE_GRACE)) || (Teams.getBlue().contains(p) && Utils.inRegion(e.getTo(), Region.RED_GRACE))) {
+        if ((Teams.getRed().contains(p) && Utils.inRegion(e.getTo(), Region.GREEN_GRACE)) || (Teams.getGreen().contains(p) && Utils.inRegion(e.getTo(), Region.RED_GRACE))) {
             e.setCancelled(true);
             // slightly boost away
             p.setVelocity(e.getFrom().toVector().subtract(e.getTo().toVector()).normalize().setY(.33).multiply(.5));
@@ -137,7 +137,7 @@ public class PlayerEvent implements Listener {
         }
 
         // launch out of own disc area
-        if ((Teams.getRed().contains(p) && Utils.inRegion(e.getTo(), Region.RED_DISC_AREA)) || (Teams.getBlue().contains(p) && Utils.inRegion(e.getTo(), Region.BLUE_DISC_AREA))) {
+        if ((Teams.getRed().contains(p) && Utils.inRegion(e.getTo(), Region.RED_DISC_AREA)) || (Teams.getGreen().contains(p) && Utils.inRegion(e.getTo(), Region.GREEN_DISC_AREA))) {
             e.setCancelled(true);
             p.sendMessage("§cYou cannot enter your own disc area!");
         }
@@ -146,25 +146,25 @@ public class PlayerEvent implements Listener {
         if (Teams.getRed().contains(p) && Utils.inRegion(e.getTo(), Region.RED_CAPTURE) && GameCore.isDiscHolder(p)) {
             for (Player player : Teams.getRed()) {
                 player.sendTitle("§aYou won!", "", 20, 100, 20);
-                player.sendMessage("§c" + p.getName() + " §ecaptured the §9§lBLUE §edisc!");
+                player.sendMessage("§c" + p.getName() + " §ecaptured the §a§lGREEN §edisc!");
                 Utils.playSound(player, Sound.UI_TOAST_CHALLENGE_COMPLETE);
             }
-            for (Player player : Teams.getBlue()) {
+            for (Player player : Teams.getGreen()) {
                 player.sendTitle("§cYou lost!", "", 20, 100, 20);
-                player.sendMessage("§c" + p.getName() + " §ecaptured the §9§lBLUE §edisc!");
+                player.sendMessage("§c" + p.getName() + " §ecaptured the §a§lGREEN §edisc!");
                 Utils.playSound(player, Sound.ENTITY_ENDER_DRAGON_GROWL);
             }
             GameCore.stopGame();
         }
-        if (Teams.getBlue().contains(p) && Utils.inRegion(e.getTo(), Region.BLUE_CAPTURE) && GameCore.isDiscHolder(p)) {
-            for (Player player : Teams.getBlue()) {
+        if (Teams.getGreen().contains(p) && Utils.inRegion(e.getTo(), Region.GREEN_CAPTURE) && GameCore.isDiscHolder(p)) {
+            for (Player player : Teams.getGreen()) {
                 player.sendTitle("§aYou won!", "", 20, 100, 20);
-                player.sendMessage("§9" + p.getName() + " §ecaptured the §c§lRED §edisc!");
+                player.sendMessage("§a" + p.getName() + " §ecaptured the §c§lRED §edisc!");
                 Utils.playSound(player, Sound.UI_TOAST_CHALLENGE_COMPLETE);
             }
             for (Player player : Teams.getRed()) {
                 player.sendTitle("§cYou lost!", "", 20, 100, 20);
-                player.sendMessage("§9" + p.getName() + " §ecaptured the §c§lRED §edisc!");
+                player.sendMessage("§a" + p.getName() + " §ecaptured the §c§lRED §edisc!");
                 Utils.playSound(player, Sound.ENTITY_ENDER_DRAGON_GROWL);
             }
             GameCore.stopGame();
@@ -191,20 +191,20 @@ public class PlayerEvent implements Listener {
 
         // cancel pickup if own disc
         if ((e.getItem().getItemStack().getType().equals(Material.MUSIC_DISC_PIGSTEP) && Teams.getRed().contains((Player) e.getEntity())) ||
-                (e.getItem().getItemStack().getType().equals(Material.MUSIC_DISC_CAT) && Teams.getBlue().contains((Player) e.getEntity()))) {
+                (e.getItem().getItemStack().getType().equals(Material.MUSIC_DISC_CAT) && Teams.getGreen().contains((Player) e.getEntity()))) {
             e.setCancelled(true);
             return;
         }
 
-        // blue pickup red
+        // green pickup red
         if (e.getItem().getItemStack().getType().equals(Material.MUSIC_DISC_PIGSTEP)) {
             for (Player p : Teams.getRed()) {
                 Utils.playSound(p, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 0);
-                p.sendMessage("§9" + who_picked.getName() + "§e picked up your disc!");
+                p.sendMessage("§a" + who_picked.getName() + "§e picked up your disc!");
             }
-            for (Player p : Teams.getBlue()) {
+            for (Player p : Teams.getGreen()) {
                 Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
-                p.sendMessage("§9" + who_picked.getName() + "§e picked up the §c§lRED§e disc!");
+                p.sendMessage("§a" + who_picked.getName() + "§e picked up the §c§lRED§e disc!");
             }
 
             // mark player as disc holder
@@ -214,15 +214,15 @@ public class PlayerEvent implements Listener {
             who_picked.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000000, 0));
         }
 
-        // red pickup blue
+        // red pickup green
         if (e.getItem().getItemStack().getType().equals(Material.MUSIC_DISC_CAT)) {
-            for (Player p : Teams.getBlue()) {
+            for (Player p : Teams.getGreen()) {
                 Utils.playSound(p, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 0);
                 p.sendMessage("§c" + who_picked.getName() + "§e picked up your disc!");
             }
             for (Player p : Teams.getRed()) {
                 Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
-                p.sendMessage("§c" + who_picked.getName() + "§e picked up the §9§lBLUE§e disc!");
+                p.sendMessage("§c" + who_picked.getName() + "§e picked up the §a§lGREEN§e disc!");
             }
 
             // mark player as disc holder
@@ -257,11 +257,11 @@ public class PlayerEvent implements Listener {
         // check illegal areas if pearl
         if (e.getEntity() instanceof EnderPearl) {
             if (Utils.inRegion(e.getEntity().getLocation(), Region.RED_GRACE) ||
-                    Utils.inRegion(e.getEntity().getLocation(), Region.BLUE_GRACE) ||
+                    Utils.inRegion(e.getEntity().getLocation(), Region.GREEN_GRACE) ||
                     Utils.inRegion(e.getEntity().getLocation(), Region.RED_DISC_AREA) ||
-                    Utils.inRegion(e.getEntity().getLocation(), Region.BLUE_DISC_AREA) ||
+                    Utils.inRegion(e.getEntity().getLocation(), Region.GREEN_DISC_AREA) ||
                     Utils.inRegion(e.getEntity().getLocation(), Region.RED_CAPTURE) ||
-                    Utils.inRegion(e.getEntity().getLocation(), Region.BLUE_CAPTURE)) {
+                    Utils.inRegion(e.getEntity().getLocation(), Region.GREEN_CAPTURE)) {
                 EnderPearl pearl = (EnderPearl) e.getEntity();
                 Player p = (Player) pearl.getShooter();
                 p.sendMessage("§cYou can't teleport there!");
@@ -308,7 +308,7 @@ public class PlayerEvent implements Listener {
                 if (op.isRed()) {
                     Teams.getRed().add(p);
                 } else {
-                    Teams.getBlue().add(p);
+                    Teams.getGreen().add(p);
                 }
 
                 // set upgrades

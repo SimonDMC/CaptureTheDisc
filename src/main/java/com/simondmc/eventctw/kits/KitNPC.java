@@ -8,11 +8,11 @@ public class KitNPC {
     public static void initKitNpcs() {
         Villager[] kits = {
                 (Villager) Region.RED_KITS.getWorld().spawnEntity(Region.RED_KITS, EntityType.VILLAGER),
-                (Villager) Region.RED_KITS.getWorld().spawnEntity(Region.BLUE_KITS, EntityType.VILLAGER),
+                (Villager) Region.RED_KITS.getWorld().spawnEntity(Region.GREEN_KITS, EntityType.VILLAGER),
                 (Villager) Region.RED_KITS.getWorld().spawnEntity(Region.RED_KITS.clone().add(2, 0, 0), EntityType.VILLAGER),
-                (Villager) Region.RED_KITS.getWorld().spawnEntity(Region.BLUE_KITS.clone().add(-2, 0, 0), EntityType.VILLAGER),
+                (Villager) Region.RED_KITS.getWorld().spawnEntity(Region.GREEN_KITS.clone().add(-2, 0, 0), EntityType.VILLAGER),
                 (Villager) Region.RED_KITS.getWorld().spawnEntity(Region.RED_KITS.clone().add(4, 0, 0), EntityType.VILLAGER),
-                (Villager) Region.RED_KITS.getWorld().spawnEntity(Region.BLUE_KITS.clone().add(-4, 0, 0), EntityType.VILLAGER),
+                (Villager) Region.RED_KITS.getWorld().spawnEntity(Region.GREEN_KITS.clone().add(-4, 0, 0), EntityType.VILLAGER),
         };
         // iterate through kit npcs
         int iterator = 0;

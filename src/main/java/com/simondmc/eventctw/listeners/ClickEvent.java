@@ -140,7 +140,7 @@ public class ClickEvent implements Listener {
                 THIS IS LIKELY TO CHANGE
              */
             // prevent from selecting kits in other team's base
-            if ((Teams.getRed().contains(p) && p.getLocation().getX() > 0) || (Teams.getBlue().contains(p) && p.getLocation().getX() < 0)) {
+            if ((Teams.getRed().contains(p) && p.getLocation().getX() > 0) || (Teams.getGreen().contains(p) && p.getLocation().getX() < 0)) {
                 p.sendMessage("§cYou can only select kits in your team's base!");
                 Utils.playSound(p, Sound.ENTITY_VILLAGER_NO);
                 return;

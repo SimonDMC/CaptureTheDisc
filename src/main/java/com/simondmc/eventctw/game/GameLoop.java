@@ -55,7 +55,7 @@ public class GameLoop {
                 }
 
                 // PARTICLES ON SHOP
-                for (Location l : new Location[]{Region.RED_SHOP, Region.BLUE_SHOP}) {
+                for (Location l : new Location[]{Region.RED_SHOP, Region.GREEN_SHOP}) {
                     l.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, l.clone().add(0, 2.7, 0), 5);
                 }
             }
@@ -82,10 +82,10 @@ public class GameLoop {
                     for (Entity e : red_discs) e.remove();
                     GameUtils.spawnRedDisc();
                 }
-                List<Entity> blue_discs = Region.BLUE_DISC.getWorld().getNearbyEntities(Region.BLUE_DISC, 3, 3, 3).stream().filter(e -> e instanceof Item).collect(Collectors.toList());
-                if (blue_discs.size() > 1) {
-                    for (Entity e : blue_discs) e.remove();
-                    GameUtils.spawnBlueDisc();
+                List<Entity> green_discs = Region.GREEN_DISC.getWorld().getNearbyEntities(Region.GREEN_DISC, 3, 3, 3).stream().filter(e -> e instanceof Item).collect(Collectors.toList());
+                if (green_discs.size() > 1) {
+                    for (Entity e : green_discs) e.remove();
+                    GameUtils.spawnGreenDisc();
                 }
             }
         }.runTaskTimer(EventCTW.plugin, 0, 40);

@@ -8,7 +8,7 @@ public class ShopNPC {
 
     public static void initShopNpc() {
         Villager[] shops = {(Villager) Region.RED_SHOP.getWorld().spawnEntity(Region.RED_SHOP, EntityType.VILLAGER),
-                (Villager) Region.BLUE_SHOP.getWorld().spawnEntity(Region.BLUE_SHOP, EntityType.VILLAGER)};
+                (Villager) Region.GREEN_SHOP.getWorld().spawnEntity(Region.GREEN_SHOP, EntityType.VILLAGER)};
         for (Villager v : shops) {
             v.setProfession(Villager.Profession.WEAPONSMITH);
             v.setCustomName("§e§lShop");

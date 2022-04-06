@@ -47,7 +47,7 @@ public class Inventory {
         ItemStack pot = new ItemStack(Material.SPLASH_POTION);
         PotionMeta potmeta = (PotionMeta) pot.getItemMeta();
         // can't use basepotiondata because i can't get rid of the default 3-minute speed
-        potmeta.setColor(Color.fromRGB(135,206,235)); // close enough idk i got this from searching sky blue on google
+        potmeta.setColor(Color.fromRGB(135,206,235)); // close enough idk i got this from searching sky green on google
         potmeta.setDisplayName("§rSplash Potion of Swiftness");
         potmeta.addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 600, 0, false, true), false);
         ArrayList<String> lore = new ArrayList<>(Arrays.asList(" ", "§cNotice: You can only splash", "§cthis potion on yourself."));
@@ -161,7 +161,7 @@ public class Inventory {
     }
 
     private static void setArmor(Player p) {
-        Color color = Teams.getRed().contains(p) ? Color.fromRGB(255, 0, 0) : Color.fromRGB(0, 0, 255);
+        Color color = Teams.getRed().contains(p) ? Color.fromRGB(255, 0, 0) : Color.fromRGB(0, 255, 0);
 
         ItemStack i = new ItemStack(Material.LEATHER_HELMET);
         LeatherArmorMeta leather = (LeatherArmorMeta) i.getItemMeta();

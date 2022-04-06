@@ -44,7 +44,7 @@ public class GameUtils {
             if (Teams.getRed().contains(p)) {
                 p.teleport(Utils.genLocation(p.getWorld(), Region.RED_SPAWN, .5f, 0, .5f, -90, 0));
             } else {
-                p.teleport(Utils.genLocation(p.getWorld(), Region.BLUE_SPAWN, .5f, 0, .5f, 90, 0));
+                p.teleport(Utils.genLocation(p.getWorld(), Region.GREEN_SPAWN, .5f, 0, .5f, 90, 0));
             }
             // reset coins and kills
             Coins.setCoins(p, 0);
@@ -60,8 +60,8 @@ public class GameUtils {
         Region.RED_DISC.getWorld().dropItem(Region.RED_DISC.clone().add(.5, 0, .5), new ItemStack(Material.MUSIC_DISC_PIGSTEP));
     }
 
-    public static void spawnBlueDisc() {
-        Region.BLUE_DISC.getWorld().dropItem(Region.BLUE_DISC.clone().add(.5, 0, .5), new ItemStack(Material.MUSIC_DISC_CAT));
+    public static void spawnGreenDisc() {
+        Region.GREEN_DISC.getWorld().dropItem(Region.GREEN_DISC.clone().add(.5, 0, .5), new ItemStack(Material.MUSIC_DISC_CAT));
     }
 
     public static void addKill(Player p) {

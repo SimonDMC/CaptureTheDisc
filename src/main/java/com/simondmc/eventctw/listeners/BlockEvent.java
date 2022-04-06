@@ -33,13 +33,13 @@ public class BlockEvent implements Listener {
             e.setCancelled(true);
             return;
         }
-        if (Utils.inRegion(l, Region.RED_NO_BLOCKS) || Utils.inRegion(l, Region.BLUE_NO_BLOCKS)) {
+        if (Utils.inRegion(l, Region.RED_NO_BLOCKS) || Utils.inRegion(l, Region.GREEN_NO_BLOCKS)) {
             e.getPlayer().sendMessage("§cYou can't place blocks here!");
             e.setCancelled(true);
             return;
         }
         // no blocks in disc area
-        if (Utils.inRegion(l, Region.RED_DISC_AREA) || Utils.inRegion(l, Region.BLUE_DISC_AREA)) {
+        if (Utils.inRegion(l, Region.RED_DISC_AREA) || Utils.inRegion(l, Region.GREEN_DISC_AREA)) {
             e.getPlayer().sendMessage("§cYou can't place blocks in a disc area!");
             e.setCancelled(true);
             return;

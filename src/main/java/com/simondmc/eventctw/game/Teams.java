@@ -11,9 +11,9 @@ import java.util.*;
 
 public class Teams {
     private static Team redTeam;
-    private static Team blueTeam;
+    private static Team greenTeam;
     private static final List<Player> red = new ArrayList<>();
-    private static final List<Player> blue = new ArrayList<>();
+    private static final List<Player> green = new ArrayList<>();
     private static final List<OfflinePlayer> offline = new ArrayList<>();
     private static List<Player> players = new ArrayList<>();
 
@@ -21,8 +21,8 @@ public class Teams {
         return red;
     }
 
-    public static List<Player> getBlue() {
-        return blue;
+    public static List<Player> getGreen() {
+        return green;
     }
 
     public static List<Player> getPlayers() {
@@ -33,8 +33,8 @@ public class Teams {
         return redTeam;
     }
 
-    public static Team getBlueTeam() {
-        return blueTeam;
+    public static Team getGreenTeam() {
+        return greenTeam;
     }
 
     public static List<OfflinePlayer> getOffline() {
@@ -45,14 +45,14 @@ public class Teams {
         // create mc teams for glowing
         Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
         redTeam = (board.getTeam("redCTW") == null ? board.registerNewTeam("redCTW") : board.getTeam("redCTW"));
-        blueTeam = (board.getTeam("blueCTW") == null ? board.registerNewTeam("blueCTW") : board.getTeam("blueCTW"));
+        greenTeam = (board.getTeam("greenCTW") == null ? board.registerNewTeam("greenCTW") : board.getTeam("greenCTW"));
         redTeam.setColor(ChatColor.RED);
-        blueTeam.setColor(ChatColor.BLUE);
+        greenTeam.setColor(ChatColor.GREEN);
 
         players = new ArrayList<>(Bukkit.getOnlinePlayers());
         //players.removeIf(p -> p.getGameMode().equals(GameMode.SPECTATOR));
         Collections.shuffle(players);
-        // whether to start with red or blue
+        // whether to start with red or green
         boolean red = new Random().nextFloat() < 0.5;
         for (Player p : players) {
             setTeam(p, red);
@@ -67,8 +67,8 @@ public class Teams {
             p.setPlayerListName("§c" + p.getName());
             return;
         }
-        blue.add(p);
-        blueTeam.addEntry(p.getName());
-        p.setPlayerListName("§9" + p.getName());
+        green.add(p);
+        greenTeam.addEntry(p.getName());
+        p.setPlayerListName("§a" + p.getName());
     }
 }
