@@ -6,6 +6,7 @@ import com.simondmc.capturethedisc.region.Region;
 import com.simondmc.capturethedisc.util.Utils;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -13,12 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Collections;
 
 public class GameUtils {
-    public static void clearEntities(Player p) {
-        for (Entity e : p.getWorld().getEntities()) {
-            if (!(e instanceof Player) && Utils.inRegion(e.getLocation(), Region.MAP)) e.remove();
-        }
-    }
-
     public static void setupPlayers() {
         for (Player p : Teams.getPlayers()) {
             p.setGameMode(GameMode.SURVIVAL);
@@ -28,9 +23,9 @@ public class GameUtils {
             p.getInventory().clear();
             Inventory.fillInv(p);
             if (Teams.getRed().contains(p)) {
-                p.teleport(Utils.genLocation(p.getWorld(), Region.RED_SPAWN, .5f, 0, .5f, -90, 0));
+                p.teleport(Utils.genLocation(Region.getWorld(), Region.RED_SPAWN, .5f, 0, .5f, -90, 0));
             } else {
-                p.teleport(Utils.genLocation(p.getWorld(), Region.GREEN_SPAWN, .5f, 0, .5f, 90, 0));
+                p.teleport(Utils.genLocation(Region.getWorld(), Region.GREEN_SPAWN, .5f, 0, .5f, 90, 0));
             }
             // reset coins and kills
             Coins.setCoins(p, 0);
@@ -43,11 +38,11 @@ public class GameUtils {
     }
 
     public static void spawnRedDisc() {
-        Region.RED_DISC.getWorld().dropItem(Region.RED_DISC.clone().add(.5, 0, .5), new ItemStack(Material.MUSIC_DISC_PIGSTEP));
+        Region.getWorld().dropItem(Region.RED_DISC.add(.5, 0, .5), new ItemStack(Material.MUSIC_DISC_PIGSTEP));
     }
 
     public static void spawnGreenDisc() {
-        Region.GREEN_DISC.getWorld().dropItem(Region.GREEN_DISC.clone().add(.5, 0, .5), new ItemStack(Material.MUSIC_DISC_CAT));
+        Region.getWorld().dropItem(Region.GREEN_DISC.clone().add(.5, 0, .5), new ItemStack(Material.MUSIC_DISC_CAT));
     }
 
     public static void addKill(Player p) {

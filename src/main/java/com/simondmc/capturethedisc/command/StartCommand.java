@@ -16,7 +16,7 @@ public class StartCommand implements SuperCommand {
 
     public void runCommand(Player p, String[] args) {
         if (GameCore.isOn()) GameCore.stopGame();
-        GameCore.setup(p);
+        GameCore.setup();
         GameCore.startGame();
 
     }

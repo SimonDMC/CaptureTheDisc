@@ -8,9 +8,7 @@ import com.simondmc.capturethedisc.shop.ShopGUI;
 import com.simondmc.capturethedisc.shop.ShopNPC;
 import com.simondmc.capturethedisc.util.Config;
 import com.simondmc.capturethedisc.util.Utils;
-import org.bukkit.GameMode;
-import org.bukkit.GameRule;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
@@ -69,20 +67,19 @@ public class GameCore {
         return running;
     }
 
-    public static void setup(Player p) {
+    public static void setup() {
         // PRIORITY!!! initialize world
-        Region.initWorld(p.getWorld());
+        World w = Bukkit.getWorld("ctd-world");
+        Region.initWorld(w);
 
         // set start time for devinfo
         startTime = System.currentTimeMillis();
         // gamerules, weather and time
-        p.getWorld().setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-        p.getWorld().setGameRule(GameRule.DO_MOB_SPAWNING, false);
-        p.getWorld().setGameRule(GameRule.DO_WEATHER_CYCLE, false);
-        p.getWorld().setTime(1000);
-        p.getWorld().setStorm(false);
-        // remove all entities on map
-        GameUtils.clearEntities(p);
+        w.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+        w.setGameRule(GameRule.DO_MOB_SPAWNING, false);
+        w.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
+        w.setTime(1000);
+        w.setStorm(false);
         // assign teams randomly
         Teams.assignTeams();
         // initalize all player upgrades
@@ -105,9 +102,9 @@ public class GameCore {
         p.setGameMode(GameMode.SURVIVAL);
         Inventory.fillInv(p);
         if (Teams.getRed().contains(p)) {
-            p.teleport(Utils.genLocation(p.getWorld(), Region.RED_SPAWN, .5f, 0, .5f, -90, 0));
+            p.teleport(Utils.genLocation(Region.getWorld(), Region.RED_SPAWN, .5f, 0, .5f, -90, 0));
         } else {
-            p.teleport(Utils.genLocation(p.getWorld(), Region.GREEN_SPAWN, .5f, 0, .5f, 90, 0));
+            p.teleport(Utils.genLocation(Region.getWorld(), Region.GREEN_SPAWN, .5f, 0, .5f, 90, 0));
         }
     }
 
@@ -130,7 +127,9 @@ public class GameCore {
 
         p.setGameMode(GameMode.SPECTATOR);
         dead.put(p, 100); // 100 ticks = 5 seconds
-        p.teleport(Region.CENTER.clone().add(.5, 20, .5));
+        Location l = Region.CENTER.clone().add(.5, 20, .5);
+        l.setWorld(Region.getWorld());
+        p.teleport(l);
 
         if (isDiscHolder(p)) {
             for (Player player : Teams.getPlayers()) {

@@ -17,7 +17,8 @@ public class PasteMapCommand implements SuperCommand {
 
     public void runCommand(Player p, String[] args) {
         long time = System.currentTimeMillis();
-        Map.pasteMapSchem(p);
+        //Map.pasteMapSchem(p);
+        Map.createMap();
         Config.devAnnounce("§aMap pasted! Took " + (System.currentTimeMillis() - time) + "ms.");
     }
 }

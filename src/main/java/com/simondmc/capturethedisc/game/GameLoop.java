@@ -55,7 +55,7 @@ public class GameLoop {
 
                 // PARTICLES ON SHOP
                 for (Location l : new Location[]{Region.RED_SHOP, Region.GREEN_SHOP}) {
-                    l.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, l.clone().add(0, 2.7, 0), 5);
+                    Region.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, l.clone().add(0, 2.7, 0), 5);
                 }
             }
         }.runTaskTimer(CaptureTheDisc.plugin, 0, 5);
@@ -76,12 +76,20 @@ public class GameLoop {
                 }
 
                 // remove dupe discs
-                List<Entity> red_discs = Region.RED_DISC.getWorld().getNearbyEntities(Region.RED_DISC, 3, 3, 3).stream().filter(e -> e instanceof Item).collect(Collectors.toList());
+
+                Location l = Region.RED_DISC.clone();
+                l.setWorld(Region.getWorld());
+
+                List<Entity> red_discs = Region.getWorld().getNearbyEntities(l, 3, 3, 3).stream().filter(e -> e instanceof Item).collect(Collectors.toList());
                 if (red_discs.size() > 1) {
                     for (Entity e : red_discs) e.remove();
                     GameUtils.spawnRedDisc();
                 }
-                List<Entity> green_discs = Region.GREEN_DISC.getWorld().getNearbyEntities(Region.GREEN_DISC, 3, 3, 3).stream().filter(e -> e instanceof Item).collect(Collectors.toList());
+
+                l = Region.GREEN_DISC.clone();
+                l.setWorld(Region.getWorld());
+
+                List<Entity> green_discs = Region.getWorld().getNearbyEntities(l, 3, 3, 3).stream().filter(e -> e instanceof Item).collect(Collectors.toList());
                 if (green_discs.size() > 1) {
                     for (Entity e : green_discs) e.remove();
                     GameUtils.spawnGreenDisc();

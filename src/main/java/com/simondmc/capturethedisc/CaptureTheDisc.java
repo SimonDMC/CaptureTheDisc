@@ -13,6 +13,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,9 +36,12 @@ public final class CaptureTheDisc extends JavaPlugin {
         registerListeners();
         // config file
         plugin.saveDefaultConfig();
-        // copies the schematic over
-        /*this just doesnt want to work for some reason so ill leave it for now and maybe resolve later
-        saveResource("map.schem", false);*/
+        // copies the map over
+        /*try {
+            Files.copy(plugin.getResource("world.zip"), Paths.get(plugin.getDataFolder().getPath() + "/world.zip"), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
         // starts game loop
         GameLoop.gameLoop();
         // build kit inventory
@@ -51,11 +58,9 @@ public final class CaptureTheDisc extends JavaPlugin {
 
     void populateCommands() {
         commands.add(new TestCommand());
-        commands.add(new DeconstructMapCommand());
         commands.add(new PasteMapCommand());
         commands.add(new StartCommand());
         commands.add(new ForceStopCommand());
-        //commands.add(new TestDiscCommand());
         commands.add(new ShopCommand());
         commands.add(new CoinsCommand());
         commands.add(new TestUpgradesCommand());

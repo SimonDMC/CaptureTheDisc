@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.simondmc</groupId>
-    <artifactId>EventCTD</artifactId>
+    <artifactId>CaptureTheDisc</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>EventCTD</name>
+    <name>CaptureTheDisc</name>
 
     <description>stuff for dream and techno event ig</description>
     <properties>
