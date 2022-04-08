@@ -42,11 +42,6 @@ public class GameLoop {
                         p.sendTitle("§c" + Math.round(Math.ceil((float) remainingTicks / 20)), "", 0, 10, 0);
                     }
 
-                    // ACTION BAR
-                    if (Teams.getPlayers().contains(p)) {
-                        ActionBarHandler.displayStats(p);
-                    }
-
                     // NEGATIVE COINS PATCH (sometimes it subtracts coins past 0 but doesn't give item, purely visual)
                     if (Coins.getCoins(p) < 0) {
                         Coins.addCoins(p, -Coins.getCoins(p));
@@ -59,6 +54,20 @@ public class GameLoop {
                 }
             }
         }.runTaskTimer(CaptureTheDisc.plugin, 0, 5);
+
+        // EVERY 20 TICKS (1 loop/s)
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+                if (!GameCore.isOn()) return;
+
+                // SIDEBAR
+                for (Player p : Teams.getPlayers()) {
+                    SidebarHandler.createSidebar(p);
+                }
+            }
+        }.runTaskTimer(CaptureTheDisc.plugin, 0, 20);
 
         // EVERY 40 TICKS (2 s/loop)
         new BukkitRunnable() {

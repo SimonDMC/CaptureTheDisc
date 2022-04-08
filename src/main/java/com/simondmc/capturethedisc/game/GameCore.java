@@ -29,7 +29,7 @@ public class GameCore {
     public static void stopGame() {
         running = false;
         // devinfo
-        Config.devAnnounce("§aGame finished! Took " + Math.round((System.currentTimeMillis() - GameCore.startTime)/1000) + "s.");
+        Config.devAnnounce("§aGame finished! Took " + Math.round((System.currentTimeMillis() - startTime)/1000) + "s.");
         // stats
         for (Player player : Teams.getPlayers()) {
             player.sendMessage("§e§lMost kills: §a" + GameUtils.getMostKills().getName() + " §7- §c" + GameUtils.getKills(GameUtils.getMostKills()) + "⚔");
@@ -61,6 +61,8 @@ public class GameCore {
         dead.clear();
         // reset kills
         GameCore.kills.clear();
+        // reset sidebar
+        SidebarHandler.reset();
     }
 
     public static boolean isOn() {
@@ -167,5 +169,13 @@ public class GameCore {
             if (isOn()) GameUtils.spawnGreenDisc();
         }
         p.setGlowing(false);
+    }
+
+    public static boolean existsRedDiscHolder() {
+        return redDiscHolder != null;
+    }
+
+    public static boolean existsGreenDiscHolder() {
+        return greenDiscHolder != null;
     }
 }
