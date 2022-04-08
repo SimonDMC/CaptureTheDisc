@@ -23,7 +23,8 @@ public class SidebarHandler {
 
     public static void createSidebar(Player p) {
         // CREATE SIDEBAR
-        Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
+        Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
+        if (board.getObjective("ctd") != null) board.getObjective("ctd").unregister();
         Objective objective = board.registerNewObjective("ctd", "dummy", "  §a§lCapture The Disc  ");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 

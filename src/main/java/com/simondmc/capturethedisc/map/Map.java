@@ -3,11 +3,10 @@ package com.simondmc.capturethedisc.map;
 import com.simondmc.capturethedisc.CaptureTheDisc;
 import com.simondmc.capturethedisc.region.Region;
 import org.apache.commons.io.FileUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,11 +43,27 @@ public class Map {
             // REGISTER WORLD
             plugin.getServer().createWorld(new WorldCreator("ctd-world"));
 
-            // TP EVERYONE INTO THE MAP
+            // TP EVERYONE INTO THE MAP AND RESET THEM
             for (Player p : plugin.getServer().getOnlinePlayers()) {
                 Location l = Region.LOBBY.clone();
                 l.setWorld(Bukkit.getWorld("ctd-world"));
                 p.teleport(l);
+                p.setGameMode(GameMode.ADVENTURE);
+                p.getInventory().clear();
+                p.getInventory().setArmorContents(null);
+                p.getInventory().setItemInOffHand(null);
+                p.setHealth(20);
+                p.setFoodLevel(20);
+                p.setSaturation(20);
+                p.setExp(0);
+                p.setLevel(0);
+                p.setFireTicks(0);
+                p.setFallDistance(0);
+                p.setAllowFlight(false);
+                p.setFlying(false);
+                for (PotionEffect eff : p.getActivePotionEffects()) {
+                    p.removePotionEffect(eff.getType());
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

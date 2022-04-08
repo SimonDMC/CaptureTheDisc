@@ -7,16 +7,13 @@ import com.simondmc.capturethedisc.command.template.SuperCommand;
 import com.simondmc.capturethedisc.game.GameLoop;
 import com.simondmc.capturethedisc.kits.Kits;
 import com.simondmc.capturethedisc.listeners.BlockEvent;
-import com.simondmc.capturethedisc.listeners.PlayerEvent;
+import com.simondmc.capturethedisc.listeners.ChatEvent;
 import com.simondmc.capturethedisc.listeners.ClickEvent;
+import com.simondmc.capturethedisc.listeners.PlayerEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,9 +47,10 @@ public final class CaptureTheDisc extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // patch persistant glowing..?
+        // patch persistant glowing and sidebar
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.setGlowing(false);
+            p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
         }
     }
 
@@ -73,6 +71,7 @@ public final class CaptureTheDisc extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BlockEvent(), plugin);
         getServer().getPluginManager().registerEvents(new PlayerEvent(), plugin);
         getServer().getPluginManager().registerEvents(new ClickEvent(), plugin);
+        getServer().getPluginManager().registerEvents(new ChatEvent(), plugin);
     }
 
     void registerCommand(SuperCommand cmd) {
