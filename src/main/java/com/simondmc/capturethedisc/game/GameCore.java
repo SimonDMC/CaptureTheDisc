@@ -44,8 +44,6 @@ public class GameCore {
             for (PotionEffect eff : p.getActivePotionEffects()) p.removePotionEffect(eff.getType());
             // reset team and sidebar
             p.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
-            // set vulnerable
-            p.setInvulnerable(false);
         }
         // reset teams
         Teams.getRed().clear();
@@ -95,7 +93,6 @@ public class GameCore {
     }
 
     public static void respawn(Player p) {
-        p.setInvulnerable(false);
         p.setHealth(20);
         p.setFoodLevel(20);
         p.setSaturation(0);

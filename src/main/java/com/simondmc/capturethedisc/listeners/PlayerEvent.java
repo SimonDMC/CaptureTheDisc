@@ -60,7 +60,15 @@ public class PlayerEvent implements Listener {
         }
         // death
         if (p.getHealth() - e.getDamage() <= 0) {
-            p.setInvulnerable(true);
+            // add coins
+            if (e instanceof EntityDamageByEntityEvent) {
+                EntityDamageByEntityEvent edbe = (EntityDamageByEntityEvent) e;
+                if (edbe.getDamager() instanceof Player)
+                    Coins.addCoins((Player) edbe.getDamager(), (float) e.getDamage());
+            }
+
+            // cancel death
+            e.setDamage(0);
 
             // drop everything bought from shop
             for (ItemStack i : p.getInventory().getContents()) {
