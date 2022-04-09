@@ -6,6 +6,7 @@ import com.simondmc.capturethedisc.game.OfflinePlayer;
 import com.simondmc.capturethedisc.kits.Kits;
 import com.simondmc.capturethedisc.region.Region;
 import com.simondmc.capturethedisc.shop.ShopGUI;
+import com.simondmc.capturethedisc.util.Config;
 import com.simondmc.capturethedisc.util.Utils;
 import org.bukkit.*;
 import org.bukkit.entity.*;
@@ -293,6 +294,8 @@ public class PlayerEvent implements Listener {
         // parse offlineplayer data
         for (OfflinePlayer op : Teams.getOffline()) {
             if (op.getUUID().equals(p.getUniqueId())) {
+                Config.devAnnounce("§ePlayer §a" + p.getName() + " §ereconnected");
+
                 // add back to game and die
                 Teams.getPlayers().add(p);
                 GameCore.die(p);
@@ -338,15 +341,23 @@ public class PlayerEvent implements Listener {
         Player p = e.getPlayer();
         if (Teams.getPlayers().contains(p)) {
             // generate a new offline player to retrieve when rejoins
-            Teams.getOffline().add(
-                    new OfflinePlayer(
-                            p.getUniqueId(),
-                            Kits.getKit(p),
-                            Teams.getRed().contains(p),
-                            ShopGUI.upgrades.get(p),
-                            Coins.getCoins(p),
-                            GameCore.kills.get(p)
-                    )
+            OfflinePlayer op = new OfflinePlayer(
+                    p.getUniqueId(),
+                    Kits.getKit(p),
+                    Teams.getRed().contains(p),
+                    ShopGUI.upgrades.get(p),
+                    Coins.getCoins(p),
+                    GameCore.kills.get(p)
+            );
+
+            Teams.getOffline().add(op);
+
+            Config.devAnnounce("§ePlayer §a" + p.getName() + " §edisconnected:\n" +
+                    "§aKit: §e" + op.getKit() + "\n" +
+                    "§aTeam: §e" + (op.isRed() ? "Red" : "Green") + "\n" +
+                    "§aUpgrades: §e" + op.getUpgrades() + "\n" +
+                    "§aCoins: §e" + op.getCoins() + "\n" +
+                    "§aKills: §e" + op.getKills()
             );
 
             // die so disc drops if player is disc holder
