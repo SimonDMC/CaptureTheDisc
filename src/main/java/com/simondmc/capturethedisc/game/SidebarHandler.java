@@ -2,10 +2,12 @@ package com.simondmc.capturethedisc.game;
 
 import com.simondmc.capturethedisc.util.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 public class SidebarHandler {
 
@@ -23,10 +25,22 @@ public class SidebarHandler {
 
     public static void createSidebar(Player p) {
         // CREATE SIDEBAR
-        Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
-        if (board.getObjective("ctd") != null) board.getObjective("ctd").unregister();
+        Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
         Objective objective = board.registerNewObjective("ctd", "dummy", "  §a§lCapture The Disc  ");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+
+        // SET TEAMS FOR GLOWING AND COLORED NAME
+        Team redTeam = board.registerNewTeam("redCTD");
+        Team greenTeam = board.registerNewTeam("greenCTD");
+        redTeam.setColor(ChatColor.RED);
+        greenTeam.setColor(ChatColor.GREEN);
+
+        for (Player red : Teams.getRed()) {
+            redTeam.addEntry(red.getName());
+        }
+        for (Player green : Teams.getGreen()) {
+            greenTeam.addEntry(green.getName());
+        }
 
         // EMPTY LINES
         objective.getScore("§1").setScore(7);

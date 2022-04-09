@@ -9,8 +9,6 @@ import org.bukkit.scoreboard.Team;
 import java.util.*;
 
 public class Teams {
-    private static Team redTeam;
-    private static Team greenTeam;
     private static final List<Player> red = new ArrayList<>();
     private static final List<Player> green = new ArrayList<>();
     private static final List<OfflinePlayer> offline = new ArrayList<>();
@@ -28,25 +26,11 @@ public class Teams {
         return players;
     }
 
-    public static Team getRedTeam() {
-        return redTeam;
-    }
-
-    public static Team getGreenTeam() {
-        return greenTeam;
-    }
-
     public static List<OfflinePlayer> getOffline() {
         return offline;
     }
 
     public static void assignTeams() {
-        // create mc teams for glowing
-        Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
-        redTeam = (board.getTeam("redCTD") == null ? board.registerNewTeam("redCTD") : board.getTeam("redCTD"));
-        greenTeam = (board.getTeam("greenCTD") == null ? board.registerNewTeam("greenCTD") : board.getTeam("greenCTD"));
-        redTeam.setColor(ChatColor.RED);
-        greenTeam.setColor(ChatColor.GREEN);
 
         players = new ArrayList<>(Bukkit.getOnlinePlayers());
         //players.removeIf(p -> p.getGameMode().equals(GameMode.SPECTATOR));
@@ -62,12 +46,10 @@ public class Teams {
     public static void setTeam(Player p, boolean isRed) {
         if (isRed) {
             red.add(p);
-            redTeam.addEntry(p.getName());
             p.setPlayerListName("§c" + p.getName());
             return;
         }
         green.add(p);
-        greenTeam.addEntry(p.getName());
         p.setPlayerListName("§a" + p.getName());
     }
 }

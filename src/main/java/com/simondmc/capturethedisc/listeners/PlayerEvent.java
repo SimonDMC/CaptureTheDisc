@@ -45,20 +45,18 @@ public class PlayerEvent implements Listener {
         // nerf fall damage
         if (e.getCause().equals(EntityDamageEvent.DamageCause.FALL)) e.setDamage(e.getDamage() / 2);
         Player p = (Player) e.getEntity();
-        // avoid damage taken on spawnpoint (mainly fall damage from tp)
+        // avoid damage taken on spawnpoint
         if (Teams.getRed().contains(p) && Utils.inRegion(p.getLocation(), Region.RED_GRACE)) {
-            e.setDamage(0);
             e.setCancelled(true);
             return;
         }
         if (Teams.getGreen().contains(p) && Utils.inRegion(p.getLocation(), Region.GREEN_GRACE)) {
-            e.setDamage(0);
             e.setCancelled(true);
             return;
         }
         // death
         if (p.getHealth() - e.getDamage() <= 0) {
-            e.setDamage(0);
+            p.setInvulnerable(true);
 
             // drop everything bought from shop
             for (ItemStack i : p.getInventory().getContents()) {
@@ -83,10 +81,11 @@ public class PlayerEvent implements Listener {
                 e.setCancelled(true);
                 return;
             }
-            // add coins if damage done, haven't shot self and no shield blocking
-            if (e.getDamage() == 0) return;
+            // add coins if haven't shot self, no shield blocking and not in base
             if (p.equals(damaged)) return;
             if (e.getDamage(EntityDamageEvent.DamageModifier.BLOCKING) != 0) return;
+            if (Utils.inRegion(damaged.getLocation(), Region.RED_GRACE) || Utils.inRegion(damaged.getLocation(), Region.GREEN_GRACE)) return;
+
             Coins.addCoins(p, (float) e.getDamage());
             // set last damager
             GameCore.lastDamage.put(damaged, new TimestampHit(System.currentTimeMillis(), p));
@@ -105,10 +104,11 @@ public class PlayerEvent implements Listener {
                 e.setCancelled(true);
                 return;
             }
-            // add coins if damage done, haven't shot self and no shield blocking
-            if (e.getDamage() == 0) return;
+            // add coins if haven't shot self, no shield blocking and not in base
             if (p.equals(damaged)) return;
             if (e.getDamage(EntityDamageEvent.DamageModifier.BLOCKING) != 0) return;
+            if (Utils.inRegion(damaged.getLocation(), Region.RED_GRACE) || Utils.inRegion(damaged.getLocation(), Region.GREEN_GRACE)) return;
+
             Coins.addCoins(p, (float) e.getDamage());
             // set last damager
             GameCore.lastDamage.put(damaged, new TimestampHit(System.currentTimeMillis(), p));
@@ -312,6 +312,12 @@ public class PlayerEvent implements Listener {
                 // set upgrades
                 ShopGUI.upgrades.put(p, op.getUpgrades());
 
+                // set coins
+                Coins.setCoins(p, op.getCoins());
+
+                // set kills
+                GameCore.kills.put(p, op.getKills());
+
                 return;
             }
         }
@@ -329,7 +335,16 @@ public class PlayerEvent implements Listener {
         Player p = e.getPlayer();
         if (Teams.getPlayers().contains(p)) {
             // generate a new offline player to retrieve when rejoins
-            Teams.getOffline().add(new OfflinePlayer(p.getUniqueId(), Kits.getKit(p), Teams.getRed().contains(p), ShopGUI.upgrades.get(p)));
+            Teams.getOffline().add(
+                    new OfflinePlayer(
+                            p.getUniqueId(),
+                            Kits.getKit(p),
+                            Teams.getRed().contains(p),
+                            ShopGUI.upgrades.get(p),
+                            Coins.getCoins(p),
+                            GameCore.kills.get(p)
+                    )
+            );
 
             // die so disc drops if player is disc holder
             GameCore.die(p);

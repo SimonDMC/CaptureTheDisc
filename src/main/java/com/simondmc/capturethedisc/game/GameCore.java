@@ -42,17 +42,15 @@ public class GameCore {
             removeDiscHolder(p);
             // remove all active effects
             for (PotionEffect eff : p.getActivePotionEffects()) p.removePotionEffect(eff.getType());
+            // reset team
+            p.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+            // set vulnerable
+            p.setInvulnerable(false);
         }
         // reset teams
         Teams.getRed().clear();
         Teams.getGreen().clear();
         Teams.getPlayers().clear();
-        for (String player : Teams.getRedTeam().getEntries()) {
-            Teams.getRedTeam().removeEntry(player);
-        }
-        for (String player : Teams.getGreenTeam().getEntries()) {
-            Teams.getGreenTeam().removeEntry(player);
-        }
         // reset offline players
         Teams.getOffline().clear();
         // reset kits
@@ -97,6 +95,7 @@ public class GameCore {
     }
 
     public static void respawn(Player p) {
+        p.setInvulnerable(false);
         p.setHealth(20);
         p.setFoodLevel(20);
         p.setSaturation(0);
@@ -123,6 +122,11 @@ public class GameCore {
                 GameUtils.addKill(damager);
             }
         }
+
+        // clear inventory
+        p.getInventory().clear();
+        p.setItemOnCursor(null);
+        p.getOpenInventory().getTopInventory().clear();
 
         // remove all active effects
         for (PotionEffect eff : p.getActivePotionEffects()) p.removePotionEffect(eff.getType());

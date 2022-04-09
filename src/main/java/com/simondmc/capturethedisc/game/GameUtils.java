@@ -38,7 +38,7 @@ public class GameUtils {
     }
 
     public static void spawnRedDisc() {
-        Region.getWorld().dropItem(Region.RED_DISC.add(.5, 0, .5), new ItemStack(Material.MUSIC_DISC_PIGSTEP));
+        Region.getWorld().dropItem(Region.RED_DISC.clone().add(.5, 0, .5), new ItemStack(Material.MUSIC_DISC_PIGSTEP));
     }
 
     public static void spawnGreenDisc() {

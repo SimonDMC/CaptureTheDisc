@@ -6,7 +6,6 @@ import org.apache.commons.io.FileUtils;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import java.io.File;
 import java.io.IOException;
@@ -61,6 +60,7 @@ public class Map {
                 p.setFallDistance(0);
                 p.setAllowFlight(false);
                 p.setFlying(false);
+                p.setBedSpawnLocation(l, true);
                 for (PotionEffect eff : p.getActivePotionEffects()) {
                     p.removePotionEffect(eff.getType());
                 }

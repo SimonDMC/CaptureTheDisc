@@ -20,6 +20,7 @@ import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -67,7 +68,12 @@ public class ClickEvent implements Listener {
                     if (item.slot != null) {
                         p.getInventory().setItem(item.slot, item.item);
                     } else {
-                        p.getInventory().addItem(item.item);
+                        // if hotkeyed, set to that slot
+                        if (e.getClick() == ClickType.NUMBER_KEY && p.getInventory().getItem(e.getHotbarButton()) == null) {
+                            p.getInventory().setItem(e.getHotbarButton(), item.item);
+                        } else {
+                            p.getInventory().addItem(item.item);
+                        }
                     }
                 }
 
