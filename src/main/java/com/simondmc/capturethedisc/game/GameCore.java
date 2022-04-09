@@ -42,7 +42,7 @@ public class GameCore {
             removeDiscHolder(p);
             // remove all active effects
             for (PotionEffect eff : p.getActivePotionEffects()) p.removePotionEffect(eff.getType());
-            // reset team
+            // reset team and sidebar
             p.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
             // set vulnerable
             p.setInvulnerable(false);

@@ -27,7 +27,8 @@ public class ShopGUI {
             new ShopItem(Material.SHIELD, "Shield", 85),
             new ShopItem(Material.BOW, "Regular Bow", 30),
             new ShopItem(Material.TIPPED_ARROW, "Slow Falling Arrow", 30, 5, PotionType.SLOW_FALLING),
-            new ShopItem(Material.TIPPED_ARROW, "Harming Arrow", 40, 5, PotionType.INSTANT_DAMAGE)
+            new ShopItem(Material.TIPPED_ARROW, "Harming Arrow", 40, 5, PotionType.INSTANT_DAMAGE),
+            new ShopItem(Material.MILK_BUCKET, "Milk Bucket", 75)
     ));
 
     public static Map<Player, List<Upgrade>> upgrades = new HashMap<>();

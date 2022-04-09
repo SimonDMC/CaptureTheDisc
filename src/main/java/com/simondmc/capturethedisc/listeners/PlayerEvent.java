@@ -1,5 +1,6 @@
 package com.simondmc.capturethedisc.listeners;
 
+import com.simondmc.capturethedisc.CaptureTheDisc;
 import com.simondmc.capturethedisc.game.*;
 import com.simondmc.capturethedisc.game.OfflinePlayer;
 import com.simondmc.capturethedisc.kits.Kits;
@@ -17,6 +18,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,7 +32,8 @@ public class PlayerEvent implements Listener {
             Material.ENDER_PEARL,
             Material.SHIELD,
             Material.BOW,
-            Material.TIPPED_ARROW
+            Material.TIPPED_ARROW,
+            Material.MILK_BUCKET
     ));
 
     @EventHandler
@@ -348,6 +351,21 @@ public class PlayerEvent implements Listener {
 
             // die so disc drops if player is disc holder
             GameCore.die(p);
+        }
+    }
+
+    @EventHandler
+    public void drinkMilk(PlayerItemConsumeEvent e) {
+        if (!GameCore.isOn()) return;
+
+        Player p = e.getPlayer();
+        if (e.getItem().getType() == Material.MILK_BUCKET) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    p.getInventory().remove(Material.BUCKET);
+                }
+            }.runTaskLater(CaptureTheDisc.plugin, 1);
         }
     }
 }
