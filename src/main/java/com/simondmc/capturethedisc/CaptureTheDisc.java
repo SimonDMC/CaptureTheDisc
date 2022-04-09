@@ -65,6 +65,7 @@ public final class CaptureTheDisc extends JavaPlugin {
         commands.add(new ToggleDevCommand());
         commands.add(new KillCommand());
         commands.add(new PickupDiscCommand());
+        commands.add(new TogglePerformanceCommand());
     }
 
     void registerListeners() {

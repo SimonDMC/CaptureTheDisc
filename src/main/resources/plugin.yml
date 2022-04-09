@@ -17,3 +17,4 @@ commands:
   togglectddev:
   ctdkill:
   pickupdisc:
+  togglectdperformance:

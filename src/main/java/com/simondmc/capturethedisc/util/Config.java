@@ -33,4 +33,15 @@ public class Config {
             }
         }
     }
+
+    // trigger a [PERFORMANCE]
+    public static void performanceInfo(String message) {
+        if (CaptureTheDisc.plugin.getConfig().get("performance") != null) {
+            for (String uuid : (List<String>) CaptureTheDisc.plugin.getConfig().get("performance")) {
+                try {
+                    Bukkit.getPlayer(UUID.fromString(uuid)).sendMessage("§7§l[PERFORMANCE] §7" + message);
+                } catch (Exception ignored) {}
+            }
+        }
+    }
 }

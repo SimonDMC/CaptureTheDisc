@@ -4,6 +4,7 @@ import com.simondmc.capturethedisc.CaptureTheDisc;
 import com.simondmc.capturethedisc.kits.Kit;
 import com.simondmc.capturethedisc.kits.Kits;
 import com.simondmc.capturethedisc.region.Region;
+import com.simondmc.capturethedisc.util.Performance;
 import com.simondmc.capturethedisc.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -26,6 +27,7 @@ public class GameLoop {
             @Override
             public void run() {
                 if (!GameCore.isOn()) return;
+                Performance.start("5t/loop");
 
                 for (Player p : Teams.getPlayers()) {
 
@@ -52,6 +54,8 @@ public class GameLoop {
                 for (Location l : new Location[]{Region.RED_SHOP, Region.GREEN_SHOP}) {
                     Region.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, l.clone().add(0, 2.7, 0), 5);
                 }
+
+                Performance.stop("5t/loop");
             }
         }.runTaskTimer(CaptureTheDisc.plugin, 0, 5);
 
@@ -61,11 +65,14 @@ public class GameLoop {
             @Override
             public void run() {
                 if (!GameCore.isOn()) return;
+                Performance.start("20t/loop");
 
                 // SIDEBAR
                 for (Player p : Teams.getPlayers()) {
                     SidebarHandler.createSidebar(p);
                 }
+
+                Performance.stop("20t/loop");
             }
         }.runTaskTimer(CaptureTheDisc.plugin, 0, 20);
 
@@ -75,6 +82,7 @@ public class GameLoop {
             @Override
             public void run() {
                 if (!GameCore.isOn()) return;
+                Performance.start("40t/loop");
 
                 // give blocks
                 for (Player p : Teams.getPlayers()) {
@@ -104,6 +112,8 @@ public class GameLoop {
                     for (Entity e : green_discs) e.remove();
                     GameUtils.spawnGreenDisc();
                 }
+
+                Performance.stop("40t/loop");
             }
         }.runTaskTimer(CaptureTheDisc.plugin, 0, 40);
 
@@ -113,6 +123,7 @@ public class GameLoop {
             @Override
             public void run() {
                 if (!GameCore.isOn()) return;
+                Performance.start("200t/loop");
 
                 // give arrow to every bow guy
                 for (Player p : Kits.getKitMembers(Kit.ARCHER)) {
@@ -121,6 +132,8 @@ public class GameLoop {
                         p.getInventory().addItem(new ItemStack(Material.ARROW));
                     }
                 }
+
+                Performance.stop("200t/loop");
             }
         }.runTaskTimer(CaptureTheDisc.plugin, 0, 200);
     }
