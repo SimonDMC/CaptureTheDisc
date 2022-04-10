@@ -34,6 +34,18 @@ public class GameUtils {
             Kits.selected.clear();
             // open kit selection
             Kits.openKitGui(p);
+
+            // starting message
+            p.sendMessage("§6§l§m---------------------------------------------");
+            Utils.sendCenteredMessage(p, "§a§lCapture The Disc");
+            p.sendMessage("");
+            Utils.sendCenteredMessage(p, "§bWelcome to Capture The Disc!");
+            Utils.sendCenteredMessage(p, "§eRun to the other base, pick up their disc and capture it.");
+            Utils.sendCenteredMessage(p, "§eEarn coins by dealing damage, then buy items");
+            Utils.sendCenteredMessage(p, "§eand permanent upgrades in the shop!");
+            p.sendMessage("");
+            Utils.sendCenteredMessage(p, "§cNote: Axes do not deal damage.");
+            p.sendMessage("§6§l§m---------------------------------------------");
         }
     }
 

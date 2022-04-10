@@ -83,4 +83,42 @@ public class Utils {
         seconds %= 60;
         return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
     }
+
+    // https://www.spigotmc.org/threads/free-code-sending-perfectly-centered-chat-message.95872/
+
+    public static void sendCenteredMessage(Player player, String message){
+        int messagePxSize = 0;
+        boolean previousCode = false;
+        boolean isBold = false;
+
+        for(char c : message.toCharArray()){
+            if(c == '§'){
+                previousCode = true;
+                continue;
+            }else if(previousCode == true){
+                previousCode = false;
+                if(c == 'l' || c == 'L'){
+                    isBold = true;
+                    continue;
+                }else isBold = false;
+            }else{
+                DefaultFontInfo dFI = DefaultFontInfo.getDefaultFontInfo(c);
+                messagePxSize += isBold ? dFI.getBoldLength() : dFI.getLength();
+                messagePxSize++;
+            }
+        }
+
+        int halvedMessageSize = messagePxSize / 2;
+        int toCompensate = 154 - halvedMessageSize;
+        int spaceLength = DefaultFontInfo.SPACE.getLength() + 1;
+        int compensated = 0;
+        StringBuilder sb = new StringBuilder();
+        while(compensated < toCompensate){
+            sb.append(" ");
+            compensated += spaceLength;
+        }
+        // messes up in newer version so compensate manually
+        sb.append("   ");
+        player.sendMessage(sb + message);
+    }
 }
