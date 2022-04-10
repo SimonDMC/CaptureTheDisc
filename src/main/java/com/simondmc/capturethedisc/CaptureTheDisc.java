@@ -34,11 +34,7 @@ public final class CaptureTheDisc extends JavaPlugin {
         // config file
         plugin.saveDefaultConfig();
         // copies the map over
-        /*try {
-            Files.copy(plugin.getResource("world.zip"), Paths.get(plugin.getDataFolder().getPath() + "/world.zip"), StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+        plugin.saveResource("world.zip", false);
         // starts game loop
         GameLoop.gameLoop();
         // build kit inventory
