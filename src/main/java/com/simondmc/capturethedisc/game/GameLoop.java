@@ -67,9 +67,10 @@ public class GameLoop {
                 if (!GameCore.isOn()) return;
                 Performance.start("20t/loop");
 
-                // SIDEBAR
+                // SIDEBAR & ACTIONBAR
                 for (Player p : Teams.getPlayers()) {
                     SidebarHandler.createSidebar(p);
+                    ActionBarHandler.displayStats(p);
                 }
 
                 Performance.stop("20t/loop");
