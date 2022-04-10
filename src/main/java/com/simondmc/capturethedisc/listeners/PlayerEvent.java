@@ -4,6 +4,7 @@ import com.simondmc.capturethedisc.CaptureTheDisc;
 import com.simondmc.capturethedisc.game.*;
 import com.simondmc.capturethedisc.game.OfflinePlayer;
 import com.simondmc.capturethedisc.kits.Kits;
+import com.simondmc.capturethedisc.kits.RegeneratingItemHandler;
 import com.simondmc.capturethedisc.region.Region;
 import com.simondmc.capturethedisc.shop.ShopGUI;
 import com.simondmc.capturethedisc.util.Config;
@@ -291,7 +292,8 @@ public class PlayerEvent implements Listener {
         for (LivingEntity ent : e.getAffectedEntities()) {
             if (!thrower.equals(ent)) e.setIntensity(ent, 0); // this is the worst way to cancel getting the potion but altering getAffectedEntities didn't work
         }
-
+        // start regenerating potion
+        RegeneratingItemHandler.startTactician(thrower);
     }
 
     @EventHandler

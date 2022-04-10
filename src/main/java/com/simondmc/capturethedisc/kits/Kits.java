@@ -60,7 +60,7 @@ public class Kits {
                 " ",
                 "§7Contents:",
                 "§7- 1x Fishing Rod",
-                "§7- 1x Speed I Potion (0:30)",
+                "§7- 1x Regenerating Speed I Potion (0:30)",
                 "§7- 10x Scaffolding"
         ));
         m.setLore(l);

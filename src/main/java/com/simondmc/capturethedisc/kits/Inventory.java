@@ -99,6 +99,8 @@ public class Inventory {
             p.getInventory().setItemInOffHand(null);
         }
         setArmor(p);
+        // cancel regenerating potion
+        RegeneratingItemHandler.resetRegeneratingItem(p);
     }
 
     public static void fillInv(Player p) {

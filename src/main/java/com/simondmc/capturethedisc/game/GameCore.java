@@ -3,6 +3,7 @@ package com.simondmc.capturethedisc.game;
 import com.simondmc.capturethedisc.kits.Inventory;
 import com.simondmc.capturethedisc.kits.KitNPC;
 import com.simondmc.capturethedisc.kits.Kits;
+import com.simondmc.capturethedisc.kits.RegeneratingItemHandler;
 import com.simondmc.capturethedisc.region.Region;
 import com.simondmc.capturethedisc.shop.ShopGUI;
 import com.simondmc.capturethedisc.shop.ShopNPC;
@@ -44,6 +45,8 @@ public class GameCore {
             for (PotionEffect eff : p.getActivePotionEffects()) p.removePotionEffect(eff.getType());
             // reset team and sidebar
             p.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+            // cancel regenerating potion
+            RegeneratingItemHandler.resetRegeneratingItem(p);
         }
         // reset teams
         Teams.getRed().clear();
@@ -119,6 +122,9 @@ public class GameCore {
                 GameUtils.addKill(damager);
             }
         }
+
+        // cancel regenerating potion
+        RegeneratingItemHandler.resetRegeneratingItem(p);
 
         // clear inventory
         p.getInventory().clear();
