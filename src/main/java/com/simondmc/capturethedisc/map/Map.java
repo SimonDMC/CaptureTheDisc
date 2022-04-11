@@ -2,13 +2,13 @@ package com.simondmc.capturethedisc.map;
 
 import com.simondmc.capturethedisc.CaptureTheDisc;
 import com.simondmc.capturethedisc.region.Region;
-import org.apache.commons.io.FileUtils;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 public class Map {
     private static final CaptureTheDisc plugin = CaptureTheDisc.plugin;
@@ -32,7 +32,7 @@ public class Map {
                     }
                 }
                 plugin.getServer().unloadWorld("ctd-world", false);
-                FileUtils.deleteDirectory(oldWorld);
+                deleteDir(oldWorld);
                 System.out.println("[CaptureTheDisc] Old world replaced");
             }
 
@@ -68,5 +68,18 @@ public class Map {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    // https://stackoverflow.com/a/29175213
+    private static void deleteDir(File file) {
+        File[] contents = file.listFiles();
+        if (contents != null) {
+            for (File f : contents) {
+                if (! Files.isSymbolicLink(f.toPath())) {
+                    deleteDir(f);
+                }
+            }
+        }
+        file.delete();
     }
 }
