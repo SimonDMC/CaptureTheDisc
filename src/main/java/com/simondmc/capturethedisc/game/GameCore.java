@@ -135,7 +135,7 @@ public class GameCore {
         for (PotionEffect eff : p.getActivePotionEffects()) p.removePotionEffect(eff.getType());
 
         p.setGameMode(GameMode.SPECTATOR);
-        dead.put(p, 100); // 100 ticks = 5 seconds
+        dead.put(p, 60); // 60 ticks = 3 seconds
         Location l = Region.CENTER.clone().add(.5, 20, .5);
         l.setWorld(Region.getWorld());
         p.teleport(l);
