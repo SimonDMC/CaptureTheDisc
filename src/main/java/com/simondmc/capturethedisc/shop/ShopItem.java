@@ -41,13 +41,6 @@ public class ShopItem {
         this.level = level;
     }
 
-    public ShopItem(Material itemMaterial, String itemName, int cost, int count) {
-        this.itemMaterial = itemMaterial;
-        this.itemName = itemName;
-        this.cost = cost;
-        this.count = count;
-    }
-
     public ShopItem(Material itemMaterial, String itemName, int cost, int count, PotionType tippedArrowEffect) {
         this.itemMaterial = itemMaterial;
         this.itemName = itemName;
@@ -115,6 +108,10 @@ public class ShopItem {
                     toReplace = Utils.findMatInInventory(p, Material.IRON_SWORD);
                     Utils.replaceUpgrade(p, Upgrade.SWORD_1, Upgrade.SWORD_2);
                     break;
+                case SWORD_2:
+                    toReplace = Utils.findMatInInventory(p, Material.DIAMOND_SWORD);
+                    Utils.replaceUpgrade(p, Upgrade.SWORD_2, Upgrade.SWORD_3);
+                    break;
                 case CHESTPLATE_NONE:
                     Utils.buyChestplate(p, Material.CHAINMAIL_CHESTPLATE, cost);
                     Utils.replaceUpgrade(p, Upgrade.CHESTPLATE_NONE, Upgrade.CHESTPLATE_1);
@@ -126,6 +123,10 @@ public class ShopItem {
                 case CHESTPLATE_2:
                     Utils.buyChestplate(p, Material.DIAMOND_CHESTPLATE, cost);
                     Utils.replaceUpgrade(p, Upgrade.CHESTPLATE_2, Upgrade.CHESTPLATE_3);
+                    return null;
+                case CHESTPLATE_3:
+                    Utils.buyChestplate(p, Material.NETHERITE_CHESTPLATE, cost);
+                    Utils.replaceUpgrade(p, Upgrade.CHESTPLATE_3, Upgrade.CHESTPLATE_4);
                     return null;
                 case AXE_NONE:
                     toReplace = Utils.findMatInInventory(p, Material.STONE_AXE);

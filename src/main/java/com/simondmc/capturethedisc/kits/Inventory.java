@@ -107,7 +107,9 @@ public class Inventory {
         ItemStack i;
         ItemMeta m;
 
-        if (ShopGUI.upgrades.get(p).contains(Upgrade.SWORD_2)) {
+        if (ShopGUI.upgrades.get(p).contains(Upgrade.SWORD_3)) {
+            i = new ItemStack(Material.NETHERITE_SWORD);
+        } else if (ShopGUI.upgrades.get(p).contains(Upgrade.SWORD_2)) {
             i = new ItemStack(Material.DIAMOND_SWORD);
         } else if (ShopGUI.upgrades.get(p).contains(Upgrade.SWORD_1)) {
             i = new ItemStack(Material.IRON_SWORD);
@@ -176,7 +178,9 @@ public class Inventory {
         i.setType(Material.LEATHER_BOOTS);
         p.getInventory().setBoots(i);
 
-        if (ShopGUI.upgrades.get(p).contains(Upgrade.CHESTPLATE_3)) {
+        if (ShopGUI.upgrades.get(p).contains(Upgrade.CHESTPLATE_4)) {
+            i = new ItemStack(Material.NETHERITE_CHESTPLATE);
+        } else if (ShopGUI.upgrades.get(p).contains(Upgrade.CHESTPLATE_3)) {
             i = new ItemStack(Material.DIAMOND_CHESTPLATE);
         } else if (ShopGUI.upgrades.get(p).contains(Upgrade.CHESTPLATE_2)) {
             i = new ItemStack(Material.IRON_CHESTPLATE);

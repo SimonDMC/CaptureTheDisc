@@ -16,9 +16,11 @@ public class ShopGUI {
     public static List<ShopItem> shopItems = new ArrayList<>(Arrays.asList(
             new ShopItem(Material.IRON_SWORD, "Sword Upgrade I", 70, Upgrade.SWORD_NONE),
             new ShopItem(Material.DIAMOND_SWORD, "Sword Upgrade II", 150, Upgrade.SWORD_1),
+            new ShopItem(Material.NETHERITE_SWORD, "Sword Upgrade III", 250, Upgrade.SWORD_2),
             new ShopItem(Material.CHAINMAIL_CHESTPLATE, "Chestplate Upgrade I", 50, Upgrade.CHESTPLATE_NONE),
             new ShopItem(Material.IRON_CHESTPLATE, "Chestplate Upgrade II", 100, Upgrade.CHESTPLATE_1),
             new ShopItem(Material.DIAMOND_CHESTPLATE, "Chestplate Upgrade III", 150, Upgrade.CHESTPLATE_2),
+            new ShopItem(Material.NETHERITE_CHESTPLATE, "Chestplate Upgrade IV", 250, Upgrade.CHESTPLATE_3),
             new ShopItem(Material.IRON_AXE, "Axe Upgrade I", 20, Upgrade.AXE_NONE),
             new ShopItem(Material.DIAMOND_AXE, "Axe Upgrade II", 50, Upgrade.AXE_1),
             new ShopItem(Material.GOLDEN_APPLE, "Golden Apple", 30),
