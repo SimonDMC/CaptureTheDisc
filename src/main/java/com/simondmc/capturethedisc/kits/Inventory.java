@@ -61,22 +61,22 @@ public class Inventory {
     public static void giveTank(Player p) {
         resetKit(p);
 
-        ItemStack i = new ItemStack(Material.CHAINMAIL_HELMET);
+        ItemStack i = new ItemStack(Material.IRON_HELMET);
         ItemMeta imeta = i.getItemMeta();
         imeta.setUnbreakable(true);
 
         i.setItemMeta(imeta);
         p.getInventory().setHelmet(i);
 
-        i = new ItemStack(Material.IRON_BOOTS);
+        i = new ItemStack(Material.DIAMOND_BOOTS);
         i.setItemMeta(imeta);
         p.getInventory().setBoots(i);
     }
 
     private static void resetKit(Player p) {
         List<Material> toRemove = new ArrayList<>(Arrays.asList(
-                Material.CHAINMAIL_HELMET,
-                Material.IRON_BOOTS,
+                Material.IRON_HELMET,
+                Material.DIAMOND_BOOTS,
                 Material.FISHING_ROD,
                 Material.SPLASH_POTION,
                 Material.SCAFFOLDING,

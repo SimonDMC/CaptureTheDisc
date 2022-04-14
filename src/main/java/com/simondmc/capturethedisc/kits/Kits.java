@@ -74,8 +74,8 @@ public class Kits {
         l = new ArrayList<>(Arrays.asList(
                 " ",
                 "§7Contents:",
-                "§7- 1x Chainmail Helmet",
-                "§7- 1x Iron Boots"
+                "§7- 1x Iron Helmet",
+                "§7- 1x Diamond Boots"
         ));
         m.setLore(l);
         m.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
