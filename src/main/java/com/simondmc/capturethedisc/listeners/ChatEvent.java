@@ -41,6 +41,12 @@ public class ChatEvent implements Listener {
 
         if (command.equalsIgnoreCase("shout") || command.equalsIgnoreCase(CaptureTheDisc.plugin.getName() + ":shout")) {
             e.setCancelled(true);
+
+            // check if shout command empty
+            if (e.getMessage().split(" ").length == 1) {
+                e.setMessage("/shout I AM SHOUTING RIGHT NOW!!!!!");
+            }
+
             String color = Teams.getRed().contains(e.getPlayer()) ? "§c" : "§a";
             for (Player p : Bukkit.getOnlinePlayers()) {
                 // https://stackoverflow.com/a/40910835
