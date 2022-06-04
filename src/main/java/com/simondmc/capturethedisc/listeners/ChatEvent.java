@@ -10,16 +10,26 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class ChatEvent implements Listener {
 
+    public static List<Player> toggledShout = new ArrayList<>();
+
     @EventHandler
     public void chat(AsyncPlayerChatEvent e) {
         if (!GameCore.isOn()) return;
 
+        // avoid sending real chat message
         e.setCancelled(true);
+
+        if (toggledShout.contains(e.getPlayer())) {
+            shout(e.getPlayer(), e.getMessage());
+            return;
+        }
+
         String color = Teams.getRed().contains(e.getPlayer()) ? "§c" : "§a";
         List<Player> recievers = Teams.getRed().contains(e.getPlayer()) ? Teams.getRed() : Teams.getGreen();
 
@@ -47,11 +57,15 @@ public class ChatEvent implements Listener {
                 e.setMessage("/shout I AM SHOUTING RIGHT NOW!!!!!");
             }
 
-            String color = Teams.getRed().contains(e.getPlayer()) ? "§c" : "§a";
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                // https://stackoverflow.com/a/40910835
-                p.sendMessage("§e[SHOUT] " + color + e.getPlayer().getName() + "§r: " + e.getMessage().substring(e.getMessage().indexOf(" ") + 1));
-            }
+            // https://stackoverflow.com/a/40910835
+            shout(e.getPlayer(), e.getMessage().substring(e.getMessage().indexOf(" ") + 1));
+        }
+    }
+
+    void shout(Player p, String message) {
+        String color = Teams.getRed().contains(p) ? "§c" : "§a";
+        for (Player reciever : Bukkit.getOnlinePlayers()) {
+            reciever.sendMessage("§e[SHOUT] " + color + p.getName() + "§r: " + message);
         }
     }
 }

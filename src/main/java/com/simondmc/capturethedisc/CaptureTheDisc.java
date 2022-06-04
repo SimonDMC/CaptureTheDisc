@@ -3,6 +3,7 @@ package com.simondmc.capturethedisc;
 import com.simondmc.capturethedisc.command.*;
 import com.simondmc.capturethedisc.command.template.AdminCommand;
 import com.simondmc.capturethedisc.command.template.CommandType;
+import com.simondmc.capturethedisc.command.template.PublicCommand;
 import com.simondmc.capturethedisc.command.template.SuperCommand;
 import com.simondmc.capturethedisc.game.GameLoop;
 import com.simondmc.capturethedisc.kits.Kits;
@@ -62,6 +63,7 @@ public final class CaptureTheDisc extends JavaPlugin {
         commands.add(new KillCommand());
         commands.add(new PickupDiscCommand());
         commands.add(new TogglePerformanceCommand());
+        commands.add(new ToggleShoutCommand());
     }
 
     void registerListeners() {
@@ -73,5 +75,6 @@ public final class CaptureTheDisc extends JavaPlugin {
 
     void registerCommand(SuperCommand cmd) {
         if (cmd.getType().equals(CommandType.ADMIN_COMMAND)) getCommand(cmd.getLabel()).setExecutor(new AdminCommand());
+        if (cmd.getType().equals(CommandType.PUBLIC_COMMAND)) getCommand(cmd.getLabel()).setExecutor(new PublicCommand());
     }
 }
