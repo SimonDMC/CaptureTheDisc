@@ -1,10 +1,7 @@
 package com.simondmc.capturethedisc.game;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
 
 import java.util.*;
 
@@ -30,7 +27,7 @@ public class Teams {
         return offline;
     }
 
-    public static void assignTeams() {
+    public static List<Player>[] assignTeams() {
 
         players = new ArrayList<>(Bukkit.getOnlinePlayers());
         //players.removeIf(p -> p.getGameMode().equals(GameMode.SPECTATOR));
@@ -41,6 +38,7 @@ public class Teams {
             setTeam(p, red);
             red = !red;
         }
+        return new List[]{getRed(), getGreen()};
     }
 
     public static void setTeam(Player p, boolean isRed) {

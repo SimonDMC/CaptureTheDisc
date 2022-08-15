@@ -41,30 +41,6 @@ public class Map {
 
             // REGISTER WORLD
             plugin.getServer().createWorld(new WorldCreator("ctd-world"));
-
-            // TP EVERYONE INTO THE MAP AND RESET THEM
-            for (Player p : plugin.getServer().getOnlinePlayers()) {
-                Location l = Region.LOBBY.clone();
-                l.setWorld(Bukkit.getWorld("ctd-world"));
-                p.teleport(l);
-                p.setGameMode(GameMode.ADVENTURE);
-                p.getInventory().clear();
-                p.getInventory().setArmorContents(null);
-                p.getInventory().setItemInOffHand(null);
-                p.setHealth(20);
-                p.setFoodLevel(20);
-                p.setSaturation(20);
-                p.setExp(0);
-                p.setLevel(0);
-                p.setFireTicks(0);
-                p.setFallDistance(0);
-                p.setAllowFlight(false);
-                p.setFlying(false);
-                p.setBedSpawnLocation(l, true);
-                for (PotionEffect eff : p.getActivePotionEffects()) {
-                    p.removePotionEffect(eff.getType());
-                }
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }

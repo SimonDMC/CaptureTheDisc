@@ -1,5 +1,6 @@
 package com.simondmc.capturethedisc;
 
+import com.nametbd.core.api.GameRegister;
 import com.simondmc.capturethedisc.command.*;
 import com.simondmc.capturethedisc.command.template.AdminCommand;
 import com.simondmc.capturethedisc.command.template.CommandType;
@@ -40,6 +41,9 @@ public final class CaptureTheDisc extends JavaPlugin {
         GameLoop.gameLoop();
         // build kit inventory
         Kits.initKitGui();
+        // register core
+        CoreManager core = new CoreManager();
+        GameRegister.getInstance().registerGameManager(core);
     }
 
     @Override
