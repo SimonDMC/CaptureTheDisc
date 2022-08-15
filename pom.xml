@@ -68,6 +68,10 @@
             <id>enginehub-maven</id>
             <url>https://maven.enginehub.org/repo/</url>
         </repository>
+        <repository>
+            <id>weeryan</id>
+            <url>https://maven.weeryan17.com/snapshots</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -81,6 +85,12 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.11.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.nametbd</groupId>
+            <artifactId>CharityEventCore</artifactId>
+            <version>1.2-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

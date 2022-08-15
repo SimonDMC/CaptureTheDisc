@@ -81,8 +81,6 @@ public class GameCore {
         w.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
         w.setTime(1000);
         w.setStorm(false);
-        // assign teams randomly
-        Teams.assignTeams();
         // initalize all player upgrades
         ShopGUI.initUpgrades();
         // setup all player things, tp, inventory, etc
