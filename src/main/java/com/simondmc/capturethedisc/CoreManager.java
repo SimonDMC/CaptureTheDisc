@@ -3,7 +3,10 @@ package com.simondmc.capturethedisc;
 import com.nametbd.core.api.CoreTeam;
 import com.nametbd.core.api.GameManager;
 import com.simondmc.capturethedisc.game.GameCore;
+import com.simondmc.capturethedisc.game.SidebarHandler;
 import com.simondmc.capturethedisc.game.Teams;
+import com.simondmc.capturethedisc.kits.Kits;
+import com.simondmc.capturethedisc.kits.RegeneratingItemHandler;
 import com.simondmc.capturethedisc.map.Map;
 import com.simondmc.capturethedisc.region.Region;
 import org.bukkit.*;
@@ -48,6 +51,33 @@ public class CoreManager extends GameManager {
 
     @Override
     public void cleanupGame() {
+        for (Player p : Teams.getPlayers()) {
+            p.setDisplayName(p.getName());
+            p.setGameMode(GameMode.SURVIVAL);
+            // reset disc holder
+            GameCore.removeDiscHolder(p);
+            // remove all active effects
+            for (PotionEffect eff : p.getActivePotionEffects()) p.removePotionEffect(eff.getType());
+            // reset team and sidebar
+            p.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+            // cancel regenerating potion
+            RegeneratingItemHandler.resetRegeneratingItem(p);
+        }
+        // reset teams
+        Teams.getRed().clear();
+        Teams.getGreen().clear();
+        Teams.getPlayers().clear();
+        // reset offline players
+        Teams.getOffline().clear();
+        // reset kits
+        Kits.resetKits();
+        // reset death timer
+        GameCore.dead.clear();
+        // reset kills
+        GameCore.kills.clear();
+        // reset sidebar
+        SidebarHandler.reset();
+        // reset map
         Map.createMap();
     }
 

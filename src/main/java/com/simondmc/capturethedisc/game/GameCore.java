@@ -1,5 +1,7 @@
 package com.simondmc.capturethedisc.game;
 
+import com.simondmc.capturethedisc.CaptureTheDisc;
+import com.simondmc.capturethedisc.CoreManager;
 import com.simondmc.capturethedisc.kits.Inventory;
 import com.simondmc.capturethedisc.kits.KitNPC;
 import com.simondmc.capturethedisc.kits.Kits;
@@ -34,34 +36,9 @@ public class GameCore {
         // stats
         for (Player player : Teams.getPlayers()) {
             player.sendMessage("§e§lMost kills: §a" + GameUtils.getMostKills().getName() + " §7- §c" + GameUtils.getKills(GameUtils.getMostKills()) + "⚔");
-            player.sendMessage("§7Your kills: §c" + GameUtils.getKills(player) +"⚔");
+            player.sendMessage("§7Your kills: §c" + GameUtils.getKills(player) + "⚔");
         }
-        for (Player p : Teams.getPlayers()) {
-            p.setDisplayName(p.getName());
-            p.setGameMode(GameMode.SURVIVAL);
-            // reset disc holder
-            removeDiscHolder(p);
-            // remove all active effects
-            for (PotionEffect eff : p.getActivePotionEffects()) p.removePotionEffect(eff.getType());
-            // reset team and sidebar
-            p.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
-            // cancel regenerating potion
-            RegeneratingItemHandler.resetRegeneratingItem(p);
-        }
-        // reset teams
-        Teams.getRed().clear();
-        Teams.getGreen().clear();
-        Teams.getPlayers().clear();
-        // reset offline players
-        Teams.getOffline().clear();
-        // reset kits
-        Kits.resetKits();
-        // reset death timer
-        dead.clear();
-        // reset kills
-        GameCore.kills.clear();
-        // reset sidebar
-        SidebarHandler.reset();
+        CaptureTheDisc.endGame();
     }
 
     public static boolean isOn() {
