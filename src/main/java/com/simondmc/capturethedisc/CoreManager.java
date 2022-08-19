@@ -34,7 +34,7 @@ public class CoreManager extends GameManager {
             w = Bukkit.getWorld("ctd-world");
         }
         l.setWorld(w);
-        return null;
+        return l;
     }
 
     @Override
@@ -77,12 +77,12 @@ public class CoreManager extends GameManager {
         GameCore.kills.clear();
         // reset sidebar
         SidebarHandler.reset();
-        // reset map
-        Map.createMap();
     }
 
     @Override
     public void setupGame(Runnable finishConsumer) {
+        // reset map
+        Map.createMap();
         for (Player p : CaptureTheDisc.plugin.getServer().getOnlinePlayers()) {
             Location l = Region.LOBBY.clone();
             l.setWorld(Bukkit.getWorld("ctd-world"));
@@ -105,6 +105,7 @@ public class CoreManager extends GameManager {
                 p.removePotionEffect(eff.getType());
             }
         }
+        finishConsumer.run();
     }
 
     @Override

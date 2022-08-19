@@ -54,6 +54,7 @@ public final class CaptureTheDisc extends JavaPlugin {
             p.setGlowing(false);
             p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
         }
+        GameRegister.getInstance().unRegisterGameManager(core);
     }
 
     void populateCommands() {
