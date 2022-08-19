@@ -1,8 +1,15 @@
 # CaptureTheDisc
-Hypixel's Capture the Wool-esque minigame for an event
+A minigame inspired by Hypixel's Capture the Flag.
 
-heavily WIP, schematic used rn is placeholder until we get a custom map
+## Usage
+Start a game with `/startctd`, end a game by capturing a disc.
+If you need to terminate the game for whatever reason, use `/forcestopctd`.
 
-schematic copying doesn't work atm, so you'd have to copy over the .schem manually, but apart from that everything should work fine
+## Performance Metrics
+To get updates on performance, use `/togglectdperformance`.
+The performance log shows how long each runnable takes to execute.
 
-start with /startctd, capture the other team's disc to end or type /forcestopctd to terminate
+## Map
+The current map in usage is a placeholder and will be swapped out for a custom
+map whenever it gets finished. All the locations are configured for this map, so
+the game is currently fully playable.
