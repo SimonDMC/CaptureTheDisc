@@ -2,13 +2,16 @@ package com.simondmc.capturethedisc.map;
 
 import com.simondmc.capturethedisc.CaptureTheDisc;
 import com.simondmc.capturethedisc.region.Region;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.logging.Level;
 
 public class Map {
     private static final CaptureTheDisc plugin = CaptureTheDisc.plugin;
@@ -33,7 +36,7 @@ public class Map {
                 }
                 plugin.getServer().unloadWorld("ctd-world", false);
                 deleteDir(oldWorld);
-                System.out.println("[CaptureTheDisc] Old world replaced");
+                plugin.getLogger().log(Level.INFO, "Old world replaced");
             }
 
             // UNZIP MAP
