@@ -9,6 +9,7 @@ import org.bukkit.potion.PotionEffect;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.logging.Level;
 
 public class Map {
     private static final CaptureTheDisc plugin = CaptureTheDisc.plugin;
@@ -33,7 +34,7 @@ public class Map {
                 }
                 plugin.getServer().unloadWorld("ctd-world", false);
                 deleteDir(oldWorld);
-                System.out.println("[CaptureTheDisc] Old world replaced");
+                plugin.getLogger().log(Level.INFO, "Old world replaced");
             }
 
             // UNZIP MAP
@@ -41,6 +42,32 @@ public class Map {
 
             // REGISTER WORLD
             plugin.getServer().createWorld(new WorldCreator("ctd-world"));
+
+            if (!CaptureTheDisc.coreEnabled) {
+                // TP EVERYONE INTO THE MAP AND RESET THEM
+                for (Player p : plugin.getServer().getOnlinePlayers()) {
+                    Location l = Region.LOBBY.clone();
+                    l.setWorld(Bukkit.getWorld("ctd-world"));
+                    p.teleport(l);
+                    p.setGameMode(GameMode.ADVENTURE);
+                    p.getInventory().clear();
+                    p.getInventory().setArmorContents(null);
+                    p.getInventory().setItemInOffHand(null);
+                    p.setHealth(20);
+                    p.setFoodLevel(20);
+                    p.setSaturation(20);
+                    p.setExp(0);
+                    p.setLevel(0);
+                    p.setFireTicks(0);
+                    p.setFallDistance(0);
+                    p.setAllowFlight(false);
+                    p.setFlying(false);
+                    p.setBedSpawnLocation(l, true);
+                    for (PotionEffect eff : p.getActivePotionEffects()) {
+                        p.removePotionEffect(eff.getType());
+                    }
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

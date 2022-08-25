@@ -2,13 +2,8 @@ package com.simondmc.capturethedisc.command;
 
 import com.simondmc.capturethedisc.command.template.CommandType;
 import com.simondmc.capturethedisc.command.template.SuperCommand;
-import com.simondmc.capturethedisc.game.Coins;
 import com.simondmc.capturethedisc.listeners.ChatEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ToggleShoutCommand implements SuperCommand {
     public String getLabel() {

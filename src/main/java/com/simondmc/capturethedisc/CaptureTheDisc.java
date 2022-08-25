@@ -1,6 +1,5 @@
 package com.simondmc.capturethedisc;
 
-import com.nametbd.core.api.GameRegister;
 import com.simondmc.capturethedisc.command.*;
 import com.simondmc.capturethedisc.command.template.AdminCommand;
 import com.simondmc.capturethedisc.command.template.CommandType;
@@ -22,11 +21,16 @@ import java.util.List;
 public final class CaptureTheDisc extends JavaPlugin {
     public static CaptureTheDisc plugin;
     public static List<SuperCommand> commands = new ArrayList<>();
+    public static boolean coreEnabled = false;
 
     @Override
     public void onEnable() {
         // registers plugin for static use
         plugin = this;
+        // check for core
+        if (Bukkit.getPluginManager().getPlugin("CharityEventCore") != null) {
+            coreEnabled = true;
+        }
         // registers all commands
         populateCommands();
         for (SuperCommand cmd : commands)
@@ -41,9 +45,7 @@ public final class CaptureTheDisc extends JavaPlugin {
         GameLoop.gameLoop();
         // build kit inventory
         Kits.initKitGui();
-        // register core
-        CoreManager core = new CoreManager();
-        GameRegister.getInstance().registerGameManager(core);
+        if (coreEnabled) CoreHolder.registerCore();
     }
 
     @Override
@@ -53,6 +55,7 @@ public final class CaptureTheDisc extends JavaPlugin {
             p.setGlowing(false);
             p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
         }
+        if (coreEnabled) CoreHolder.unregisterCore();
     }
 
     void populateCommands() {
@@ -67,14 +70,14 @@ public final class CaptureTheDisc extends JavaPlugin {
         commands.add(new KillCommand());
         commands.add(new PickupDiscCommand());
         commands.add(new TogglePerformanceCommand());
-        commands.add(new ToggleShoutCommand());
+        if (!CaptureTheDisc.coreEnabled) commands.add(new ToggleShoutCommand());
     }
 
     void registerListeners() {
         getServer().getPluginManager().registerEvents(new BlockEvent(), plugin);
         getServer().getPluginManager().registerEvents(new PlayerEvent(), plugin);
         getServer().getPluginManager().registerEvents(new ClickEvent(), plugin);
-        getServer().getPluginManager().registerEvents(new ChatEvent(), plugin);
+        if (!CaptureTheDisc.coreEnabled) getServer().getPluginManager().registerEvents(new ChatEvent(), plugin);
     }
 
     void registerCommand(SuperCommand cmd) {

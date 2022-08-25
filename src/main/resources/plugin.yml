@@ -6,7 +6,7 @@ description: stuff for dream and techno event ig
 website: simondmc.com
 api-version: 1.16
 
-depend:
+softdepend:
   - CharityEventCore
 
 commands:
