@@ -20,7 +20,7 @@ public class Region {
 
     // points of map with lowest and highest XYZ
     public static final Location[] MAP = {
-            new Location(null, 53, -58, -299),
+            new Location(null, 53, -56, -299),
             new Location(null, 191, -6, 1)
     };
 
@@ -73,7 +73,7 @@ public class Region {
     };
 
     // void level
-    public static final int VOID_LEVEL = -58;
+    public static final int VOID_LEVEL = -56;
 
     // shop npcs
     public static final Location RED_SHOP = new Location(null, 118.5, -35, -285.5, -135, 0);
