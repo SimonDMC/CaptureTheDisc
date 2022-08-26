@@ -7,6 +7,7 @@ import com.simondmc.capturethedisc.game.Teams;
 import com.simondmc.capturethedisc.kits.Inventory;
 import com.simondmc.capturethedisc.kits.Kit;
 import com.simondmc.capturethedisc.kits.Kits;
+import com.simondmc.capturethedisc.region.Region;
 import com.simondmc.capturethedisc.shop.ShopGUI;
 import com.simondmc.capturethedisc.shop.ShopItem;
 import com.simondmc.capturethedisc.shop.SlotItem;
@@ -141,11 +142,8 @@ public class ClickEvent implements Listener {
 
         // selection sound + clear speed
         if (!v.getProfession().equals(Villager.Profession.WEAPONSMITH)) {
-            /*
-                THIS IS LIKELY TO CHANGE
-             */
             // prevent from selecting kits in other team's base
-            if ((Teams.getRed().contains(p) && p.getLocation().getX() > 0) || (Teams.getGreen().contains(p) && p.getLocation().getX() < 0)) {
+            if ((Teams.getRed().contains(p) && p.getLocation().getZ() > Region.CENTER.getZ()) || (Teams.getGreen().contains(p) && p.getLocation().getZ() < Region.CENTER.getZ())) {
                 p.sendMessage("§cYou can only select kits in your team's base!");
                 Utils.playSound(p, Sound.ENTITY_VILLAGER_NO);
                 return;
