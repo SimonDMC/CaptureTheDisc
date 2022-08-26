@@ -139,6 +139,8 @@ public class ClickEvent implements Listener {
     }
 
     void clickedVillager(Player p, Villager v) {
+        // check for spectator
+        if (!Teams.getPlayers().contains(p)) return;
 
         // selection sound + clear speed
         if (!v.getProfession().equals(Villager.Profession.WEAPONSMITH)) {
@@ -186,12 +188,12 @@ public class ClickEvent implements Listener {
     public void closeInv(InventoryCloseEvent e) {
         if (!GameCore.isOn()) return;
         Player p = (Player) e.getPlayer();
-        if (!Kits.selected.contains(p)) {
+        if (!Kits.selected.contains(p) && Teams.getPlayers().contains(p)) {
             // reopen inventory a tick later otherwise console shits its pants
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    p.openInventory(Kits.getKitGui());
+                    Kits.openKitGui(p);
                 }
             }.runTaskLater(CaptureTheDisc.plugin, 1);
         }

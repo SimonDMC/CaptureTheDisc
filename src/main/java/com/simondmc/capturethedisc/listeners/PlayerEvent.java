@@ -135,6 +135,9 @@ public class PlayerEvent implements Listener {
         if (!GameCore.isOn()) return;
         Player p = e.getPlayer();
 
+        // check for spectator
+        if (!Teams.getPlayers().contains(p)) return;
+
         // void death
         if (e.getTo().getY() < Region.VOID_LEVEL && !GameCore.dead.containsKey(p)) {
             GameCore.die(p, EntityDamageEvent.DamageCause.VOID);
@@ -344,6 +347,10 @@ public class PlayerEvent implements Listener {
         p.sendMessage("§aCapture The Disc has already started! You can spectate the game.");
         p.setGameMode(GameMode.SPECTATOR);
         Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+
+        Location l = Region.CENTER;
+        l.setWorld(Region.getWorld());
+        p.teleport(l);
 
     }
 
