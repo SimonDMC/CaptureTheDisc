@@ -411,7 +411,7 @@ public class PlayerEvent implements Listener {
     @EventHandler
     public void craftChest(CraftItemEvent e) {
         if (!GameCore.isOn()) return;
-        if (e.getRecipe().getResult().getType().equals(Material.CHEST)) {
+        if (e.getRecipe().getResult().getType().equals(Material.CHEST) || e.getRecipe().getResult().getType().equals(Material.BARREL)) {
             e.setCancelled(true);
         }
     }
