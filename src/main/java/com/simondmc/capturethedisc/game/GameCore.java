@@ -14,9 +14,13 @@ import com.simondmc.capturethedisc.util.Config;
 import com.simondmc.capturethedisc.util.Utils;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffect;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 public class GameCore {
     private static boolean running = false;
@@ -122,20 +126,7 @@ public class GameCore {
         p.teleport(l);
     }
 
-    public static void die(Player p) {
-        // figure out if kill
-        if (lastDamage.containsKey(p)) {
-            // make sure last hit was less than 10 seconds ago
-            if (System.currentTimeMillis() - lastDamage.get(p).timestamp < 10000) {// 10,000ms = 10s
-                Player damager = lastDamage.get(p).damager;
-                String dColor = (Teams.getRed().contains(damager) ? "§c" : "§a");
-                String pColor = (Teams.getRed().contains(p) ? "§c" : "§a");
-                damager.sendMessage(pColor + p.getName() + " §ewas killed by " + dColor + damager.getName());
-                Utils.playSound(damager, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
-                GameUtils.addKill(damager);
-            }
-        }
-
+    public static void die(Player p, EntityDamageEvent.DamageCause cause) {
         // cancel regenerating potion
         RegeneratingItemHandler.resetRegeneratingItem(p);
 
@@ -166,6 +157,67 @@ public class GameCore {
                 }
             }
             removeDiscHolder(p);
+        }
+
+        // figure out if kill
+        if (lastDamage.containsKey(p)) {
+            List<Player> players = Teams.getPlayers().size() <= 5 ? Teams.getPlayers() : Arrays.asList(p, lastDamage.get(p).damager);
+
+            // make sure last hit was less than 10 seconds ago
+            if (System.currentTimeMillis() - lastDamage.get(p).timestamp < 10000) {// 10,000ms = 10s
+                Player damager = lastDamage.get(p).damager;
+                String dColor = (Teams.getRed().contains(damager) ? "§c" : "§a");
+                String pColor = (Teams.getRed().contains(p) ? "§c" : "§a");
+                GameUtils.addKill(damager);
+                Utils.playSound(damager, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+                for (Player reciever : players) {
+                    switch (cause) {
+                        case PROJECTILE:
+                            reciever.sendMessage(pColor + p.getName() + " §ewas shot by " + dColor + damager.getName() + "§e.");
+                            break;
+                        case FALL:
+                            reciever.sendMessage(pColor + p.getName() + " §ewas pushed off by " + dColor + damager.getName() + "§e.");
+                            break;
+                        case VOID:
+                            reciever.sendMessage(pColor + p.getName() + " §ewas knocked onto the floor by " + dColor + damager.getName() + "§e.");
+                            break;
+                        case ENTITY_EXPLOSION:
+                            reciever.sendMessage(pColor + p.getName() + " §ewas blown up by " + dColor + damager.getName() + "§e.");
+                            break;
+                        case CUSTOM:
+                            break;
+                        default:
+                            reciever.sendMessage(pColor + p.getName() + " §ewas killed by " + dColor + damager.getName() + "§e.");
+                            break;
+                    }
+                }
+                return;
+            }
+        }
+
+        // if not kill
+        List<Player> players = Teams.getPlayers().size() <= 5 ? Teams.getPlayers() : Collections.singletonList(p);
+        String pColor = (Teams.getRed().contains(p) ? "§c" : "§a");
+        for (Player reciever : players) {
+            switch (cause) {
+                case PROJECTILE:
+                    reciever.sendMessage(pColor + p.getName() + " §ewas shot.");
+                    break;
+                case FALL:
+                    reciever.sendMessage(pColor + p.getName() + " §efell off.");
+                    break;
+                case VOID:
+                    reciever.sendMessage(pColor + p.getName() + " §efell onto the floor.");
+                    break;
+                case ENTITY_EXPLOSION:
+                    reciever.sendMessage(pColor + p.getName() + " §eblew up.");
+                    break;
+                case CUSTOM:
+                    break;
+                default:
+                    reciever.sendMessage(pColor + p.getName() + " §edied.");
+                    break;
+            }
         }
     }
 

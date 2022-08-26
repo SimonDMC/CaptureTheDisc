@@ -79,7 +79,7 @@ public class PlayerEvent implements Listener {
                     p.getWorld().dropItemNaturally(p.getLocation(), i);
                 }
             }
-            GameCore.die(p);
+            GameCore.die(p, e.getCause());
         }
     }
 
@@ -137,7 +137,7 @@ public class PlayerEvent implements Listener {
 
         // void death
         if (e.getTo().getY() < Region.VOID_LEVEL && !GameCore.dead.containsKey(p)) {
-            GameCore.die(p);
+            GameCore.die(p, EntityDamageEvent.DamageCause.VOID);
             return;
         }
 
@@ -310,7 +310,7 @@ public class PlayerEvent implements Listener {
 
                 // add back to game and die
                 Teams.getPlayers().add(p);
-                GameCore.die(p);
+                GameCore.die(p, EntityDamageEvent.DamageCause.CUSTOM);
 
                 // set kit
                 if (op.getKit() == null) {
@@ -373,7 +373,7 @@ public class PlayerEvent implements Listener {
             );
 
             // die so disc drops if player is disc holder
-            GameCore.die(p);
+            GameCore.die(p, EntityDamageEvent.DamageCause.CUSTOM);
         }
     }
 

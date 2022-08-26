@@ -5,6 +5,7 @@ import com.simondmc.capturethedisc.command.template.SuperCommand;
 import com.simondmc.capturethedisc.game.GameCore;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
 
 public class KillCommand implements SuperCommand {
     public String getLabel() {
@@ -17,7 +18,7 @@ public class KillCommand implements SuperCommand {
 
     public void runCommand(Player p, String[] args) {
         if (args.length == 0) {
-            GameCore.die(p);
+            GameCore.die(p, EntityDamageEvent.DamageCause.SUICIDE);
             return;
         }
         Player p2;
@@ -26,6 +27,6 @@ public class KillCommand implements SuperCommand {
         } catch (Exception e) {
             return;
         }
-        GameCore.die(p2);
+        GameCore.die(p2, EntityDamageEvent.DamageCause.SUICIDE);
     }
 }
