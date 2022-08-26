@@ -136,7 +136,12 @@ public class PlayerEvent implements Listener {
         Player p = e.getPlayer();
 
         // check for spectator
-        if (!Teams.getPlayers().contains(p)) return;
+        if (!Teams.getPlayers().contains(p)) {
+            if (!Utils.inRegion(p.getLocation(), Region.MAP)) {
+                p.teleport(Region.CENTER);
+            }
+            return;
+        }
 
         // void death
         if (e.getTo().getY() < Region.VOID_LEVEL && !GameCore.dead.containsKey(p)) {
