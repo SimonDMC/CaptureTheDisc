@@ -88,9 +88,9 @@ public class GameLoop {
                 // give blocks
                 for (Player p : Teams.getPlayers()) {
                     if (GameCore.dead.containsKey(p)) continue;
-                    int blockCount = Utils.countItems(Material.OAK_PLANKS, p);
+                    int blockCount = Utils.countItems(Material.BIRCH_PLANKS, p);
                     if (blockCount < 64) {
-                        p.getInventory().addItem(new ItemStack(Material.OAK_PLANKS));
+                        p.getInventory().addItem(new ItemStack(Material.BIRCH_PLANKS));
                     }
                 }
 

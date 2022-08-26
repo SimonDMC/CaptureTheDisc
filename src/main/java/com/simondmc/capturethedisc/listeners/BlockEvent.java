@@ -3,18 +3,18 @@ package com.simondmc.capturethedisc.listeners;
 import com.simondmc.capturethedisc.game.GameCore;
 import com.simondmc.capturethedisc.region.Region;
 import com.simondmc.capturethedisc.util.Utils;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
+import org.bukkit.event.player.PlayerFishEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,5 +79,16 @@ public class BlockEvent implements Listener {
     @EventHandler
     public void itemDespawn(ItemDespawnEvent e) {
         if (GameCore.isOn()) e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void scaffoldingLand(EntityChangeBlockEvent e) {
+        if (!GameCore.isOn()) return;
+        if (e.getTo() != Material.SCAFFOLDING) return;
+        if (e.getBlock().getLocation().getBlockY() == -60) {
+            e.setCancelled(true);
+            return;
+        }
+        placedBlocks.add(e.getBlock().getLocation());
     }
 }

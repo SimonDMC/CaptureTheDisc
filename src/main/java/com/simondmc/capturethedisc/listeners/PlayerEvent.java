@@ -15,6 +15,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -134,7 +136,7 @@ public class PlayerEvent implements Listener {
         Player p = e.getPlayer();
 
         // void death
-        if (e.getTo().getY() < Region.VOID_LEVEL) {
+        if (e.getTo().getY() < Region.VOID_LEVEL && !GameCore.dead.containsKey(p)) {
             GameCore.die(p);
             return;
         }
@@ -387,6 +389,23 @@ public class PlayerEvent implements Listener {
                     p.getInventory().remove(Material.BUCKET);
                 }
             }.runTaskLater(CaptureTheDisc.plugin, 1);
+        }
+    }
+
+    @EventHandler
+    public void fishItem(PlayerFishEvent e) {
+        if (!GameCore.isOn()) return;
+        if (!e.getState().equals(PlayerFishEvent.State.CAUGHT_ENTITY)) return;
+        if (e.getCaught() instanceof Item) {
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void craftChest(CraftItemEvent e) {
+        if (!GameCore.isOn()) return;
+        if (e.getRecipe().getResult().getType().equals(Material.CHEST)) {
+            e.setCancelled(true);
         }
     }
 }

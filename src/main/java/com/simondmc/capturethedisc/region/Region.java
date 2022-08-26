@@ -21,7 +21,7 @@ public class Region {
     // points of map with lowest and highest XYZ
     public static final Location[] MAP = {
             new Location(null, 53, -42, -299),
-            new Location(null, 191, -16, 1)
+            new Location(null, 191, -6, 1)
     };
 
     // team spawnpoints
@@ -55,11 +55,11 @@ public class Region {
     // disc surroundings where you can't place blocks and team members can't enter
     public static final Location[] RED_DISC_AREA = {
             new Location(null, 176, -23, -273),
-            new Location(null, 179, -19, -270),
+            new Location(null, 179, 10, -270),
     };
     public static final Location[] GREEN_DISC_AREA = {
             new Location(null, 65, -23, -28),
-            new Location(null, 68, -19, -25),
+            new Location(null, 68, 10, -25),
     };
 
     // capturing platforms

@@ -138,7 +138,7 @@ public class Inventory {
 
         p.getInventory().setItem(1, i);
 
-        p.getInventory().setItem(2, new ItemStack(Material.OAK_PLANKS, 64));
+        p.getInventory().setItem(2, new ItemStack(Material.BIRCH_PLANKS, 64));
 
         i = new ItemStack(Material.GOLDEN_APPLE);
         m = i.getItemMeta();
