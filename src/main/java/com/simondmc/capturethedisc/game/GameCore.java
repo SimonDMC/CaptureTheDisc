@@ -112,11 +112,14 @@ public class GameCore {
         p.getInventory().clear();
         p.setGameMode(GameMode.SURVIVAL);
         Inventory.fillInv(p);
+        Location l;
         if (Teams.getRed().contains(p)) {
-            p.teleport(Utils.genLocation(Region.getWorld(), Region.RED_SPAWN, .5f, 0, .5f, -90, 0));
+            l = Region.RED_SPAWN.clone();
         } else {
-            p.teleport(Utils.genLocation(Region.getWorld(), Region.GREEN_SPAWN, .5f, 0, .5f, 90, 0));
+            l = Region.GREEN_SPAWN.clone();
         }
+        l.setWorld(Region.getWorld());
+        p.teleport(l);
     }
 
     public static void die(Player p) {

@@ -5,6 +5,7 @@ import com.simondmc.capturethedisc.kits.Kits;
 import com.simondmc.capturethedisc.region.Region;
 import com.simondmc.capturethedisc.util.Utils;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -22,11 +23,14 @@ public class GameUtils {
             p.setSaturation(0);
             p.getInventory().clear();
             Inventory.fillInv(p);
+            Location l;
             if (Teams.getRed().contains(p)) {
-                p.teleport(Utils.genLocation(Region.getWorld(), Region.RED_SPAWN, .5f, 0, .5f, -90, 0));
+                l = Region.RED_SPAWN.clone();
             } else {
-                p.teleport(Utils.genLocation(Region.getWorld(), Region.GREEN_SPAWN, .5f, 0, .5f, 90, 0));
+                l = Region.GREEN_SPAWN.clone();
             }
+            l.setWorld(Region.getWorld());
+            p.teleport(l);
             // reset coins and kills
             Coins.setCoins(p, 0);
             GameCore.kills.put(p, 0);

@@ -134,7 +134,7 @@ public class PlayerEvent implements Listener {
         Player p = e.getPlayer();
 
         // void death
-        if (e.getTo().getY() < 0) {
+        if (e.getTo().getY() < Region.VOID_LEVEL) {
             GameCore.die(p);
             return;
         }
