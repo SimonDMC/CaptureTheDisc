@@ -62,7 +62,7 @@ public class PlayerEvent implements Listener {
             return;
         }
         // death
-        if (p.getHealth() - e.getDamage() <= 0) {
+        if (p.getHealth() - e.getFinalDamage() <= 0) {
             // add coins
             if (e instanceof EntityDamageByEntityEvent) {
                 EntityDamageByEntityEvent edbe = (EntityDamageByEntityEvent) e;
