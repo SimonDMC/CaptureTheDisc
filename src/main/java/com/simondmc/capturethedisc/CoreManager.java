@@ -62,6 +62,8 @@ public class CoreManager extends GameManager {
             p.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
             // cancel regenerating potion
             RegeneratingItemHandler.resetRegeneratingItem(p);
+            // clear inv
+            p.getInventory().clear();
         }
         // reset teams
         Teams.getRed().clear();

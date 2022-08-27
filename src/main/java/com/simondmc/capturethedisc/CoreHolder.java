@@ -2,6 +2,7 @@ package com.simondmc.capturethedisc;
 
 import com.nametbd.core.api.GameManager;
 import com.nametbd.core.api.GameRegister;
+import org.bukkit.Bukkit;
 
 public class CoreHolder {
     static GameManager core;
@@ -16,6 +17,6 @@ public class CoreHolder {
     }
 
     public static void endGame() {
-        core.endGame();
+        Bukkit.getScheduler().runTaskLater(CaptureTheDisc.plugin, () -> core.endGame(), 100);
     }
 }
