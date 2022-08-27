@@ -6,6 +6,7 @@ import com.simondmc.capturethedisc.kits.Kits;
 import com.simondmc.capturethedisc.region.Region;
 import com.simondmc.capturethedisc.util.Performance;
 import com.simondmc.capturethedisc.util.Utils;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -47,6 +48,13 @@ public class GameLoop {
                     // NEGATIVE COINS PATCH (sometimes it subtracts coins past 0 but doesn't give item, purely visual)
                     if (Coins.getCoins(p) < 0) {
                         Coins.addCoins(p, -Coins.getCoins(p));
+                    }
+
+                    // STRENGTH PARTICLES
+                    if (p.hasPotionEffect(org.bukkit.potion.PotionEffectType.INCREASE_DAMAGE)) {
+                        // spawn particles in a circle around the player
+                        Location loc = p.getLocation().add(0, 2.3, 0);
+                        loc.getWorld().spawnParticle(Particle.REDSTONE, loc, 0, 0.001, 1, 0, 1, new Particle.DustOptions(Color.RED, 2));
                     }
                 }
 
@@ -118,23 +126,23 @@ public class GameLoop {
             }
         }.runTaskTimer(CaptureTheDisc.plugin, 0, 40);
 
-        // EVERY 200 TICKS (10 s/loop)
+        // EVERY 160 TICKS (8 s/loop)
         new BukkitRunnable() {
 
             @Override
             public void run() {
                 if (!GameCore.isOn()) return;
-                Performance.start("200t/loop");
+                Performance.start("160t/loop");
 
                 // give arrow to every bow guy
                 for (Player p : Kits.getKitMembers(Kit.ARCHER)) {
                     int arrowCount = Utils.countItems(Material.ARROW, p);
-                    if (arrowCount < 3) {
+                    if (arrowCount < 5) {
                         p.getInventory().addItem(new ItemStack(Material.ARROW));
                     }
                 }
 
-                Performance.stop("200t/loop");
+                Performance.stop("160t/loop");
             }
         }.runTaskTimer(CaptureTheDisc.plugin, 0, 200);
     }

@@ -394,7 +394,7 @@ public class PlayerEvent implements Listener {
     }
 
     @EventHandler
-    public void drinkMilk(PlayerItemConsumeEvent e) {
+    public void drink(PlayerItemConsumeEvent e) {
         if (!GameCore.isOn()) return;
 
         Player p = e.getPlayer();
@@ -403,6 +403,14 @@ public class PlayerEvent implements Listener {
                 @Override
                 public void run() {
                     p.getInventory().remove(Material.BUCKET);
+                }
+            }.runTaskLater(CaptureTheDisc.plugin, 1);
+        }
+        if (e.getItem().getType() == Material.POTION) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    p.getInventory().remove(Material.GLASS_BOTTLE);
                 }
             }.runTaskLater(CaptureTheDisc.plugin, 1);
         }

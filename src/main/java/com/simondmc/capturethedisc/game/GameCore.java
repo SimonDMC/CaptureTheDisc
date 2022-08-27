@@ -14,6 +14,7 @@ import com.simondmc.capturethedisc.shop.Upgrade;
 import com.simondmc.capturethedisc.util.Config;
 import com.simondmc.capturethedisc.util.Utils;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffect;
@@ -56,6 +57,8 @@ public class GameCore {
                 p.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
                 // cancel regenerating potion
                 RegeneratingItemHandler.resetRegeneratingItem(p);
+                // reset attack speed
+                p.getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(4);
             }
             // reset teams
             Teams.getRed().clear();
@@ -92,6 +95,7 @@ public class GameCore {
         w.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
         w.setTime(1000);
         w.setStorm(false);
+        w.setDifficulty(Difficulty.EASY);
         if (!CaptureTheDisc.coreEnabled) {
             // assign teams randomly
             Teams.assignTeams();

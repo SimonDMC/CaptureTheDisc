@@ -10,6 +10,7 @@ import com.simondmc.capturethedisc.kits.RegeneratingItemHandler;
 import com.simondmc.capturethedisc.map.Map;
 import com.simondmc.capturethedisc.region.Region;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
@@ -64,6 +65,8 @@ public class CoreManager extends GameManager {
             RegeneratingItemHandler.resetRegeneratingItem(p);
             // clear inv
             p.getInventory().clear();
+            // reset attack speed
+            p.getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(4);
         }
         // reset teams
         Teams.getRed().clear();

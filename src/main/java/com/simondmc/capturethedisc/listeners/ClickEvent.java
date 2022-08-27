@@ -152,6 +152,7 @@ public class ClickEvent implements Listener {
             }
             Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
             p.removePotionEffect(PotionEffectType.SPEED);
+            p.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
             // remove thrown potions
             for (Entity e : p.getNearbyEntities(10, 10, 10)) {
                 if (!(e instanceof ThrownPotion)) continue;

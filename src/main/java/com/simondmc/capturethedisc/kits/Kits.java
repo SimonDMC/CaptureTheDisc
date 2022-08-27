@@ -45,8 +45,8 @@ public class Kits {
         List<String> l = new ArrayList<>(Arrays.asList(
                 " ",
                 "§7Contents:",
-                "§7- 1x Crossbow",
-                "§7- 1x Regenerating Arrow (10s)"
+                "§7- 1x Crossbow (Quick Charge II)",
+                "§7- 1x Regenerating Arrow (8s)"
         ));
         m.setLore(l);
         m.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -61,7 +61,7 @@ public class Kits {
                 "§7Contents:",
                 "§7- 1x Fishing Rod",
                 "§7- 1x Regenerating Speed I Potion (0:30)",
-                "§7- 10x Scaffolding"
+                "§7- 15x Scaffolding"
         ));
         m.setLore(l);
         m.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -74,8 +74,9 @@ public class Kits {
         l = new ArrayList<>(Arrays.asList(
                 " ",
                 "§7Contents:",
-                "§7- 1x Iron Helmet",
-                "§7- 1x Diamond Boots"
+                "§7- Full Chainmail Armor",
+                "§7- 1x Strength Potion (0:10)",
+                "§7- Decreased Attack Speed"
         ));
         m.setLore(l);
         m.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);

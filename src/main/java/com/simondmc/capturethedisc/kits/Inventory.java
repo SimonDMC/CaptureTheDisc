@@ -7,6 +7,7 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -29,6 +30,7 @@ public class Inventory {
         ItemStack crossbow = new ItemStack(Material.CROSSBOW);
         ItemMeta m = crossbow.getItemMeta();
         m.setUnbreakable(true);
+        m.addEnchant(Enchantment.QUICK_CHARGE, 2, true);
         crossbow.setItemMeta(m);
         p.getInventory().addItem(crossbow);
 
@@ -55,30 +57,46 @@ public class Inventory {
         pot.setItemMeta(potmeta);
         p.getInventory().addItem(pot);
 
-        p.getInventory().addItem(new ItemStack(Material.SCAFFOLDING, 10));
+        p.getInventory().addItem(new ItemStack(Material.SCAFFOLDING, 15));
     }
 
     public static void giveTank(Player p) {
         resetKit(p);
 
-        ItemStack i = new ItemStack(Material.IRON_HELMET);
+        ItemStack i = new ItemStack(Material.CHAINMAIL_HELMET);
         ItemMeta imeta = i.getItemMeta();
         imeta.setUnbreakable(true);
 
         i.setItemMeta(imeta);
         p.getInventory().setHelmet(i);
 
-        i = new ItemStack(Material.DIAMOND_BOOTS);
+        i = new ItemStack(Material.CHAINMAIL_LEGGINGS);
+        i.setItemMeta(imeta);
+        p.getInventory().setLeggings(i);
+
+        i = new ItemStack(Material.CHAINMAIL_BOOTS);
         i.setItemMeta(imeta);
         p.getInventory().setBoots(i);
+
+        ItemStack pot = new ItemStack(Material.POTION);
+        PotionMeta potmeta = (PotionMeta) pot.getItemMeta();
+        // can't use basepotiondata because i can't get rid of the default 3-minute strength
+        potmeta.setColor(Color.fromRGB(150, 37, 36)); // https://minecraft.fandom.com/wiki/Effect_colors/Potions_table
+        potmeta.setDisplayName("§rPotion of Strength");
+        potmeta.addCustomEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 200, 0, false, true), false);
+        pot.setItemMeta(potmeta);
+        p.getInventory().addItem(pot);
+        p.getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(3.7);
     }
 
     private static void resetKit(Player p) {
         List<Material> toRemove = new ArrayList<>(Arrays.asList(
-                Material.IRON_HELMET,
-                Material.DIAMOND_BOOTS,
+                Material.CHAINMAIL_HELMET,
+                Material.CHAINMAIL_LEGGINGS,
+                Material.CHAINMAIL_BOOTS,
                 Material.FISHING_ROD,
                 Material.SPLASH_POTION,
+                Material.POTION,
                 Material.SCAFFOLDING,
                 Material.CROSSBOW,
                 Material.ARROW,
@@ -101,6 +119,8 @@ public class Inventory {
         setArmor(p);
         // cancel regenerating potion
         RegeneratingItemHandler.resetRegeneratingItem(p);
+        // reset attack speed
+        p.getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(4);
     }
 
     public static void fillInv(Player p) {
