@@ -1,6 +1,7 @@
 package com.simondmc.capturethedisc.util;
 
 import com.simondmc.capturethedisc.game.Coins;
+import com.simondmc.capturethedisc.region.Region;
 import com.simondmc.capturethedisc.shop.ShopGUI;
 import com.simondmc.capturethedisc.shop.Upgrade;
 import org.bukkit.Location;
@@ -120,5 +121,18 @@ public class Utils {
         // messes up in newer version so compensate manually
         sb.append("   ");
         player.sendMessage(sb + message);
+    }
+
+    // fill all blocks in an area
+    public static void fillRegion(Location[] reg, Material mat) {
+        reg[0].setWorld(Region.getWorld());
+        reg[1].setWorld(Region.getWorld());
+        for (int x = reg[0].getBlockX(); x <= reg[1].getBlockX(); x++) {
+            for (int y = reg[0].getBlockY(); y <= reg[1].getBlockY(); y++) {
+                for (int z = reg[0].getBlockZ(); z <= reg[1].getBlockZ(); z++) {
+                    reg[0].getWorld().getBlockAt(x, y, z).setType(mat);
+                }
+            }
+        }
     }
 }

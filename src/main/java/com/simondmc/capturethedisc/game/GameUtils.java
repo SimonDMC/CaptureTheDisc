@@ -55,10 +55,12 @@ public class GameUtils {
 
     public static void spawnRedDisc() {
         Region.getWorld().dropItem(Region.RED_DISC.clone().add(.5, 0, .5), new ItemStack(Material.MUSIC_DISC_PIGSTEP));
+        Utils.fillRegion(Region.RED_DISC_BEACON_COVER, Material.RED_STAINED_GLASS);
     }
 
     public static void spawnGreenDisc() {
         Region.getWorld().dropItem(Region.GREEN_DISC.clone().add(.5, 0, .5), new ItemStack(Material.MUSIC_DISC_CAT));
+        Utils.fillRegion(Region.GREEN_DISC_BEACON_COVER, Material.GREEN_STAINED_GLASS);
     }
 
     public static void addKill(Player p) {

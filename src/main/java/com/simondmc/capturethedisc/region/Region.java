@@ -62,6 +62,16 @@ public class Region {
             new Location(null, 68, 10, -25),
     };
 
+    // disc beacon covers
+    public static final Location[] RED_DISC_BEACON_COVER = {
+            new Location(null, 177, -22, -276),
+            new Location(null, 178, -22, -275),
+    };
+    public static final Location[] GREEN_DISC_BEACON_COVER = {
+            new Location(null, 66, -22, -23),
+            new Location(null, 67, -22, -22),
+    };
+
     // capturing platforms
     public static final Location[] GREEN_CAPTURE = {
             new Location(null, 112, -34, -7),
