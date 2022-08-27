@@ -4,10 +4,7 @@ import com.simondmc.capturethedisc.kits.Inventory;
 import com.simondmc.capturethedisc.kits.Kits;
 import com.simondmc.capturethedisc.region.Region;
 import com.simondmc.capturethedisc.util.Utils;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -50,6 +47,9 @@ public class GameUtils {
             p.sendMessage("");
             Utils.sendCenteredMessage(p, "§cNote: Axes do not deal damage.");
             p.sendMessage("§6§l§m---------------------------------------------");
+
+            // play starting sound
+            Utils.playSound(p, Sound.BLOCK_NOTE_BLOCK_HARP);
         }
     }
 

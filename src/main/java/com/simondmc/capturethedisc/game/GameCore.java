@@ -17,6 +17,7 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -144,6 +145,14 @@ public class GameCore {
         Location l = Region.CENTER.clone().add(.5, 20, .5);
         l.setWorld(Region.getWorld());
         p.teleport(l);
+
+        // play void death sound
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Utils.playSound(p, Sound.ENTITY_GENERIC_BIG_FALL);
+            }
+        }.runTaskLater(CaptureTheDisc.plugin, 2);
 
         if (isDiscHolder(p)) {
             for (Player player : Teams.getPlayers()) {
