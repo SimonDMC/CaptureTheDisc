@@ -10,6 +10,7 @@ import com.simondmc.capturethedisc.kits.RegeneratingItemHandler;
 import com.simondmc.capturethedisc.region.Region;
 import com.simondmc.capturethedisc.shop.ShopGUI;
 import com.simondmc.capturethedisc.shop.ShopNPC;
+import com.simondmc.capturethedisc.shop.Upgrade;
 import com.simondmc.capturethedisc.util.Config;
 import com.simondmc.capturethedisc.util.Utils;
 import org.bukkit.*;
@@ -17,10 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffect;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class GameCore {
     private static boolean running = false;
@@ -124,6 +122,9 @@ public class GameCore {
         }
         l.setWorld(Region.getWorld());
         p.teleport(l);
+        if (Kits.getKit(p) == null) {
+            Kits.openKitGui(p);
+        }
     }
 
     public static void die(Player p, EntityDamageEvent.DamageCause cause) {
@@ -249,5 +250,23 @@ public class GameCore {
 
     public static boolean existsGreenDiscHolder() {
         return greenDiscHolder != null;
+    }
+
+    public static void joinGame(Player p) {
+        // check if player is in any team already
+        if (Teams.getRed().contains(p) || Teams.getGreen().contains(p)) {
+            p.sendMessage("§cYou are already in the game.");
+            return;
+        }
+        // add player to smaller team
+        Teams.setTeam(p, Teams.getRed().size() <= Teams.getGreen().size());
+        Teams.getPlayers().add(p);
+        // init player upgrades
+        List<Upgrade> upgradeList = new ArrayList<>();
+        upgradeList.addAll(Arrays.asList(Upgrade.SWORD_NONE, Upgrade.CHESTPLATE_NONE, Upgrade.AXE_NONE));
+        ShopGUI.upgrades.put(p, upgradeList);
+        // respawn player
+        GameCore.respawn(p);
+        p.sendMessage("§eYou have joined the game.");
     }
 }

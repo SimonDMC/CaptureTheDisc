@@ -349,7 +349,7 @@ public class PlayerEvent implements Listener {
         }
 
         // if not in offlineplayer list, set as spectator
-        p.sendMessage("§aCapture The Disc has already started! You can spectate the game.");
+        p.sendMessage("§aCapture The Disc has already started! You can spectate the game or join via §d/joinctd");
         p.setGameMode(GameMode.SPECTATOR);
         Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
 
@@ -371,7 +371,7 @@ public class PlayerEvent implements Listener {
                     Teams.getRed().contains(p),
                     ShopGUI.upgrades.get(p),
                     Coins.getCoins(p),
-                    GameCore.kills.get(p)
+                    GameCore.kills.get(p) == null ? 0 : GameCore.kills.get(p)
             );
 
             Teams.getOffline().add(op);

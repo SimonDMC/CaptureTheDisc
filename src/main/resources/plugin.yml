@@ -24,3 +24,4 @@ commands:
   toggleshout:
   # used in preprocess to override any other shout command while ctd is running
   shout:
+  joinctd:
