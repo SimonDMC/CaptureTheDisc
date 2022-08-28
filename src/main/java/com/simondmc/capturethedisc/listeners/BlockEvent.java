@@ -60,6 +60,11 @@ public class BlockEvent implements Listener {
 
     @EventHandler
     public void breakBlock(BlockBreakEvent e) {
+        // if in world before game starts, disable block breaking
+        if (e.getPlayer().getWorld().getName().equals("ctd-world") && !GameCore.isOn()) {
+            e.setCancelled(true);
+            return;
+        }
         if (!GameCore.isOn()) return;
         Player p = e.getPlayer();
         if (p.getGameMode().equals(GameMode.CREATIVE)) return;
