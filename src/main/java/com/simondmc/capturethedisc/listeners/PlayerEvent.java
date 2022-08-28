@@ -96,6 +96,11 @@ public class PlayerEvent implements Listener {
                 e.setCancelled(true);
                 return;
             }
+            // send warning message if damager holding axe
+            if (p.getInventory().getItemInMainHand().getType().toString().contains("AXE")) {
+                p.sendMessage("§cAxes do not deal damage.");
+            }
+
             // add coins if haven't shot self, no shield blocking and not in base
             if (p.equals(damaged)) return;
             if (e.getDamage(EntityDamageEvent.DamageModifier.BLOCKING) != 0) return;
