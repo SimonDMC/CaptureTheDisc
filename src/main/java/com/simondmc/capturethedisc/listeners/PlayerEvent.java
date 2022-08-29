@@ -37,7 +37,9 @@ public class PlayerEvent implements Listener {
             Material.SHIELD,
             Material.BOW,
             Material.TIPPED_ARROW,
-            Material.MILK_BUCKET
+            Material.MILK_BUCKET,
+            Material.MUSIC_DISC_CAT,
+            Material.MUSIC_DISC_PIGSTEP
     ));
 
     @EventHandler
@@ -75,7 +77,10 @@ public class PlayerEvent implements Listener {
 
             // drop everything bought from shop
             for (ItemStack i : p.getInventory().getContents()) {
-                if (i != null && droppable.contains(i.getType())) {
+                if (i != null &&
+                        droppable.contains(i.getType()) &&
+                        i.getType() != Material.MUSIC_DISC_CAT &&
+                        i.getType() != Material.MUSIC_DISC_PIGSTEP) {
                     p.getWorld().dropItemNaturally(p.getLocation(), i);
                 }
             }
@@ -215,10 +220,33 @@ public class PlayerEvent implements Listener {
         if (!(e.getEntity() instanceof Player)) return;
         Player who_picked = (Player) e.getEntity();
 
-        // cancel pickup if own disc
-        if ((e.getItem().getItemStack().getType().equals(Material.MUSIC_DISC_PIGSTEP) && Teams.getRed().contains((Player) e.getEntity())) ||
-                (e.getItem().getItemStack().getType().equals(Material.MUSIC_DISC_CAT) && Teams.getGreen().contains((Player) e.getEntity()))) {
+        // cancel pickup and respawn if own disc
+        if (e.getItem().getItemStack().getType().equals(Material.MUSIC_DISC_PIGSTEP) && Teams.getRed().contains(who_picked)) {
             e.setCancelled(true);
+            e.getItem().remove();
+            for (Player player : Teams.getGreen()) {
+                Utils.playSound(player, Sound.BLOCK_ANVIL_LAND);
+                player.sendMessage("§c" + who_picked.getName() + " §eretrieved their own disc - §lRespawning!");
+            }
+            for (Player player : Teams.getRed()) {
+                Utils.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+                player.sendMessage("§c" + who_picked.getName() + " §eretrieved their own disc - §lRespawning!");
+            }
+            GameUtils.spawnRedDisc();
+            return;
+        }
+        if (e.getItem().getItemStack().getType().equals(Material.MUSIC_DISC_CAT) && Teams.getGreen().contains(who_picked)) {
+            e.setCancelled(true);
+            e.getItem().remove();
+            for (Player player : Teams.getRed()) {
+                Utils.playSound(player, Sound.BLOCK_ANVIL_LAND);
+                player.sendMessage("§a" + who_picked.getName() + " §eretrieved their own disc - §lRespawning!");
+            }
+            for (Player player : Teams.getGreen()) {
+                Utils.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+                player.sendMessage("§a" + who_picked.getName() + " §eretrieved their own disc - §lRespawning!");
+            }
+            GameUtils.spawnGreenDisc();
             return;
         }
 
@@ -267,7 +295,37 @@ public class PlayerEvent implements Listener {
     @EventHandler
     public void dropItem(PlayerDropItemEvent e) {
         if (!GameCore.isOn()) return;
-        if (!droppable.contains(e.getItemDrop().getItemStack().getType())) e.setCancelled(true);
+        if (!droppable.contains(e.getItemDrop().getItemStack().getType())) {
+            e.setCancelled(true);
+            return;
+        }
+        // dropped disc
+        if (e.getItemDrop().getItemStack().getType().equals(Material.MUSIC_DISC_PIGSTEP)) {
+            for (Player p : Teams.getPlayers()) {
+                Utils.playSound(p, Sound.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF);
+                p.sendMessage("§c" + e.getPlayer().getName() + "§e dropped the §a§lGREEN§e disc!");
+            }
+            e.getItemDrop().setGlowing(true);
+            GameCore.redDisc = e.getItemDrop();
+            SidebarHandler.redTeam.addEntry(GameCore.redDisc.getUniqueId().toString());
+            for (Player p : Teams.getPlayers()) {
+                p.setScoreboard(SidebarHandler.board);
+            }
+            GameCore.removeDiscHolder(e.getPlayer());
+        }
+        if (e.getItemDrop().getItemStack().getType().equals(Material.MUSIC_DISC_CAT)) {
+            for (Player p : Teams.getPlayers()) {
+                Utils.playSound(p, Sound.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF);
+                p.sendMessage("§c" + e.getPlayer().getName() + "§e dropped the §a§lGREEN§e disc!");
+            }
+            e.getItemDrop().setGlowing(true);
+            GameCore.greenDisc = e.getItemDrop();
+            SidebarHandler.greenTeam.addEntry(GameCore.greenDisc.getUniqueId().toString());
+            for (Player p : Teams.getPlayers()) {
+                p.setScoreboard(SidebarHandler.board);
+            }
+            GameCore.removeDiscHolder(e.getPlayer());
+        }
     }
 
     @EventHandler

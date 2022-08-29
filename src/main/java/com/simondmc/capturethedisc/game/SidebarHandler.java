@@ -11,6 +11,9 @@ import org.bukkit.scoreboard.Team;
 
 public class SidebarHandler {
 
+    public static Scoreboard board;
+    public static Team redTeam, greenTeam;
+
     /*
         CAPTURE THE DISC
                             7
@@ -20,18 +23,18 @@ public class SidebarHandler {
         Green Disc: Held    3
                             2
         Coins: 5¢           1
-        Kills: 7⚔           0
+        Kills: 7⚔          0
      */
 
     public static void createSidebar(Player p) {
         // CREATE SIDEBAR
-        Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
+        board = Bukkit.getScoreboardManager().getNewScoreboard();
         Objective objective = board.registerNewObjective("ctd", "dummy", "  §a§lCapture The Disc  ");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
         // SET TEAMS FOR GLOWING AND COLORED NAME
-        Team redTeam = board.registerNewTeam("redCTD");
-        Team greenTeam = board.registerNewTeam("greenCTD");
+        redTeam = board.registerNewTeam("redCTD");
+        greenTeam = board.registerNewTeam("greenCTD");
         redTeam.setColor(ChatColor.RED);
         greenTeam.setColor(ChatColor.GREEN);
 
@@ -41,6 +44,10 @@ public class SidebarHandler {
         for (Player green : Teams.getGreen()) {
             greenTeam.addEntry(green.getName());
         }
+
+        // ADD DISCS TO COLOR GLOWS
+        redTeam.addEntry(GameCore.redDisc.getUniqueId().toString());
+        greenTeam.addEntry(GameCore.greenDisc.getUniqueId().toString());
 
         // EMPTY LINES
         objective.getScore("§1").setScore(7);

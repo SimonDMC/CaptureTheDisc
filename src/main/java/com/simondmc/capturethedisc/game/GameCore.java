@@ -15,6 +15,7 @@ import com.simondmc.capturethedisc.util.Config;
 import com.simondmc.capturethedisc.util.Utils;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffect;
@@ -29,6 +30,7 @@ public class GameCore {
     public static final HashMap<Player, TimestampHit> lastDamage = new HashMap<>();
     public static long startTime;
     private static Player redDiscHolder, greenDiscHolder;
+    public static Item redDisc, greenDisc;
 
     public static void startGame() {
         running = true;
@@ -133,6 +135,8 @@ public class GameCore {
     }
 
     public static void die(Player p, EntityDamageEvent.DamageCause cause) {
+        boolean isDiscHolder = false;
+
         // cancel regenerating potion
         RegeneratingItemHandler.resetRegeneratingItem(p);
 
@@ -163,14 +167,17 @@ public class GameCore {
                 Utils.playSound(player, Sound.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF);
                 // green disc holder
                 if (Teams.getRed().contains(p)) {
-                    player.sendMessage("§eThe §a§lGREEN §edisc was dropped!");
+                    player.sendMessage("§c" + p.getName() +  " §edied with the §a§lGREEN §edisc!");
+                    GameUtils.spawnGreenDisc();
                 }
                 // red disc holder
                 if (Teams.getGreen().contains(p)) {
-                    player.sendMessage("§eThe §c§lRED §edisc was dropped!");
+                    player.sendMessage("§a" + p.getName() +  " §edied with the §c§lRED §edisc!");
+                    GameUtils.spawnRedDisc();
                 }
             }
             removeDiscHolder(p);
+            isDiscHolder = true;
         }
 
         // figure out if kill
@@ -184,6 +191,7 @@ public class GameCore {
                 String pColor = (Teams.getRed().contains(p) ? "§c" : "§a");
                 GameUtils.addKill(damager);
                 Utils.playSound(damager, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+                if (isDiscHolder) return;
                 for (Player reciever : players) {
                     switch (cause) {
                         case PROJECTILE:
@@ -212,6 +220,7 @@ public class GameCore {
         // if not kill
         List<Player> players = Teams.getPlayers().size() <= 5 ? Teams.getPlayers() : Collections.singletonList(p);
         String pColor = (Teams.getRed().contains(p) ? "§c" : "§a");
+        if (isDiscHolder) return;
         for (Player reciever : players) {
             switch (cause) {
                 case PROJECTILE:
@@ -248,11 +257,9 @@ public class GameCore {
     public static void removeDiscHolder(Player p) {
         if (redDiscHolder == p) {
             redDiscHolder = null;
-            if (isOn()) GameUtils.spawnRedDisc();
         }
         if (greenDiscHolder == p) {
             greenDiscHolder = null;
-            if (isOn()) GameUtils.spawnGreenDisc();
         }
         p.setGlowing(false);
     }

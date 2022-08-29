@@ -6,10 +6,7 @@ import com.simondmc.capturethedisc.kits.Kits;
 import com.simondmc.capturethedisc.region.Region;
 import com.simondmc.capturethedisc.util.Performance;
 import com.simondmc.capturethedisc.util.Utils;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -61,6 +58,24 @@ public class GameLoop {
                 // PARTICLES ON SHOP
                 for (Location l : new Location[]{Region.RED_SHOP, Region.GREEN_SHOP}) {
                     Region.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, l.clone().add(0, 2.7, 0), 5);
+                }
+
+                // RESPAWN DISC IN VOID
+                if (GameCore.redDisc.getLocation().getY() < Region.VOID_LEVEL) {
+                    GameCore.redDisc.remove();
+                    GameUtils.spawnRedDisc();
+                    for (Player p : Teams.getPlayers()) {
+                        p.sendMessage("§eThe §c§lRED §edisc fell onto the floor and respawned!");
+                        Utils.playSound(p, Sound.BLOCK_STONE_BREAK);
+                    }
+                }
+                if (GameCore.greenDisc.getLocation().getY() < Region.VOID_LEVEL) {
+                    GameCore.greenDisc.remove();
+                    GameUtils.spawnGreenDisc();
+                    for (Player p : Teams.getPlayers()) {
+                        p.sendMessage("§eThe §a§lGREEN §edisc fell onto the floor and respawned!");
+                        Utils.playSound(p, Sound.BLOCK_STONE_BREAK);
+                    }
                 }
 
                 Performance.stop("5t/loop");

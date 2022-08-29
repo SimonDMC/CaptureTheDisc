@@ -1,13 +1,18 @@
 package com.simondmc.capturethedisc.game;
 
+import com.simondmc.capturethedisc.CaptureTheDisc;
 import com.simondmc.capturethedisc.kits.Inventory;
 import com.simondmc.capturethedisc.kits.Kits;
 import com.simondmc.capturethedisc.region.Region;
 import com.simondmc.capturethedisc.util.Utils;
-import org.bukkit.*;
-import org.bukkit.entity.Entity;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.util.Collections;
 
@@ -54,13 +59,39 @@ public class GameUtils {
     }
 
     public static void spawnRedDisc() {
-        Region.getWorld().dropItem(Region.RED_DISC.clone().add(.5, 0, .5), new ItemStack(Material.MUSIC_DISC_PIGSTEP));
-        Utils.fillRegion(Region.RED_DISC_BEACON_COVER, Material.RED_STAINED_GLASS);
+        GameCore.redDisc = Region.getWorld().dropItem(Region.RED_DISC, new ItemStack(Material.MUSIC_DISC_PIGSTEP));
+        GameCore.redDisc.setGlowing(true);
+        Utils.fillRegion(Region.RED_DISC_BEACON_COVER, Material.GLASS);
+        if (SidebarHandler.board != null) {
+            SidebarHandler.redTeam.addEntry(GameCore.redDisc.getUniqueId().toString());
+            for (Player p : Teams.getPlayers()) {
+                p.setScoreboard(SidebarHandler.board);
+            }
+        }
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                GameCore.redDisc.setVelocity(new Vector(0, 0, 0));
+            }
+        }.runTaskLater(CaptureTheDisc.plugin, 1);
     }
 
     public static void spawnGreenDisc() {
-        Region.getWorld().dropItem(Region.GREEN_DISC.clone().add(.5, 0, .5), new ItemStack(Material.MUSIC_DISC_CAT));
-        Utils.fillRegion(Region.GREEN_DISC_BEACON_COVER, Material.GREEN_STAINED_GLASS);
+        GameCore.greenDisc = Region.getWorld().dropItem(Region.GREEN_DISC, new ItemStack(Material.MUSIC_DISC_CAT));
+        GameCore.greenDisc.setGlowing(true);
+        Utils.fillRegion(Region.GREEN_DISC_BEACON_COVER, Material.GLASS);
+        if (SidebarHandler.board != null) {
+            SidebarHandler.greenTeam.addEntry(GameCore.greenDisc.getUniqueId().toString());
+            for (Player p : Teams.getPlayers()) {
+                p.setScoreboard(SidebarHandler.board);
+            }
+        }
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                GameCore.greenDisc.setVelocity(new Vector(0, 0, 0));
+            }
+        }.runTaskLater(CaptureTheDisc.plugin, 1);
     }
 
     public static void addKill(Player p) {
