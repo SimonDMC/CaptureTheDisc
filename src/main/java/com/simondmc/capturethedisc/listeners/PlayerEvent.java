@@ -349,11 +349,13 @@ public class PlayerEvent implements Listener {
                     Utils.inRegion(e.getEntity().getLocation(), Region.RED_DISC_AREA) ||
                     Utils.inRegion(e.getEntity().getLocation(), Region.GREEN_DISC_AREA) ||
                     Utils.inRegion(e.getEntity().getLocation(), Region.RED_CAPTURE) ||
-                    Utils.inRegion(e.getEntity().getLocation(), Region.GREEN_CAPTURE)) {
+                    Utils.inRegion(e.getEntity().getLocation(), Region.GREEN_CAPTURE) ||
+                    e.getEntity().getLocation().getY() < Region.VOID_LEVEL) {
                 EnderPearl pearl = (EnderPearl) e.getEntity();
                 Player p = (Player) pearl.getShooter();
                 p.sendMessage("§cYou can't teleport there!");
-                p.getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
+                if (e.getEntity().getLocation().getY() > Region.VOID_LEVEL)
+                    p.getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
                 pearl.remove();
             }
         }
