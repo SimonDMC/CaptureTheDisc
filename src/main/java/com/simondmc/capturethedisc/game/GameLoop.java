@@ -113,7 +113,11 @@ public class GameLoop {
                     if (GameCore.dead.containsKey(p)) continue;
                     int blockCount = Utils.countItems(Material.BIRCH_PLANKS, p);
                     if (blockCount < 64) {
-                        p.getInventory().addItem(new ItemStack(Material.BIRCH_PLANKS));
+                        if (p.getInventory().getItemInOffHand().getType() == Material.BIRCH_PLANKS) {
+                            p.getInventory().getItemInOffHand().setAmount(p.getInventory().getItemInOffHand().getAmount() + 1);
+                        } else {
+                            p.getInventory().addItem(new ItemStack(Material.BIRCH_PLANKS));
+                        }
                     }
                 }
 
