@@ -19,7 +19,12 @@ public class PublicCommand implements CommandExecutor {
             }
 
             Player player = (Player) sender;
-            cmd.runCommand(player, args);
+            try {
+                cmd.runCommand(player, args);
+            } catch (Exception e) {
+                player.sendMessage("§cAn error occurred while running this command! Please report this to SimonDMC#6662.");
+                e.printStackTrace();
+            }
 
             return true;
         }
