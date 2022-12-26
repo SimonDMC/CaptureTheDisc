@@ -16,8 +16,11 @@ import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class CoreManager extends GameManager {
+
+    Logger logger = Bukkit.getLogger();
 
     @Override
     public String getId() {
@@ -40,18 +43,24 @@ public class CoreManager extends GameManager {
 
     @Override
     public List<CoreTeam> startGame() {
+        logger.info("Starting game...");
+        logger.info("Assigning teams...");
         List<CoreTeam> coreTeams = new ArrayList<>();
         // assign teams randomly
         List<Player>[] teams = Teams.assignTeams();
         coreTeams.add(new CoreTeam(teams[0], ChatColor.RED, "Red"));
         coreTeams.add(new CoreTeam(teams[1], ChatColor.GREEN, "Green"));
+        logger.info("Teams assigned, running internal game setup...");
         GameCore.setup();
+        logger.info("Internal game setup complete, starting game.");
         GameCore.startGame();
+        logger.info("Game started! Returning teams.");
         return coreTeams;
     }
 
     @Override
     public void cleanupGame() {
+        logger.info("Cleaning up game...");
         for (Player p : Teams.getPlayers()) {
             p.setDisplayName(p.getName());
             p.setGameMode(GameMode.SURVIVAL);
@@ -82,16 +91,18 @@ public class CoreManager extends GameManager {
         GameCore.kills.clear();
         // reset sidebar
         SidebarHandler.reset();
+        logger.info("Game cleaned up!");
     }
 
     @Override
     public void setupGame(Runnable finishConsumer) {
+        logger.info("Setting up game...");
         // reset map
         Map.createMap();
         for (Player p : CaptureTheDisc.plugin.getServer().getOnlinePlayers()) {
             Location l = Region.LOBBY.clone();
             l.setWorld(Bukkit.getWorld("ctd-world"));
-            p.teleport(l);
+            // don't teleport as that's handled by core
             p.setGameMode(GameMode.ADVENTURE);
             p.getInventory().clear();
             p.getInventory().setArmorContents(null);
@@ -110,6 +121,7 @@ public class CoreManager extends GameManager {
                 p.removePotionEffect(eff.getType());
             }
         }
+        logger.info("Game setup complete!");
         finishConsumer.run();
     }
 

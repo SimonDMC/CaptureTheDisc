@@ -20,8 +20,8 @@ public class Region {
 
     // points of map with lowest and highest XYZ
     public static final Location[] MAP = {
-            new Location(null, 53, -56, -299),
-            new Location(null, 191, -6, 1)
+            new Location(null, 54, -56, -298),
+            new Location(null, 190, -6, 0)
     };
 
     // team spawnpoints
