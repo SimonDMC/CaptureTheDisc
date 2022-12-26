@@ -27,6 +27,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class PlayerEvent implements Listener {
 
@@ -41,6 +42,8 @@ public class PlayerEvent implements Listener {
             Material.MUSIC_DISC_CAT,
             Material.MUSIC_DISC_PIGSTEP
     ));
+
+    Logger logger = CaptureTheDisc.plugin.getLogger();
 
     @EventHandler
     public void food(FoodLevelChangeEvent e) {
@@ -185,6 +188,7 @@ public class PlayerEvent implements Listener {
                 player.sendMessage("§c" + p.getName() + " §ecaptured the §a§lGREEN §edisc!");
                 Utils.playSound(player, Sound.ENTITY_ENDER_DRAGON_GROWL);
             }
+            logger.info(p.getName() + " captured the green disc - stopping game");
             GameCore.stopGame();
         }
         if (Teams.getGreen().contains(p) && Utils.inRegion(e.getTo(), Region.GREEN_CAPTURE) && GameCore.isDiscHolder(p)) {
@@ -198,6 +202,7 @@ public class PlayerEvent implements Listener {
                 player.sendMessage("§a" + p.getName() + " §ecaptured the §c§lRED §edisc!");
                 Utils.playSound(player, Sound.ENTITY_ENDER_DRAGON_GROWL);
             }
+            logger.info(p.getName() + " captured the red disc - stopping game");
             GameCore.stopGame();
         }
     }

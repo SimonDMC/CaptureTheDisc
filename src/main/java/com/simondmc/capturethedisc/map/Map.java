@@ -15,6 +15,7 @@ public class Map {
     private static final CaptureTheDisc plugin = CaptureTheDisc.plugin;
 
     public static void createMap() {
+        plugin.getLogger().info("Creating map...");
         try {
             // GET PATHS
             String mapPath = plugin.getDataFolder() + File.separator + "world.zip";
@@ -71,6 +72,7 @@ public class Map {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        plugin.getLogger().info("Map created!");
     }
 
     // https://stackoverflow.com/a/29175213

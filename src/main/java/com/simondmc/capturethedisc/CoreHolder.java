@@ -17,6 +17,9 @@ public class CoreHolder {
     }
 
     public static void endGame() {
-        Bukkit.getScheduler().runTaskLater(CaptureTheDisc.plugin, () -> core.endGame(), 100);
+        Bukkit.getScheduler().runTaskLater(CaptureTheDisc.plugin, () -> {
+            CaptureTheDisc.plugin.getLogger().info("Received end game request, stopping game...");
+            core.endGame();
+            }, 100);
     }
 }

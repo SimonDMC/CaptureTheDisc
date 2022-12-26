@@ -11,7 +11,8 @@ reason, use `/forcestopctd`.
 To get updates on performance, use `/togglectdperformance`.
 The performance log shows how long each runnable takes to execute.
 
-## Map
-The current map in usage is not entirely finished, but the core of it 
-will  remain the same. All the locations are configured for this map, 
-so the game is currently fully playable.
+## Event Core
+As this game was made for an event, it works with the EventCore plugin,
+however it also works without it. If EventCore is installed, set up
+the game with `/event setup capture_the_disc`, and start it with
+`/event start capture_the_disc`.

@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 
 public class CoreManager extends GameManager {
 
-    Logger logger = Bukkit.getLogger();
+    Logger logger = CaptureTheDisc.plugin.getLogger();
 
     @Override
     public String getId() {
