@@ -289,4 +289,53 @@ public class GameCore {
         GameCore.respawn(p);
         p.sendMessage("§eYou have joined the game.");
     }
+
+    public static void joinWorld(Player p) {
+        // parse offlineplayer data
+        for (OfflinePlayer op : Teams.getOffline()) {
+            if (op.getUUID().equals(p.getUniqueId())) {
+                Config.devAnnounce("§ePlayer §a" + p.getName() + " §ereconnected");
+
+                // add back to game and die
+                Teams.getPlayers().add(p);
+                GameCore.die(p, EntityDamageEvent.DamageCause.CUSTOM);
+
+                // set kit
+                if (op.getKit() == null) {
+                    Kits.openKitGui(p);
+                } else {
+                    Kits.setKit(p, op.getKit());
+                    Kits.selected.add(p);
+                }
+
+                // set team
+                if (op.isRed()) {
+                    Teams.getRed().add(p);
+                } else {
+                    Teams.getGreen().add(p);
+                }
+
+                // set upgrades
+                ShopGUI.upgrades.put(p, op.getUpgrades());
+
+                // set coins
+                Coins.setCoins(p, op.getCoins());
+
+                // set kills
+                GameCore.kills.put(p, op.getKills());
+
+                return;
+            }
+        }
+
+        // if not in offlineplayer list, set as spectator
+        p.sendMessage("§aCapture The Disc has already started! You can spectate the game or join via §d/joinctd");
+        p.setGameMode(GameMode.SPECTATOR);
+        Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+
+        Location l = Region.CENTER;
+        l.setWorld(Region.getWorld());
+        p.teleport(l);
+
+    }
 }

@@ -1,6 +1,8 @@
 package com.simondmc.capturethedisc.listeners;
 
 import com.simondmc.capturethedisc.CaptureTheDisc;
+import com.simondmc.capturethedisc.CoreHolder;
+import com.simondmc.capturethedisc.CoreManager;
 import com.simondmc.capturethedisc.game.*;
 import com.simondmc.capturethedisc.game.OfflinePlayer;
 import com.simondmc.capturethedisc.kits.Kits;
@@ -149,9 +151,11 @@ public class PlayerEvent implements Listener {
         Player p = e.getPlayer();
 
         // check for spectator
-        if (!Teams.getPlayers().contains(p)) {
+        if (!Teams.getPlayers().contains(p) && p.getWorld().equals(Region.getWorld())) {
             if (!Utils.inRegion(p.getLocation(), Region.MAP)) {
-                p.teleport(Region.CENTER);
+                Location l = Region.CENTER.clone();
+                l.setWorld(Region.getWorld());
+                p.teleport(l);
             }
             return;
         }
@@ -383,54 +387,11 @@ public class PlayerEvent implements Listener {
     @EventHandler
     public void joinGame(PlayerJoinEvent e) {
         if (!GameCore.isOn()) return;
+        if (CaptureTheDisc.coreEnabled) return;
         Player p = e.getPlayer();
+        logger.info(p.getName() + " joined CaptureTheDisc");
 
-        // parse offlineplayer data
-        for (OfflinePlayer op : Teams.getOffline()) {
-            if (op.getUUID().equals(p.getUniqueId())) {
-                Config.devAnnounce("§ePlayer §a" + p.getName() + " §ereconnected");
-
-                // add back to game and die
-                Teams.getPlayers().add(p);
-                GameCore.die(p, EntityDamageEvent.DamageCause.CUSTOM);
-
-                // set kit
-                if (op.getKit() == null) {
-                    Kits.openKitGui(p);
-                } else {
-                    Kits.setKit(p, op.getKit());
-                    Kits.selected.add(p);
-                }
-
-                // set team
-                if (op.isRed()) {
-                    Teams.getRed().add(p);
-                } else {
-                    Teams.getGreen().add(p);
-                }
-
-                // set upgrades
-                ShopGUI.upgrades.put(p, op.getUpgrades());
-
-                // set coins
-                Coins.setCoins(p, op.getCoins());
-
-                // set kills
-                GameCore.kills.put(p, op.getKills());
-
-                return;
-            }
-        }
-
-        // if not in offlineplayer list, set as spectator
-        p.sendMessage("§aCapture The Disc has already started! You can spectate the game or join via §d/joinctd");
-        p.setGameMode(GameMode.SPECTATOR);
-        Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
-
-        Location l = Region.CENTER;
-        l.setWorld(Region.getWorld());
-        p.teleport(l);
-
+        GameCore.joinWorld(p);
     }
 
     @EventHandler
@@ -457,6 +418,8 @@ public class PlayerEvent implements Listener {
                     "§aCoins: §e" + op.getCoins() + "\n" +
                     "§aKills: §e" + op.getKills()
             );
+
+            logger.info(p.getName() + " left CaptureTheDisc");
 
             // die so disc drops if player is disc holder
             GameCore.die(p, EntityDamageEvent.DamageCause.CUSTOM);

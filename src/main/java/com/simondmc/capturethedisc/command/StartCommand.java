@@ -17,6 +17,10 @@ public class StartCommand implements SuperCommand {
     }
 
     public void runCommand(Player p, String[] args) {
+        if (CaptureTheDisc.coreEnabled) {
+            p.sendMessage("§cCore is enabled, please use §e/event setup capture_the_disc §cfollowed by §e/event start capture_the_disc §cto start the game.");
+            return;
+        }
         if (GameCore.isOn()) {
             CaptureTheDisc.plugin.getLogger().warning("Game is already running, terminating.");
             GameCore.stopGame();

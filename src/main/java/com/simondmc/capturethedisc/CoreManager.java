@@ -95,6 +95,13 @@ public class CoreManager extends GameManager {
     }
 
     @Override
+    public void handleRejoin(Player player) {
+        logger.info("Handling rejoin for " + player.getName());
+        GameCore.joinWorld(player);
+        logger.info("Rejoin handled for " + player.getName());
+    }
+
+    @Override
     public void setupGame(Runnable finishConsumer) {
         logger.info("Setting up game...");
         // reset map
