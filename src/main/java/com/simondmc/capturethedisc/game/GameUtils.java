@@ -122,6 +122,8 @@ public class GameUtils {
         // clear disc from inventory
         p.getInventory().remove(Material.MUSIC_DISC_PIGSTEP);
         p.getInventory().remove(Material.MUSIC_DISC_CAT);
+        // clear slowness
+        p.removePotionEffect(PotionEffectType.SLOW);
         // respawn disc
         if (Teams.getRed().contains(p)) {
             spawnGreenDisc();
