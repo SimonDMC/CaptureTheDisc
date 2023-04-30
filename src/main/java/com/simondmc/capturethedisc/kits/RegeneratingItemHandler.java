@@ -34,7 +34,7 @@ public class RegeneratingItemHandler {
                 potmeta.setColor(Color.fromRGB(135,206,235)); // close enough idk i got this from searching sky green on google
                 potmeta.setDisplayName("§rSplash Potion of Swiftness");
                 potmeta.addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 600, 0, false, true), false);
-                ArrayList<String> lore = new ArrayList<>(Arrays.asList(" ", "§cNotice: You can only splash", "§cthis potion on yourself."));
+                ArrayList<String> lore = new ArrayList<>(Arrays.asList(" ", "§cNote: You can only splash", "§cthis potion on yourself."));
                 potmeta.setLore(lore);
                 pot.setItemMeta(potmeta);
 
