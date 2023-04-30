@@ -25,3 +25,4 @@ commands:
   # used in preprocess to override any other shout command while ctd is running
   shout:
   joinctd:
+  ctdstuck:
