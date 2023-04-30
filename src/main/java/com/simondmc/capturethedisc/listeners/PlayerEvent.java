@@ -308,8 +308,7 @@ public class PlayerEvent implements Listener {
 
             // mark player as disc holder
             GameCore.setDiscHolder(who_picked);
-            // give regen and slowness
-            who_picked.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 200, 0));
+            // give slowness
             who_picked.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000000, 0));
             // cover beacons
             Utils.fillRegion(Region.RED_DISC_BEACON_COVER, Material.POLISHED_BLACKSTONE);
@@ -328,8 +327,7 @@ public class PlayerEvent implements Listener {
 
             // mark player as disc holder
             GameCore.setDiscHolder(who_picked);
-            // give regen and slowness
-            who_picked.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 200, 0));
+            // give slowness
             who_picked.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000000, 0));
             // cover beacons
             Utils.fillRegion(Region.GREEN_DISC_BEACON_COVER, Material.POLISHED_BLACKSTONE);
