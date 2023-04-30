@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.player.PlayerFishEvent;
@@ -90,6 +91,15 @@ public class BlockEvent implements Listener {
     @EventHandler
     public void itemDespawn(ItemDespawnEvent e) {
         if (GameCore.isOn()) e.setCancelled(true);
+    }
+
+    // stop tnt from blowing up items
+    @EventHandler
+    public void itemExplode(EntityDamageEvent e) {
+        if (!GameCore.isOn()) return;
+        if (e.getCause() != EntityDamageEvent.DamageCause.BLOCK_EXPLOSION && e.getCause() != EntityDamageEvent.DamageCause.ENTITY_EXPLOSION) return;
+        if (e.getEntityType() != EntityType.DROPPED_ITEM && !(e.getEntity() instanceof Item)) return;
+        e.setCancelled(true);
     }
 
     @EventHandler
