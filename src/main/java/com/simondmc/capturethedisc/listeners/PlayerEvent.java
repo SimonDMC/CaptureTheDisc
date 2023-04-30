@@ -355,6 +355,7 @@ public class PlayerEvent implements Listener {
                 p.setScoreboard(SidebarHandler.board);
             }
             GameCore.removeDiscHolder(e.getPlayer());
+            e.getPlayer().removePotionEffect(PotionEffectType.SLOW);
         }
         if (e.getItemDrop().getItemStack().getType().equals(Material.MUSIC_DISC_CAT)) {
             for (Player p : Teams.getPlayers()) {
@@ -368,6 +369,7 @@ public class PlayerEvent implements Listener {
                 p.setScoreboard(SidebarHandler.board);
             }
             GameCore.removeDiscHolder(e.getPlayer());
+            e.getPlayer().removePotionEffect(PotionEffectType.SLOW);
         }
     }
 
