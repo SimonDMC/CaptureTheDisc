@@ -17,8 +17,16 @@ public class JoinCommand implements SuperCommand {
     }
 
     public void runCommand(Player p, String[] args) {
+        if (!GameCore.isOn()) {
+            p.sendMessage("§cThe game is not on!");
+            return;
+        }
         if (args.length == 0) {
             GameCore.joinGame(p);
+            return;
+        }
+        if (!p.isOp()) {
+            p.sendMessage("§cYou don't have permission to join other players!");
             return;
         }
         Player p2;
