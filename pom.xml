@@ -41,7 +41,7 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\Users\SimonDMC\Desktop\Spigot\plugins\CaptureTheDisc.jar</outputFile>
+                            <outputFile>C:\Users\SimonDMCPlayer\Desktop\spigot\plugins\CaptureTheDisc.jar</outputFile>
                         </configuration>
                     </execution>
                 </executions>

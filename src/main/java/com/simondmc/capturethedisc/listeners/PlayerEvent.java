@@ -180,34 +180,70 @@ public class PlayerEvent implements Listener {
             p.sendMessage("§cYou cannot enter your own disc area!");
         }
 
-        // capture disc - end game
+        // capture disc
         if (Teams.getRed().contains(p) && Utils.inRegion(e.getTo(), Region.RED_CAPTURE) && GameCore.isDiscHolder(p)) {
-            for (Player player : Teams.getRed()) {
-                player.sendTitle("§aYou won!", "", 20, 100, 20);
-                player.sendMessage("§c" + p.getName() + " §ecaptured the §a§lGREEN §edisc!");
-                Utils.playSound(player, Sound.UI_TOAST_CHALLENGE_COMPLETE);
+            GameCore.redDiscCaptures++;
+            if (GameCore.redDiscCaptures == GameCore.discGoal) {
+                // final disc
+                for (Player player : Teams.getRed()) {
+                    player.sendTitle("§aYou won!", "", 20, 100, 20);
+                    player.sendMessage("§c" + p.getName() + " §ecaptured the §a§lGREEN §edisc! §7(" + GameCore.redDiscCaptures + "/" + GameCore.discGoal + ")");
+                    Utils.playSound(player, Sound.UI_TOAST_CHALLENGE_COMPLETE);
+                }
+                for (Player player : Teams.getGreen()) {
+                    player.sendTitle("§cYou lost!", "", 20, 100, 20);
+                    player.sendMessage("§c" + p.getName() + " §ecaptured the §a§lGREEN §edisc! §7(" + GameCore.redDiscCaptures + "/" + GameCore.discGoal + ")");
+                    Utils.playSound(player, Sound.ENTITY_ENDER_DRAGON_GROWL);
+                }
+                logger.info(p.getName() + " captured the green disc - stopping game");
+                GameCore.stopGame();
+            } else {
+                // non-final disc
+                for (Player player : Teams.getRed()) {
+                    player.sendTitle("§aGreen disc captured!", "§e" + GameCore.redDiscCaptures + "/" + GameCore.discGoal, 20, 100, 20);
+                    player.sendMessage("§c" + p.getName() + " §ecaptured the §a§lGREEN §edisc! §7(" + GameCore.redDiscCaptures + "/" + GameCore.discGoal + ")");
+                    Utils.playSound(player, Sound.ENTITY_PLAYER_LEVELUP);
+                }
+                for (Player player : Teams.getGreen()) {
+                    player.sendTitle("§cGreen disc captured!", "§e" + GameCore.redDiscCaptures + "/" + GameCore.discGoal, 20, 100, 20);
+                    player.sendMessage("§c" + p.getName() + " §ecaptured the §a§lGREEN §edisc! §7(" + GameCore.redDiscCaptures + "/" + GameCore.discGoal + ")");
+                    Utils.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 0);
+                }
+                logger.info(p.getName() + " captured the green disc - " + GameCore.redDiscCaptures + "/" + GameCore.discGoal);
+                GameUtils.captureDisc(p);
             }
-            for (Player player : Teams.getGreen()) {
-                player.sendTitle("§cYou lost!", "", 20, 100, 20);
-                player.sendMessage("§c" + p.getName() + " §ecaptured the §a§lGREEN §edisc!");
-                Utils.playSound(player, Sound.ENTITY_ENDER_DRAGON_GROWL);
-            }
-            logger.info(p.getName() + " captured the green disc - stopping game");
-            GameCore.stopGame();
         }
         if (Teams.getGreen().contains(p) && Utils.inRegion(e.getTo(), Region.GREEN_CAPTURE) && GameCore.isDiscHolder(p)) {
-            for (Player player : Teams.getGreen()) {
-                player.sendTitle("§aYou won!", "", 20, 100, 20);
-                player.sendMessage("§a" + p.getName() + " §ecaptured the §c§lRED §edisc!");
-                Utils.playSound(player, Sound.UI_TOAST_CHALLENGE_COMPLETE);
+            GameCore.greenDiscCaptures++;
+            if (GameCore.greenDiscCaptures == GameCore.discGoal) {
+                // final disc
+                for (Player player : Teams.getGreen()) {
+                    player.sendTitle("§aYou won!", "", 20, 100, 20);
+                    player.sendMessage("§a" + p.getName() + " §ecaptured the §c§lRED §edisc! §7(" + GameCore.greenDiscCaptures + "/" + GameCore.discGoal + ")");
+                    Utils.playSound(player, Sound.UI_TOAST_CHALLENGE_COMPLETE);
+                }
+                for (Player player : Teams.getRed()) {
+                    player.sendTitle("§cYou lost!", "", 20, 100, 20);
+                    player.sendMessage("§a" + p.getName() + " §ecaptured the §c§lRED §edisc! §7(" + GameCore.greenDiscCaptures + "/" + GameCore.discGoal + ")");
+                    Utils.playSound(player, Sound.ENTITY_ENDER_DRAGON_GROWL);
+                }
+                logger.info(p.getName() + " captured the red disc - stopping game");
+                GameCore.stopGame();
+            } else {
+                // non-final disc
+                for (Player player : Teams.getGreen()) {
+                    player.sendTitle("§aRed disc captured!", "§e" + GameCore.greenDiscCaptures + "/" + GameCore.discGoal, 20, 100, 20);
+                    player.sendMessage("§a" + p.getName() + " §ecaptured the §c§lRED §edisc! §7(" + GameCore.greenDiscCaptures + "/" + GameCore.discGoal + ")");
+                    Utils.playSound(player, Sound.ENTITY_PLAYER_LEVELUP);
+                }
+                for (Player player : Teams.getRed()) {
+                    player.sendTitle("§cRed disc captured!", "§e" + GameCore.greenDiscCaptures + "/" + GameCore.discGoal, 20, 100, 20);
+                    player.sendMessage("§a" + p.getName() + " §ecaptured the §c§lRED §edisc! §7(" + GameCore.greenDiscCaptures + "/" + GameCore.discGoal + ")");
+                    Utils.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 0);
+                }
+                logger.info(p.getName() + " captured the red disc - " + GameCore.greenDiscCaptures + "/" + GameCore.discGoal);
+                GameUtils.captureDisc(p);
             }
-            for (Player player : Teams.getRed()) {
-                player.sendTitle("§cYou lost!", "", 20, 100, 20);
-                player.sendMessage("§a" + p.getName() + " §ecaptured the §c§lRED §edisc!");
-                Utils.playSound(player, Sound.ENTITY_ENDER_DRAGON_GROWL);
-            }
-            logger.info(p.getName() + " captured the red disc - stopping game");
-            GameCore.stopGame();
         }
     }
 

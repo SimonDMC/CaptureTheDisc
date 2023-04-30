@@ -31,6 +31,8 @@ public class GameCore {
     public static long startTime;
     private static Player redDiscHolder, greenDiscHolder;
     public static Item redDisc, greenDisc;
+    public static int discGoal = 1;
+    public static int redDiscCaptures = 0, greenDiscCaptures = 0;
 
     public static void startGame() {
         running = true;
@@ -76,6 +78,9 @@ public class GameCore {
             GameCore.kills.clear();
             // reset sidebar
             SidebarHandler.reset();
+            // reset captures
+            greenDiscCaptures = 0;
+            redDiscCaptures = 0;
         }
 
     }

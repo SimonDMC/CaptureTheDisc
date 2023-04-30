@@ -11,6 +11,7 @@ import com.simondmc.capturethedisc.listeners.BlockEvent;
 import com.simondmc.capturethedisc.listeners.ChatEvent;
 import com.simondmc.capturethedisc.listeners.ClickEvent;
 import com.simondmc.capturethedisc.listeners.PlayerEvent;
+import com.simondmc.capturethedisc.util.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -45,12 +46,14 @@ public final class CaptureTheDisc extends JavaPlugin {
         GameLoop.gameLoop();
         // build kit inventory
         Kits.initKitGui();
+        // register disc goal
+        Config.registerDiscGoal();
         if (coreEnabled) CoreHolder.registerCore();
     }
 
     @Override
     public void onDisable() {
-        // patch persistant glowing and sidebar
+        // patch persistent glowing and sidebar
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.setGlowing(false);
             p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());

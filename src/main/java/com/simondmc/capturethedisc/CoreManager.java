@@ -91,6 +91,9 @@ public class CoreManager extends GameManager {
         GameCore.kills.clear();
         // reset sidebar
         SidebarHandler.reset();
+        // reset captures
+        GameCore.greenDiscCaptures = 0;
+        GameCore.redDiscCaptures = 0;
         logger.info("Game cleaned up!");
     }
 
@@ -110,7 +113,7 @@ public class CoreManager extends GameManager {
             Location l = Region.LOBBY.clone();
             l.setWorld(Bukkit.getWorld("ctd-world"));
             // don't teleport as that's handled by core
-            p.setGameMode(GameMode.ADVENTURE);
+            // don't set into adventure mode as that's handled by core
             p.getInventory().clear();
             p.getInventory().setArmorContents(null);
             p.getInventory().setItemInOffHand(null);

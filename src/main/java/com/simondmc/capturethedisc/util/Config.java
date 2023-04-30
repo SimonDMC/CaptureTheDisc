@@ -1,6 +1,7 @@
 package com.simondmc.capturethedisc.util;
 
 import com.simondmc.capturethedisc.CaptureTheDisc;
+import com.simondmc.capturethedisc.game.GameCore;
 import org.bukkit.Bukkit;
 
 import java.util.List;
@@ -21,6 +22,13 @@ public class Config {
         list.remove(toRemove);
         CaptureTheDisc.plugin.getConfig().set(path, list);
         CaptureTheDisc.plugin.saveConfig();
+    }
+
+    // register disc goal
+    public static void registerDiscGoal() {
+        if (CaptureTheDisc.plugin.getConfig().get("capture-goal") != null) {
+            GameCore.discGoal = (int) CaptureTheDisc.plugin.getConfig().get("capture-goal");
+        }
     }
 
     // trigger a [DEV INFO]

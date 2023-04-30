@@ -16,14 +16,17 @@ public class SidebarHandler {
 
     /*
         CAPTURE THE DISC
-                            7
-        Game Time: 3:17     6
-                            5
-        Red Disc: Safe      4
-        Green Disc: Held    3
-                            2
-        Coins: 5¢           1
-        Kills: 7⚔          0
+                              10
+        Game Time: 3:17        9
+                               8
+        Red Disc: Safe         7
+        Green Disc: Held       6
+                               5
+        Red Captures: 0/3      4
+        Green Captures: 0/3    3
+                               2
+        Coins: 5¢              1
+        Kills: 7⚔              0
      */
 
     public static void createSidebar(Player p) {
@@ -50,25 +53,33 @@ public class SidebarHandler {
         greenTeam.addEntry(GameCore.greenDisc.getUniqueId().toString());
 
         // EMPTY LINES
-        objective.getScore("§1").setScore(7);
-        objective.getScore("§2").setScore(5);
-        objective.getScore("§3").setScore(2);
+        objective.getScore("§1").setScore(10);
+        objective.getScore("§2").setScore(8);
+        objective.getScore("§3").setScore(5);
+        objective.getScore("§4").setScore(2);
 
         // GAME TIME
         long time = System.currentTimeMillis() - GameCore.startTime;
-        objective.getScore("§eGame Time: §a" + Utils.convertMillisToMSS(time)).setScore(6);
+        objective.getScore("§eGame Time: §a" + Utils.convertMillisToMSS(time)).setScore(9);
 
         // DISCS
         if (GameCore.existsRedDiscHolder()) {
-            objective.getScore("§cRed Disc: §c§lHeld").setScore(4);
+            objective.getScore("§cRed Disc: §c§lHeld").setScore(7);
         } else {
-            objective.getScore("§cRed Disc: §a§lSafe").setScore(4);
+            objective.getScore("§cRed Disc: §a§lSafe").setScore(7);
         }
         if (GameCore.existsGreenDiscHolder()) {
-            objective.getScore("§aGreen Disc: §c§lHeld").setScore(3);
+            objective.getScore("§aGreen Disc: §c§lHeld").setScore(6);
         } else {
-            objective.getScore("§aGreen Disc: §a§lSafe").setScore(3);
+            objective.getScore("§aGreen Disc: §a§lSafe").setScore(6);
         }
+
+        // CAPTURES
+        int discGoal = GameCore.discGoal;
+        int redDiscs = GameCore.redDiscCaptures;
+        int greenDiscs = GameCore.greenDiscCaptures;
+        objective.getScore("§cRed Captures: §e" + redDiscs + "/" + discGoal).setScore(4);
+        objective.getScore("§aGreen Captures: §e" + greenDiscs + "/" + discGoal).setScore(3);
 
         // COINS AND KILLS
         float coins = Coins.getCoins(p);

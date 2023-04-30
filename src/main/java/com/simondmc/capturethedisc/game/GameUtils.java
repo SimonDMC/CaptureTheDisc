@@ -113,4 +113,17 @@ public class GameUtils {
                 .filter(key -> GameCore.kills.get(key).equals(value))
                 .findFirst().get();
     }
+
+    public static void captureDisc(Player p) {
+        GameCore.removeDiscHolder(p);
+        // clear disc from inventory
+        p.getInventory().remove(Material.MUSIC_DISC_PIGSTEP);
+        p.getInventory().remove(Material.MUSIC_DISC_CAT);
+        // respawn disc
+        if (Teams.getRed().contains(p)) {
+            spawnGreenDisc();
+        } else {
+            spawnRedDisc();
+        }
+    }
 }
