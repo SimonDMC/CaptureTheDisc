@@ -18,10 +18,10 @@ public class TogglePerformanceCommand implements SuperCommand {
     public void runCommand(Player p, String[] args) {
         if (!CaptureTheDisc.plugin.getConfig().getStringList("performance").contains(p.getUniqueId().toString())) {
             Config.addString("performance", p.getUniqueId().toString());
-            p.sendMessage("§aYou will now recieve performance updates.");
+            p.sendMessage("§aYou will now receive performance updates.");
         } else {
             Config.removeString("performance", p.getUniqueId().toString());
-            p.sendMessage("§aYou will no longer recieve performance updates.");
+            p.sendMessage("§aYou will no longer receive performance updates.");
         }
     }
 }
