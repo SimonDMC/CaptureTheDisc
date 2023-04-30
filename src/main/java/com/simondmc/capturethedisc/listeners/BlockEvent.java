@@ -44,6 +44,12 @@ public class BlockEvent implements Listener {
             e.setCancelled(true);
             return;
         }
+        // no blocks above beacons
+        if (Utils.inRegion(l, Region.RED_DISC_BEACON_AREA) || Utils.inRegion(l, Region.GREEN_DISC_BEACON_AREA)) {
+            e.getPlayer().sendMessage("§cYou can't place blocks above a beacon!");
+            e.setCancelled(true);
+            return;
+        }
         placedBlocks.add(e.getBlock().getLocation());
 
         // TNT
