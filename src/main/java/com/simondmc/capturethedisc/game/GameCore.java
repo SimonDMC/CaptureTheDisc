@@ -96,13 +96,6 @@ public class GameCore {
 
         // set start time for devinfo
         startTime = System.currentTimeMillis();
-        // gamerules, weather and time
-        w.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-        w.setGameRule(GameRule.DO_MOB_SPAWNING, false);
-        w.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
-        w.setTime(1000);
-        w.setStorm(false);
-        w.setDifficulty(Difficulty.EASY);
         if (!CaptureTheDisc.coreEnabled) {
             // assign teams randomly
             Teams.assignTeams();

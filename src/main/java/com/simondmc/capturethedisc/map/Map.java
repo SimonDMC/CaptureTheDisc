@@ -44,6 +44,16 @@ public class Map {
             // REGISTER WORLD
             plugin.getServer().createWorld(new WorldCreator("ctd-world"));
 
+            // gamerules, weather and time
+            World w = Bukkit.getWorld("ctd-world");
+            w.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+            w.setGameRule(GameRule.DO_MOB_SPAWNING, false);
+            w.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
+            w.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
+            w.setTime(1000);
+            w.setStorm(false);
+            w.setDifficulty(Difficulty.EASY);
+
             if (!CaptureTheDisc.coreEnabled) {
                 // TP EVERYONE INTO THE MAP AND RESET THEM
                 for (Player p : plugin.getServer().getOnlinePlayers()) {

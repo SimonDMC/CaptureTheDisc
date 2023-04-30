@@ -34,7 +34,7 @@ import java.util.Objects;
 public class ClickEvent implements Listener {
 
     @EventHandler
-    public void clickShop(InventoryClickEvent e) {
+    public void clickShopOrKit(InventoryClickEvent e) {
         if (e.getView().getTitle().equals("Shop§k")) {
             e.setCancelled(true);
             // get rid of that stupid inventory error
@@ -190,13 +190,12 @@ public class ClickEvent implements Listener {
         if (!GameCore.isOn()) return;
         Player p = (Player) e.getPlayer();
         if (!Kits.selected.contains(p) && Teams.getPlayers().contains(p)) {
-            // reopen inventory a tick later otherwise console shits its pants
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    Kits.openKitGui(p);
-                }
-            }.runTaskLater(CaptureTheDisc.plugin, 1);
+            // i am just not dealing with this
+            Kits.setKit(p, Kit.ARCHER);
+            Inventory.giveArcher(p);
+            Utils.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+            Kits.selected.add(p);
+            p.sendMessage("§dYou closed the kit selection screen, so you were given the Archer Kit. Change your kit by clicking one of the Kit NPCs.");
         }
     }
 }

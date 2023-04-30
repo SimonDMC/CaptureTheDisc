@@ -44,10 +44,8 @@ public class Teams {
     public static void setTeam(Player p, boolean isRed) {
         if (isRed) {
             red.add(p);
-            p.setPlayerListName("§c" + p.getName());
             return;
         }
         green.add(p);
-        p.setPlayerListName("§a" + p.getName());
     }
 }

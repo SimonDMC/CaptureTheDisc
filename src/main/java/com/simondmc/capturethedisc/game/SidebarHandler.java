@@ -41,6 +41,10 @@ public class SidebarHandler {
         redTeam.setColor(ChatColor.RED);
         greenTeam.setColor(ChatColor.GREEN);
 
+        // DISABLE COLLISIONS
+        redTeam.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
+        greenTeam.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
+
         for (Player red : Teams.getRed()) {
             redTeam.addEntry(red.getName());
         }

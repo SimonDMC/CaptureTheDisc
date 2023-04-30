@@ -13,6 +13,7 @@ import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,6 +131,8 @@ public class CoreManager extends GameManager {
             for (PotionEffect eff : p.getActivePotionEffects()) {
                 p.removePotionEffect(eff.getType());
             }
+            // set invulnerable for pregame
+            p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 1000000, 1000000, false, false));
         }
         logger.info("Game setup complete!");
         finishConsumer.run();
