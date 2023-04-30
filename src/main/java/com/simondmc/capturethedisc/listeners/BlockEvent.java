@@ -4,6 +4,7 @@ import com.simondmc.capturethedisc.game.GameCore;
 import com.simondmc.capturethedisc.region.Region;
 import com.simondmc.capturethedisc.util.Utils;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -15,9 +16,9 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
-import org.bukkit.event.player.PlayerFishEvent;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class BlockEvent implements Listener {
@@ -82,9 +83,10 @@ public class BlockEvent implements Listener {
         placedBlocks.remove(e.getBlock().getLocation());
     }
 
+    // prevent non-player-placed blocks from being destroyed
     @EventHandler
     public void blockExplode(EntityExplodeEvent e) {
-        if (GameCore.isOn()) e.blockList().clear();
+        if (GameCore.isOn()) e.blockList().removeIf(b -> !placedBlocks.contains(b.getLocation()));
     }
 
     // not block but who cares ig
