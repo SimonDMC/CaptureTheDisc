@@ -346,7 +346,7 @@ public class PlayerEvent implements Listener {
         if (e.getItemDrop().getItemStack().getType().equals(Material.MUSIC_DISC_PIGSTEP)) {
             for (Player p : Teams.getPlayers()) {
                 Utils.playSound(p, Sound.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF);
-                p.sendMessage("§c" + e.getPlayer().getName() + "§e dropped the §a§lGREEN§e disc!");
+                p.sendMessage("§a" + e.getPlayer().getName() + "§e dropped the §c§lRED§e disc!");
             }
             e.getItemDrop().setGlowing(true);
             GameCore.redDisc = e.getItemDrop();
