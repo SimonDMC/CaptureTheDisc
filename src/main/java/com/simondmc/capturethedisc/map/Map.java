@@ -5,6 +5,7 @@ import com.simondmc.capturethedisc.region.Region;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.io.File;
 import java.io.IOException;
@@ -77,6 +78,8 @@ public class Map {
                     for (PotionEffect eff : p.getActivePotionEffects()) {
                         p.removePotionEffect(eff.getType());
                     }
+                    // set invulnerable for pregame
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 1000000, 1000000, false, false));
                 }
             }
         } catch (IOException e) {
