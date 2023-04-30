@@ -78,6 +78,16 @@ public class GameLoop {
                     }
                 }
 
+                // REMOVE BOATS IN DISC AREAS
+                for (Entity e : Region.getWorld().getEntities()) {
+                    if (e instanceof org.bukkit.entity.Boat) {
+                        Location l = e.getLocation();
+                        if (Utils.inRegion(l, Region.RED_DISC_AREA) || Utils.inRegion(l, Region.GREEN_DISC_AREA)) {
+                            e.remove();
+                        }
+                    }
+                }
+
                 Performance.stop("5t/loop");
             }
         }.runTaskTimer(CaptureTheDisc.plugin, 0, 5);
